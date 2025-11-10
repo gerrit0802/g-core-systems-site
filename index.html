@@ -474,6 +474,94 @@
       color: var(--text-light);
     }
 
+    /* Programme & Downloads */
+    .product-grid {
+      display: grid;
+      gap: 22px;
+    }
+
+    @media (min-width: 840px) {
+      .product-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    .product-card {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      min-height: 100%;
+    }
+
+    .product-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 4px;
+    }
+
+    .product-badge {
+      font-size: 0.68rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      border-radius: 999px;
+      padding: 3px 10px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .badge-free {
+      border-color: rgba(126, 196, 126, 0.7);
+      color: #b8f5b8;
+    }
+
+    .badge-pro {
+      border-color: rgba(215, 184, 111, 0.8);
+      color: var(--gold);
+    }
+
+    .product-tag {
+      font-size: 0.7rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+
+    .product-text {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+    }
+
+    .product-list {
+      margin: 4px 0 0;
+      padding-left: 16px;
+      font-size: 0.88rem;
+      color: var(--text-muted);
+    }
+
+    .product-list li {
+      margin-bottom: 3px;
+    }
+
+    .product-footer {
+      margin-top: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .product-btn {
+      width: 100%;
+      text-align: center;
+    }
+
+    .product-note {
+      font-size: 0.76rem;
+      color: var(--text-muted);
+      opacity: 0.85;
+    }
+
+    
     /* KONTAKT & FOOTER */
 
     .contact-box {
@@ -558,6 +646,7 @@
           <a href="#start">Start</a>
           <a href="#anwendungen">Anwendungen</a>
           <a href="#loesungen">Lösungen</a>
+          <a href="#programme">Programme</a>
           <a href="#philosophie">Philosophie</a>
           <a href="#projekte">Projekte</a>
           <a href="#kontakt">Kontakt</a>
@@ -752,6 +841,80 @@
     </div>
   </section>
 
+    <!-- PROGRAMME & DOWNLOADS -->
+  <section id="programme">
+    <div class="container">
+      <div class="section-label">Programme & Downloads</div>
+      <h2 class="section-title">G-CORE Werkzeuge für Ihren Alltag.</h2>
+      <p class="section-intro">
+        Hier entstehen schrittweise Ihre persönlichen G-CORE SYSTEMS™ Tools:
+        Master-Prompts, geführte KI-Programme und ausgewählte Freebies.
+        Starten Sie mit kostenlosen Einstiegen oder sichern Sie sich
+        vertiefende Profi-Pakete.
+      </p>
+
+      <div class="product-grid">
+        <!-- FREEBIES -->
+        <div class="card product-card">
+          <div class="product-header">
+            <span class="product-badge badge-free">Freebie</span>
+            <span class="product-tag">Einstieg</span>
+          </div>
+          <h3>G-CORE Starter Prompts</h3>
+          <p class="product-text">
+            Eine kleine Sammlung grundlegender Prompts, mit denen Sie
+            sofort beginnen können, KI klarer, strukturierter
+            und bewusster zu nutzen – ohne technische Vorkenntnisse.
+          </p>
+          <ul class="product-list">
+            <li>Alltags- & Berufs-Prompts</li>
+            <li>Strukturierte Fragelogik</li>
+            <li>Ideal zum Ausprobieren mit ChatGPT</li>
+          </ul>
+          <div class="product-footer">
+            <!-- Später: Link zu echter Datei -->
+            <a href="#" class="btn-primary product-btn">
+              Kostenlos herunterladen
+            </a>
+            <div class="product-note">
+              Download-Link wird hier hinterlegt.
+            </div>
+          </div>
+        </div>
+
+        <!-- MASTER-PROMPTS / PROGRAMME -->
+        <div class="card product-card">
+          <div class="product-header">
+            <span class="product-badge badge-pro">Master Prompt</span>
+            <span class="product-tag">Professionell</span>
+          </div>
+          <h3>G-CORE Session Architect</h3>
+          <p class="product-text">
+            Ein geführtes Master-Prompt-System, das Ihnen hilft,
+            komplexe Gespräche, Analysen oder Projekte mit KI
+            Schritt für Schritt aufzubauen – strukturiert, sicher,
+            an Ihre Sprache anpassbar.
+          </p>
+          <ul class="product-list">
+            <li>Geführter Gesprächsaufbau</li>
+            <li>Klare Rollen, Ziele & Grenzen</li>
+            <li>Für Beratung, Kreativarbeit & Planung</li>
+          </ul>
+          <div class="product-footer">
+            <!-- Später: Stripe/PayPal-Link oder Download-Seite -->
+            <a href="#" class="btn-ghost product-btn">
+              Details & Kaufoptionen
+            </a>
+            <div class="product-note">
+              Zahlungs- & Download-Link folgen, sobald Sie verkaufen möchten.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  
   <!-- PROJEKTE -->
   <section id="projekte">
     <div class="container">
@@ -819,6 +982,7 @@
   </footer>
 </body>
 </html>
+
 
 
 
