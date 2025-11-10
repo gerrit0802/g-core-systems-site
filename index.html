@@ -266,15 +266,15 @@
       min-height: 260px;
     }
 
-    /* G-CORE Emblem – verfeinerte Variante */
+    /* G-CORE Emblem – Gold Edition */
     .hero-orbit {
-      width: 210px;
-      height: 210px;
+      width: 220px;
+      height: 220px;
       border-radius: 50%;
-      background: radial-gradient(circle at 30% 0%, #3c3420 0%, #050506 70%);
-      border: 1px solid var(--gold-soft);
+      background: radial-gradient(circle at 28% 0%, #3c3420 0%, #050506 72%);
+      border: 1px solid rgba(215, 184, 111, 0.4);
       box-shadow:
-        0 0 35px rgba(215, 184, 111, 0.22),
+        0 0 55px rgba(215, 184, 111, 0.25),
         0 0 0 1px rgba(0, 0, 0, 0.9);
       display: flex;
       align-items: center;
@@ -283,27 +283,42 @@
     }
 
     .hero-orbit-inner {
-      width: 185px;
-      height: 185px;
+      width: 192px;
+      height: 192px;
       border-radius: 50%;
       overflow: hidden;
       display: flex;
       align-items: center;
       justify-content: center;
-      background: #050506;
+      background: radial-gradient(circle at 30% 0%, #2a2317 0%, #050506 80%);
+      position: relative;
+    }
+
+    .hero-orbit-inner::after {
+      /* dezenter Metallic-Glanz */
+      content: "";
+      position: absolute;
+      inset: -20%;
+      background: radial-gradient(circle at 20% 0%,
+        rgba(255, 255, 255, 0.18) 0%,
+        transparent 35%,
+        transparent 100%);
+      mix-blend-mode: screen;
+      pointer-events: none;
     }
 
     .hero-orbit-inner img {
-      width: 110%;
-      height: 110%;
+      width: 115%;
+      height: 115%;
       object-fit: cover;
-      transform: translateY(2%);
+      transform: translateY(3%);
     }
 
     .hero-orbit-ring,
     .hero-orbit-label {
       display: none;
     }
+
 
 
     /* SECTIONS */
@@ -730,4 +745,5 @@
   </footer>
 </body>
 </html>
+
 
