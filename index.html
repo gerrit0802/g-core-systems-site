@@ -257,41 +257,47 @@
       color: var(--text-muted);
     }
 
-    .hero-right {
-      position: relative;
-      min-height: 220px;
+       .hero-right {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 260px;
     }
 
     .hero-orbit {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: none;
-  box-shadow: none;
-  border: none;
-}
+      width: 220px;
+      height: 220px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 30% 0%, #3c3420 0%, #050506 70%);
+      border: 1px solid var(--gold-soft);
+      box-shadow: 0 0 40px rgba(215, 184, 111, 0.25);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
 
-.hero-orbit-inner {
-  width: 160px;
-  height: 160px;
-  border-radius: 50%;
-  border: 1px solid var(--gold-soft);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: none;
-}
+    .hero-orbit-inner {
+      width: 190px;
+      height: 190px;
+      border-radius: 50%;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #000;
+    }
 
-.hero-orbit-inner img {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-}
+    .hero-orbit-inner img {
+      width: 90%;
+      height: 90%;
+      object-fit: contain;
+    }
 
-.hero-orbit-ring,
-.hero-orbit-label {
-  display: none;
-}
+    .hero-orbit-ring,
+    .hero-orbit-label {
+      display: none;
+    }
+
 
 
     /* SECTIONS */
@@ -720,4 +726,5 @@
   </footer>
 </body>
 </html>
+
 
