@@ -77,23 +77,27 @@
       gap: 12px;
     }
 
+    /* Nav-Logo: kleine Version des Emblems */
     .nav-logo {
-      width: 40px;
-      height: 40px;
-      border-radius: 999px;
-      border: 1px solid var(--gold-soft);
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      border: 1px solid rgba(215, 184, 111, 0.6);
+      background: radial-gradient(circle at 30% 0%, #3c3420 0%, #050506 75%);
+      box-shadow: 0 0 14px rgba(215, 184, 111, 0.25);
       display: flex;
       align-items: center;
       justify-content: center;
-      background: radial-gradient(circle at 30% 0, #3c3420, #111214 60%);
       overflow: hidden;
     }
 
     .nav-logo img {
-      width: 85%;
-      height: 85%;
-      object-fit: contain;
+      width: 115%;
+      height: 115%;
+      object-fit: cover;
+      transform: translateY(3%);
     }
+
 
     .nav-title {
       display: flex;
@@ -815,6 +819,7 @@
   </footer>
 </body>
 </html>
+
 
 
 
