@@ -319,6 +319,37 @@
       display: none;
     }
 
+    .hero-orbit:hover {
+      transform: translateY(-4px) scale(1.02);
+      box-shadow:
+        0 0 70px rgba(215, 184, 111, 0.32),
+        0 0 0 1px rgba(0, 0, 0, 0.9);
+      transition: transform 0.5s ease, box-shadow 0.5s ease;
+      cursor: default;
+    }
+
+    /* sanfter Dauer-Puls des Emblems */
+    .hero-orbit {
+      animation: gcoreGlow 14s ease-in-out infinite;
+    }
+
+    @keyframes gcoreGlow {
+      0% {
+        box-shadow:
+          0 0 35px rgba(215, 184, 111, 0.18),
+          0 0 0 1px rgba(0, 0, 0, 0.9);
+      }
+      50% {
+        box-shadow:
+          0 0 55px rgba(215, 184, 111, 0.3),
+          0 0 0 1px rgba(0, 0, 0, 0.9);
+      }
+      100% {
+        box-shadow:
+          0 0 35px rgba(215, 184, 111, 0.18),
+          0 0 0 1px rgba(0, 0, 0, 0.9);
+      }
+    }
 
 
     /* SECTIONS */
@@ -745,5 +776,6 @@
   </footer>
 </body>
 </html>
+
 
 
