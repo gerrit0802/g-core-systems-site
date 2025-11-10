@@ -1,0 +1,737 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <title>G-CORE SYSTEMS™ – Architecture of Intelligence</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Montserrat:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+  />
+
+  <style>
+    :root {
+      --bg-dark: #111214;
+      --bg-darker: #0b0b0c;
+      --text-light: #f5f5f7;
+      --text-muted: #c8c8c8;
+      --gold: #d7b86f;
+      --gold-soft: #d7b86f33;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont,
+        "Segoe UI", sans-serif;
+      background: radial-gradient(circle at top, #181824 0, #050506 55%);
+      color: var(--text-light);
+      line-height: 1.7;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    /* LAYOUT */
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      background: linear-gradient(
+        to bottom,
+        rgba(5, 5, 6, 0.96),
+        rgba(5, 5, 6, 0.88)
+      );
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(215, 184, 111, 0.12);
+    }
+
+    .container {
+      width: 100%;
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 0;
+    }
+
+    .nav-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .nav-logo {
+      width: 40px;
+      height: 40px;
+      border-radius: 999px;
+      border: 1px solid var(--gold-soft);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: radial-gradient(circle at 30% 0%, #3c3420, #111214 60%);
+      overflow: hidden;
+    }
+
+    .nav-logo img {
+      width: 80%;
+      height: 80%;
+      object-fit: contain;
+    }
+
+    .nav-title {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .nav-title-main {
+      font-family: "Montserrat", sans-serif;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      font-size: 0.82rem;
+    }
+
+    .nav-title-sub {
+      font-size: 0.7rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 20px;
+      font-size: 0.8rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+
+    .nav-links a {
+      position: relative;
+      padding-bottom: 3px;
+    }
+
+    .nav-links a::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      width: 0;
+      height: 1px;
+      background: var(--gold);
+      transition: width 0.25s ease;
+    }
+
+    .nav-links a:hover {
+      color: var(--text-light);
+    }
+
+    .nav-links a:hover::after {
+      width: 100%;
+    }
+
+    /* HERO */
+
+    .hero {
+      padding: 96px 0 72px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-inner {
+      display: grid;
+      gap: 40px;
+      align-items: center;
+    }
+
+    .hero-left {
+      max-width: 640px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--gold-soft);
+      background: rgba(15, 14, 11, 0.85);
+      font-size: 0.7rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 18px;
+    }
+
+    .hero-badge-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--gold);
+      box-shadow: 0 0 12px var(--gold-soft);
+    }
+
+    .hero-title {
+      font-family: "Montserrat", sans-serif;
+      font-size: 2.4rem;
+      line-height: 1.18;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 14px;
+    }
+
+    .hero-highlight {
+      color: var(--gold);
+    }
+
+    .hero-subtitle {
+      max-width: 460px;
+      color: var(--text-muted);
+      font-size: 0.98rem;
+      margin-bottom: 26px;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      margin-bottom: 20px;
+    }
+
+    .btn-primary,
+    .btn-ghost {
+      padding: 10px 24px;
+      border-radius: 999px;
+      font-size: 0.78rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      border: 1px solid var(--gold);
+      cursor: pointer;
+      background: transparent;
+      transition: all 0.25s ease;
+      text-align: center;
+    }
+
+    .btn-primary {
+      background: var(--gold);
+      color: #111214;
+    }
+
+    .btn-primary:hover {
+      background: transparent;
+      color: var(--gold);
+    }
+
+    .btn-ghost {
+      color: var(--gold);
+      border-color: var(--gold-soft);
+    }
+
+    .btn-ghost:hover {
+      border-color: var(--gold);
+      background: rgba(215, 184, 111, 0.08);
+    }
+
+    .hero-meta {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+    }
+
+    .hero-right {
+      position: relative;
+      min-height: 220px;
+    }
+
+    .hero-orbit {
+      position: absolute;
+      inset: -20px;
+      border-radius: 999px;
+      border: 1px solid #26262a;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: radial-gradient(circle at center, #272019 0, #050506 60%);
+      box-shadow: 0 0 60px rgba(0, 0, 0, 0.8);
+    }
+
+    .hero-orbit-inner {
+      width: 170px;
+      height: 170px;
+      border-radius: 999px;
+      border: 1px solid var(--gold-soft);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-orbit-inner img {
+      width: 85%;
+      height: 85%;
+      object-fit: contain;
+    }
+
+    .hero-orbit-ring {
+      position: absolute;
+      inset: 26px;
+      border-radius: 999px;
+      border: 1px dashed rgba(215, 184, 111, 0.35);
+    }
+
+    .hero-orbit-label {
+      position: absolute;
+      bottom: 18px;
+      right: 26px;
+      font-size: 0.7rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+
+    /* SECTIONS */
+
+    section {
+      padding: 70px 0;
+    }
+
+    .section-label {
+      font-size: 0.78rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 10px;
+    }
+
+    .section-title {
+      font-family: "Montserrat", sans-serif;
+      font-size: 1.6rem;
+      margin-bottom: 12px;
+    }
+
+    .section-intro {
+      color: var(--text-muted);
+      max-width: 640px;
+      margin-bottom: 26px;
+      font-size: 0.96rem;
+    }
+
+    .grid-2 {
+      display: grid;
+      gap: 26px;
+    }
+
+    .grid-4 {
+      display: grid;
+      gap: 20px;
+    }
+
+    .card {
+      border-radius: 14px;
+      border: 1px solid rgba(255, 255, 255, 0.04);
+      background: radial-gradient(circle at top left, #1c1711 0, #050506 55%);
+      padding: 18px 18px 20px;
+    }
+
+    .card h3 {
+      font-family: "Montserrat", sans-serif;
+      font-size: 1.02rem;
+      margin-bottom: 6px;
+      color: var(--gold);
+    }
+
+    .card p {
+      font-size: 0.92rem;
+      color: var(--text-muted);
+    }
+
+    .pill {
+      display: inline-flex;
+      font-size: 0.7rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      padding: 3px 9px;
+      margin-bottom: 8px;
+    }
+
+    .highlight-box {
+      border-radius: 18px;
+      border: 1px solid rgba(215, 184, 111, 0.24);
+      background: radial-gradient(circle at top, #30251a 0, #060607 58%);
+      padding: 26px 22px;
+    }
+
+    .highlight-box p {
+      color: var(--text-light);
+    }
+
+    /* KONTAKT & FOOTER */
+
+    .contact-box {
+      border-radius: 18px;
+      border: 1px solid rgba(215, 184, 111, 0.3);
+      padding: 26px 22px;
+      background: radial-gradient(circle at top left, #292018 0, #050506 65%);
+    }
+
+    .contact-box a {
+      color: var(--gold);
+      font-weight: 500;
+    }
+
+    footer {
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+      padding: 26px 0 30px;
+      background: #050506;
+      font-size: 0.78rem;
+      color: var(--text-muted);
+    }
+
+    footer .footer-inner {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    /* RESPONSIVE */
+
+    @media (min-width: 840px) {
+      .hero-inner {
+        grid-template-columns: minmax(0, 3fr) minmax(0, 2.2fr);
+      }
+      .grid-2 {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+      .grid-4 {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (min-width: 1080px) {
+      .grid-4 {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 720px) {
+      .nav-links {
+        display: none;
+      }
+      .hero {
+        padding-top: 70px;
+      }
+      .hero-title {
+        font-size: 1.9rem;
+      }
+      section {
+        padding: 54px 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- NAVBAR -->
+  <header>
+    <div class="container">
+      <nav class="nav">
+        <div class="nav-left">
+          <div class="nav-logo">
+            <img src="logo-gcore.png" alt="G-CORE SYSTEMS Logo" />
+          </div>
+          <div class="nav-title">
+            <div class="nav-title-main">G-CORE SYSTEMS™</div>
+            <div class="nav-title-sub">ARCHITECTURE OF INTELLIGENCE</div>
+          </div>
+        </div>
+        <div class="nav-links">
+          <a href="#start">Start</a>
+          <a href="#anwendungen">Anwendungen</a>
+          <a href="#loesungen">Lösungen</a>
+          <a href="#philosophie">Philosophie</a>
+          <a href="#projekte">Projekte</a>
+          <a href="#kontakt">Kontakt</a>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <main id="start" class="hero">
+    <div class="container hero-inner">
+      <div class="hero-left">
+        <div class="hero-badge">
+          <span class="hero-badge-dot"></span>
+          <span>Individuelle KI-Lösungen</span>
+        </div>
+        <h1 class="hero-title">
+          KI, die <span class="hero-highlight">Menschen stärkt</span> – nicht
+          ersetzt.
+        </h1>
+        <p class="hero-subtitle">
+          G-CORE SYSTEMS™ entwickelt individuelle, intelligente Lösungen, die
+          Denken, Arbeiten und Gestalten leichter machen – ohne Ihr Menschsein
+          zu ersetzen.
+        </p>
+        <div class="hero-actions">
+          <a href="#anwendungen" class="btn-primary">Jetzt entdecken</a>
+          <a href="#kontakt" class="btn-ghost">Projekt anfragen</a>
+        </div>
+        <p class="hero-meta">
+          Für Unternehmen, Selbstständige, Kreative und Privatpersonen, die
+          Technologie bewusst einsetzen möchten.
+        </p>
+      </div>
+
+      <div class="hero-right">
+        <div class="hero-orbit">
+          <div class="hero-orbit-inner">
+            <img src="logo-gcore.png" alt="G-CORE SYSTEMS Logo" />
+            <div class="hero-orbit-ring"></div>
+            <div class="hero-orbit-label">Core Architecture</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- VISION -->
+  <section id="philosophie">
+    <div class="container">
+      <div class="section-label">Vision</div>
+      <h2 class="section-title">
+        Technologie soll Bewusstsein erweitern – nicht verdrängen.
+      </h2>
+      <p class="section-intro">
+        G-CORE SYSTEMS™ steht für einen reflektierten Umgang mit künstlicher
+        Intelligenz. Technologie ist für uns ein Werkzeug menschlicher
+        Kreativität – nicht ihr Ersatz. Unsere Aufgabe ist es, Systeme zu
+        schaffen, die Ihnen helfen, Klarheit zu gewinnen, Entscheidungen zu
+        treffen und Potenziale zu entfalten.
+      </p>
+
+      <div class="grid-2">
+        <div>
+          <div class="pill">Haltung</div>
+          <p>
+            Wir glauben daran, dass jeder Mensch mit KI denken kann, wenn sie
+            verständlich, menschlich und zugänglich gestaltet ist. Darum
+            entwickeln wir Systeme, die Struktur und Intuition verbinden –
+            ohne Fachjargon, ohne technische Überforderung.
+          </p>
+        </div>
+        <div>
+          <div class="pill">Versprechen</div>
+          <p>
+            G-CORE SYSTEMS™ ersetzt keine Menschen. Wir entlasten sie. Ihre
+            Zeit soll wieder frei werden für das Wesentliche: Begegnung,
+            Kreativität, Entscheidung, Verantwortung.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ANWENDUNGSBEREICHE -->
+  <section id="anwendungen">
+    <div class="container">
+      <div class="section-label">Anwendungsbereiche</div>
+      <h2 class="section-title">KI dort, wo sie wirklich gebraucht wird.</h2>
+      <p class="section-intro">
+        G-CORE SYSTEMS™ entwickelt maßgeschneiderte Lösungen für unterschiedliche
+        Lebens- und Arbeitsfelder. Ob im Büro, im Studio, in der Beratung oder
+        im privaten Alltag – überall, wo Menschen Prozesse verbessern oder Ideen
+        realisieren wollen, kann KI sinnvoll unterstützen.
+      </p>
+
+      <div class="grid-4">
+        <div class="card">
+          <div class="pill">Unternehmen</div>
+          <h3>Unternehmen & Organisationen</h3>
+          <p>
+            Systeme, die Abläufe verstehen, Dokumentationen erleichtern und
+            Kommunikation strukturieren – ohne Ihre Arbeitsweise von Grund auf
+            zu verändern.
+          </p>
+        </div>
+        <div class="card">
+          <div class="pill">Fachkräfte</div>
+          <h3>Selbstständige & Fachkräfte</h3>
+          <p>
+            Ihr Wissen in Form: individuelle Assistenten für Text, Planung,
+            Kundenkommunikation und Marketing, abgestimmt auf Ihre Sprache und
+            Ihr Angebot.
+          </p>
+        </div>
+        <div class="card">
+          <div class="pill">Kreative</div>
+          <h3>Kreative & Innovatoren</h3>
+          <p>
+            KI als Co-Kreator: Tools wie Story-, Music- oder Brand-Assistenz,
+            die kreative Prozesse strukturieren, ohne sie zu ersticken.
+          </p>
+        </div>
+        <div class="card">
+          <div class="pill">Privat</div>
+          <h3>Privatpersonen & Lernende</h3>
+          <p>
+            Intelligente Werkzeuge für Fokus, Lernen, mentale Klarheit und
+            Alltagsorganisation – für Menschen, die ihr Leben bewusster
+            gestalten wollen.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TECHNOLOGISCHER KERN -->
+  <section id="kern">
+    <div class="container">
+      <div class="section-label">Architektur</div>
+      <h2 class="section-title">Der Kern, der alles verbindet.</h2>
+      <p class="section-intro">
+        Hinter allen G-CORE SYSTEMS-Lösungen arbeitet eine eigens entwickelte
+        Architektur – ein Master-System, das Denken, Struktur und Sprache
+        miteinander verbindet. Dieser Kern ist urheberrechtlich geschützt, nicht
+        verkäuflich und bildet die Grundlage für jede unserer Anwendungen.
+      </p>
+
+      <div class="highlight-box">
+        <p>
+          Unsichtbar nach außen – aber in jeder Lösung enthalten. So bleibt
+          G-CORE SYSTEMS™ unabhängig, sicher und einzigartig. Sie erhalten
+          Anwendungen, keine Blackbox-Technik.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- INDIVIDUELLE LÖSUNGEN -->
+  <section id="loesungen">
+    <div class="container">
+      <div class="section-label">Lösungen</div>
+      <h2 class="section-title">
+        Jedes Projekt ist anders. Jede Lösung individuell.
+      </h2>
+      <p class="section-intro">
+        Wir glauben nicht an Standardsoftware. Wir entwickeln Systeme, die zu
+        Ihrem Denken, Ihrem Alltag und Ihren Zielen passen. Sie beschreiben
+        Ihre Situation – wir formen daraus ein Werkzeug, das Sie entlastet,
+        begleitet und inspiriert.
+      </p>
+
+      <div class="grid-2">
+        <div class="card">
+          <h3>Analyse & Konzeption</h3>
+          <p>
+            Wir hören zu, stellen Fragen und verstehen Ihre Realität – erst
+            dann entsteht ein Konzept. Klar, verständlich und in Ihrer Sprache
+            formuliert.
+          </p>
+        </div>
+        <div class="card">
+          <h3>Implementierung & Begleitung</h3>
+          <p>
+            Auf Basis des Konzepts entwickeln wir Ihr System, testen es mit
+            Ihnen und passen es an, bis es sich wirklich stimmig anfühlt.
+          </p>
+        </div>
+      </div>
+
+      <div style="margin-top: 26px;">
+        <a href="#kontakt" class="btn-primary">Projekt anfragen</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROJEKTE -->
+  <section id="projekte">
+    <div class="container">
+      <div class="section-label">Projekte</div>
+      <h2 class="section-title">Wo G-CORE SYSTEMS™ bereits wirkt.</h2>
+      <p class="section-intro">
+        Unsere Lösungen unterstützen heute Menschen in Unternehmen, Bildung,
+        kreativen Studios und beratenden Berufen. Jede Zusammenarbeit beginnt
+        mit Zuhören und Analysieren – und endet mit einer Lösung, die im
+        Alltag wirklich genutzt wird.
+      </p>
+
+      <div class="grid-2">
+        <div class="card">
+          <h3>Kommunikation & Dokumentation</h3>
+          <p>
+            Strukturierte Bericht- und Kommunikationshilfen, die Sprache
+            ordnen, Zeit sparen und fachliche Qualität sichern.
+          </p>
+        </div>
+        <div class="card">
+          <h3>Kreativ- & Markenprojekte</h3>
+          <p>
+            Assistenten für Text, Storytelling, Musik und Markenaufbau, die
+            Kreativität verstärken statt zu ersetzen.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- KONTAKT -->
+  <section id="kontakt">
+    <div class="container">
+      <div class="section-label">Kontakt</div>
+      <h2 class="section-title">Lassen Sie uns gemeinsam denken.</h2>
+      <p class="section-intro">
+        Sie haben ein Ziel, eine Idee oder eine Herausforderung und möchten
+        wissen, ob KI dabei helfen kann? Schreiben Sie uns. Wir hören zu,
+        denken mit – und entwickeln gemeinsam die Lösung, die wirklich zu
+        Ihnen passt.
+      </p>
+
+      <div class="contact-box">
+        <p>
+          ✉️ E-Mail: 
+          <a href="mailto:info@g-core-systems.com"
+            >info@g-core-systems.com</a
+          ><br />
+          📍 Standort: Deutschland
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="container footer-inner">
+      <div>
+        © 2025 G-CORE SYSTEMS™ · Individuelle KI-Lösungen für Arbeit, Alltag und
+        Kreativität. Alle Rechte vorbehalten.
+      </div>
+      <div>Architecture of Intelligence.</div>
+    </div>
+  </footer>
+</body>
+</html>
