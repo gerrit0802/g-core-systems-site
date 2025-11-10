@@ -306,27 +306,29 @@
       mix-blend-mode: screen;
       pointer-events: none;
     }
-    /* Light-Sweep-Spur, die nur bei Hover aktiviert wird */
-    .hero-orbit-inner::before {
+      /* Light-Sweep-Spur über dem äußeren Ring */
+    .hero-orbit::before {
       content: "";
       position: absolute;
-      inset: -40%;
+      inset: -6%;              /* nur der Ringbereich, nicht die komplette Fläche */
+      border-radius: 50%;
       background: linear-gradient(
         120deg,
         transparent 0%,
-        rgba(255, 255, 255, 0.35) 40%,
-        rgba(255, 255, 255, 0.1) 55%,
+        rgba(255, 255, 255, 0.45) 40%,
+        rgba(255, 255, 255, 0.15) 55%,
         transparent 100%
       );
       opacity: 0;
-      transform: translateX(-140%) rotate(15deg);
+      transform: translateX(-150%) rotate(15deg);
       pointer-events: none;
       mix-blend-mode: screen;
     }
 
-    .hero-orbit:hover .hero-orbit-inner::before {
+    .hero-orbit:hover::before {
       animation: gcoreSweep 1.2s ease-out;
     }
+
 
     .hero-orbit-inner img {
       width: 115%;
@@ -813,6 +815,7 @@
   </footer>
 </body>
 </html>
+
 
 
 
