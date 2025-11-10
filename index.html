@@ -306,6 +306,27 @@
       mix-blend-mode: screen;
       pointer-events: none;
     }
+    /* Light-Sweep-Spur, die nur bei Hover aktiviert wird */
+    .hero-orbit-inner::before {
+      content: "";
+      position: absolute;
+      inset: -40%;
+      background: linear-gradient(
+        120deg,
+        transparent 0%,
+        rgba(255, 255, 255, 0.35) 40%,
+        rgba(255, 255, 255, 0.1) 55%,
+        transparent 100%
+      );
+      opacity: 0;
+      transform: translateX(-140%) rotate(15deg);
+      pointer-events: none;
+      mix-blend-mode: screen;
+    }
+
+    .hero-orbit:hover .hero-orbit-inner::before {
+      animation: gcoreSweep 1.2s ease-out;
+    }
 
     .hero-orbit-inner img {
       width: 115%;
@@ -348,6 +369,22 @@
         box-shadow:
           0 0 35px rgba(215, 184, 111, 0.18),
           0 0 0 1px rgba(0, 0, 0, 0.9);
+      }
+    }
+    @keyframes gcoreSweep {
+      0% {
+        opacity: 0;
+        transform: translateX(-150%) rotate(15deg);
+      }
+      20% {
+        opacity: 0.9;
+      }
+      60% {
+        opacity: 0.4;
+      }
+      100% {
+        opacity: 0;
+        transform: translateX(150%) rotate(15deg);
       }
     }
 
@@ -776,6 +813,7 @@
   </footer>
 </body>
 </html>
+
 
 
 
