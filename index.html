@@ -677,55 +677,113 @@ html {
         padding: 54px 0;
       }
     }
-    /* Founder Section */
+    
+/* === Founder Signature Layout mit Wasserzeichen === */
 #founder {
-  background: transparent;     /* bleibt unverändert */
-  color: var(--text-light);     /* heller Text, besser lesbar */
-  padding: 40px 0 50px;         /* oben/unten weniger Abstand */
-  margin-top: -20px;            /* zieht näher an den Hero */
-  text-align: center;
+  background: transparent;
+  color: var(--text-light);
+  padding: 70px 0;
 }
 
-
-
-.founder-box {
-  max-width: 700px;
+.founder-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: stretch;
+  max-width: 1100px;
   margin: 0 auto;
-  border: 1px solid rgba(215, 184, 111, 0.25);
-  border-radius: 14px;
-  padding: 40px 30px;
-  background: radial-gradient(circle at top left, #292018 0%, #050506 65%);
+  gap: 50px;
+  padding: 0 20px;
+  position: relative;
 }
 
-#founder .section-title {
+.founder-signature {
+  flex: 0 0 260px;
+  position: relative;
+  background: linear-gradient(180deg, rgba(215,184,111,0.14) 0%, rgba(215,184,111,0.04) 100%);
+  border-left: 3px solid var(--gold);
+  padding: 40px 25px;
+  border-radius: 12px;
+  text-align: left;
+  overflow: hidden;
+}
+
+/* Wasserzeichen-Hintergrund */
+.founder-logo {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 180px;
+  height: 180px;
+  background: url('logo-g-core.png') no-repeat center/contain;
+  opacity: 0.08;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  filter: brightness(1.2);
+}
+
+.founder-signature h3 {
   color: var(--gold);
-  margin-bottom: 20px;
+  font-size: 1.35rem;
+  margin-bottom: 6px;
+  position: relative;
+  z-index: 2;
 }
 
-/* Optionales Bild, falls später Foto hinzugefügt wird */
-.founder-image {
-  width: 160px;
-  height: 160px;
-  border-radius: 50%;
-  border: 2px solid var(--gold);
-  margin-bottom: 20px;
-  object-fit: cover;
-  filter: grayscale(30%);
+.founder-signature p {
+  color: var(--text-muted);
+  font-size: 0.95rem;
+  margin: 0;
+  position: relative;
+  z-index: 2;
 }
 
-   /* Founder Optimierung */
-#founder {
-  padding: 100px 0; /* mehr Abstand oben/unten */
+.founder-text {
+  flex: 1;
+  text-align: left;
+  position: relative;
+  z-index: 1;
 }
 
-#founder .section-title {
-  text-align: center; /* Überschrift mittig */
+.founder-text h2 {
+  font-size: 1.9rem;
+  color: var(--gold);
+  margin-bottom: 22px;
 }
 
-.founder-box {
-  text-align: left; /* Text linksbündig */
-  line-height: 1.8; /* etwas luftiger */
+.founder-text p {
+  line-height: 1.8;
+  color: var(--text-light);
+  font-size: 1.05rem;
 }
+
+.highlight {
+  color: var(--gold);
+  font-weight: 600;
+}
+
+/* --- Responsive Anpassungen --- */
+@media (max-width: 880px) {
+  .founder-wrapper {
+    flex-direction: column;
+    gap: 30px;
+    padding: 0 25px;
+  }
+
+  .founder-signature {
+    flex: none;
+    border-left: none;
+    border-top: 3px solid var(--gold);
+    text-align: center;
+  }
+
+  .founder-logo {
+    top: 60%;
+    width: 120px;
+    height: 120px;
+    opacity: 0.1;
+  }
+}
+
  
     
   </style>
@@ -834,20 +892,29 @@ html {
 
 <!-- FOUNDER SECTION -->
 <section id="founder">
-  <div class="container founder-box">
-    <h2 class="section-title">Der Mensch hinter G-CORE SYSTEMS™</h2>
-    <p>
-      <strong>G-CORE SYSTEMS™</strong> steht für die Entwicklung intelligenter Architekturen,
-      die Technologie und Bewusstsein verbinden.
-    </p>
-    <p>
-      Hinter der Marke steht <strong>Gerrit Gutsch</strong> – Entwickler und Gründer,
-      der Systeme erschafft, die Klarheit, Struktur und Sinn vereinen.
-      Sein Fokus liegt auf der Gestaltung KI-basierter Lösungen, die Denken, Arbeiten und Kreativität
-      erleichtern – ohne den Menschen zu ersetzen.
-    </p>
+  <div class="founder-wrapper">
+    <div class="founder-signature">
+      <div class="founder-logo"></div>
+      <h3>Gerrit Gutsch</h3>
+      <p>Founder & System Architect</p>
+    </div>
+
+    <div class="founder-text">
+      <h2>Der Mensch hinter <span class="highlight">G-CORE SYSTEMS™</span></h2>
+      <p>
+        Hinter G-CORE SYSTEMS™ steht <strong>Gerrit Gutsch</strong> – Entwickler und Architekt intelligenter KI-Strukturen.  
+        Sein Fokus liegt darauf, komplexe Prozesse verständlich, nutzbar und effizient zu gestalten.  
+        <br><br>
+        Ziel ist es, Technologie so zu entwickeln, dass sie Arbeitsabläufe vereinfacht,  
+        Kreativität unterstützt und nachhaltige Ergebnisse ermöglicht – klar, funktional und praxisorientiert.  
+        <br><br>
+        <strong>G-CORE SYSTEMS™</strong> steht damit für eine moderne Verbindung aus  
+        technischer Präzision, menschlichem Denken und systemischer Klarheit.
+      </p>
+    </div>
   </div>
 </section>
+
 
   
   <!-- ANWENDUNGSBEREICHE -->
@@ -1225,5 +1292,6 @@ html {
   </footer>
 </body>
 </html>
+
 
 
