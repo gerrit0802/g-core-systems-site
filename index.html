@@ -612,6 +612,28 @@
       gap: 10px;
     }
 
+/* Footer-Links */
+.footer-legal {
+  text-align: center;
+  margin-top: 30px;
+  padding: 15px;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.footer-legal a {
+  color: var(--gold);
+  text-decoration: none;
+  margin: 0 5px;
+  transition: color 0.3s ease;
+}
+
+.footer-legal a:hover {
+  color: #f6d76b;
+  text-decoration: underline;
+}
+
+    
     /* RESPONSIVE */
 
     @media (min-width: 840px) {
@@ -1118,10 +1140,17 @@
       </div>
     </div>
   </section>
+  <div class="footer-legal">
+    <p>
+      <a href="#impressum">Impressum</a> · 
+      <a href="#datenschutz">Datenschutzerklärung</a>
+    </p>
+  </div>
 
   </footer>
 </body>
 </html>
+
 
 
 
