@@ -677,6 +677,39 @@ html {
         padding: 54px 0;
       }
     }
+    /* Funktions-Sektion: Wie G-CORE SYSTEMS™ arbeitet */
+
+#funktion {
+  padding: 80px 0;
+}
+
+#funktion .section-intro {
+  max-width: 720px;
+  margin: 0 auto 40px;
+}
+
+.funktion-grid {
+  max-width: 1000px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 26px;
+}
+
+.funktion-card {
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba(215, 184, 111, 0.28); /* goldiger Rand */
+  border-radius: 16px;
+  padding: 22px 24px;
+  text-align: left;
+}
+
+.funktion-card h3 {
+  color: var(--gold);
+  margin-bottom: 10px;
+  font-size: 1.05rem;
+}
+
     
 /* === Founder Signature Layout mit Wasserzeichen === */
 #founder {
@@ -991,6 +1024,48 @@ html {
     </div>
   </section>
 
+<section id="funktion">
+  <div class="container">
+    <div class="section-label">Systemlogik</div>
+    <h2 class="section-title">Wie G-CORE SYSTEMS™ arbeitet</h2>
+
+    <p class="section-intro">
+      G-CORE SYSTEMS™ entwickelt keine losen KI-Tools, sondern klare Architekturen.
+      Jede Lösung folgt einer festen Systemlogik: nachvollziehbar, strukturiert
+      und auf den Menschen ausgerichtet – ohne Blackbox, ohne Chaos.
+    </p>
+
+    <div class="funktion-grid">
+      <div class="funktion-card">
+        <h3>1. Logische Ebene</h3>
+        <p>
+          Hier wird festgelegt, wie ein System denkt: welche Informationen wichtig sind,
+          wie sie geordnet werden und in welche Richtung Entscheidungen gehen.
+          Für Nutzer wirkt das einfach – im Hintergrund läuft eine klare Struktur.
+        </p>
+      </div>
+
+      <div class="funktion-card">
+        <h3>2. Interaktionsebene</h3>
+        <p>
+          Die Programme führen Menschen durch Prozesse: Fragen, Rückfragen, Vorschläge.
+          Sie reagieren auf Kontext, behalten den roten Faden und helfen, Entscheidungen
+          fokussiert zu treffen – wie ein strukturierter Dialog statt einem chaotischen Chat.
+        </p>
+      </div>
+
+      <div class="funktion-card">
+        <h3>3. Integritäts-Ebene</h3>
+        <p>
+          Diese Ebene schützt die Architektur. Sie setzt Grenzen, sichert Abläufe
+          und sorgt dafür, dass Systeme verlässlich bleiben. So bleiben G-CORE SYSTEMS™
+          Programme stabil, verständlich und verantwortungsvoll nutzbar.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+  
   <!-- INDIVIDUELLE LÖSUNGEN -->
   <section id="loesungen">
     <div class="container">
@@ -1292,6 +1367,7 @@ html {
   </footer>
 </body>
 </html>
+
 
 
 
