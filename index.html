@@ -885,6 +885,22 @@ html {
   color: var(--text-muted);
 }
 
+/* Korrektur: Systemlogik & Programme linksbündig ausrichten */
+#funktion .section-label,
+#funktion .section-title,
+#funktion .section-intro,
+#programme .section-label,
+#programme .section-title,
+#programme .section-intro {
+  text-align: left !important;
+  margin-left: 0;
+}
+
+#funktion .section-intro,
+#programme .section-intro {
+  max-width: 720px;
+  margin: 0 auto 40px;
+}
 
  
   </style>
@@ -1488,6 +1504,7 @@ html {
   </footer>
 </body>
 </html>
+
 
 
 
