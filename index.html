@@ -28,6 +28,9 @@
       margin: 0;
       padding: 0;
     }
+html {
+  scroll-behavior: smooth;
+}
 
     body {
       font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont,
@@ -154,8 +157,14 @@
 
     .nav-links a {
      letter-spacing: 0.03em;
+
+      .nav-links a {
+  letter-spacing: 0.08em;   /* etwas mehr „Tech“-Look */
 }
 
+.nav-links a:hover {
+  color: var(--gold);       /* beim Hover gold – passend zum Logo */
+}
     
     /* HERO */
 
@@ -720,7 +729,24 @@
   text-align: left; /* Text linksbündig */
   line-height: 1.8; /* etwas luftiger */
 }
- 
+ /* Anwendungsbereiche – Feintuning */
+#anwendungen .section-intro {
+  max-width: 720px;
+  margin: 0 auto 40px;
+  color: var(--text-muted);
+}
+
+#anwendungen {
+  padding-top: 90px;
+  padding-bottom: 90px;
+}
+
+#anwendungen .card-grid,
+#anwendungen .anwendungs-grid,
+#anwendungen .application-grid {
+  gap: 28px;       /* etwas mehr Luft zwischen Kacheln */
+}
+
     
   </style>
 </head>
@@ -1219,6 +1245,7 @@
   </footer>
 </body>
 </html>
+
 
 
 
