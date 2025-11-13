@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <title>G-Core Genie Test</title>
+</head>
+<body>
+  <h1>G-Core Genie Test</h1>
+  <textarea id="prompt" rows="4" cols="60"
+    placeholder="Deine Frage an G-Core Genie..."></textarea>
+  <br />
+  <button id="send">Abschicken</button>
+
+  <h2>Antwort:</h2>
+  <pre id="reply"></pre>
+
+  <script>
+    document.getElementById("send").addEventListener("click", async () => {
+      const prompt = document.getElementById("prompt").value.trim();
+      const replyBox = document.getElementById("reply");
+      replyBox.textContent = "Bitte warten...";
+
+      try {
+        const res = await fetch("https://api.g-core-systems.com/genie", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ prompt }),
+        });
+
+        const data = await res.json();
+        if (!data.ok) {
+          replyBox.textContent = "Fehler: " + (data.message || "Unbekannt");
+          return;
+        }
+
+        replyBox.textContent = data.reply || "(keine Antwort erhalten)";
+      } catch (err) {
+        replyBox.textContent = "Technischer Fehler: " + err.message;
+      }
+    });
+  </script>
+</body>
+</html>
