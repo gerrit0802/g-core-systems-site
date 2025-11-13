@@ -350,14 +350,17 @@
           return;
         }
 
-        const data = await res.json();
+        const response = await res.json();
 
-        // Erwartete Struktur aus dem Router:
-        // { ok: true, data: { reply: "...", ... } }
-        const reply = data?.data?.reply || data?.reply || "(Keine Antwort erhalten)";
+// Erwartete Struktur aus dem Router:
+// Router liefert z.B.:
+// { ok: true, data: { reply: "..." }, model: "...", ... }
+const { ok, data } = response ?? {};
+const replyText = data?.reply ?? "(Keine Antwort erhalten)";
 
-        setAnswer(reply);
-        setStatus("Antwort erfolgreich von Genie erhalten.", false);
+setAnswer(replyText);
+setStatus("Antwort erfolgreich von Genie erhalten.", true);
+
       } catch (err) {
         console.error("Fetch-Fehler:", err);
         setStatus(`Failed to fetch – ${err.message || err}`, true);
