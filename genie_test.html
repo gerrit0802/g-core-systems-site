@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <title>G-Core Systems · Genie API Test</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    :root {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: #05070c;
+      color: #f5f5f5;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+
+    .card {
+      width: 100%;
+      max-width: 860px;
+      background: radial-gradient(circle at top left, #1b2440, #080b16 55%, #05060b 100%);
+      border-radius: 18px;
+      padding: 24px 24px 20px;
+      box-shadow:
+        0 18px 40px rgba(0,0,0,0.7),
+        0 0 0 1px rgba(255,255,255,0.02);
+      border: 1px solid rgba(120,157,255,0.25);
+    }
+
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .title-block {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #dbe3ff;
+    }
+
+    .subtitle {
+      font-size: 0.85rem;
+      color: #9ea9d8;
+    }
+
+    .status-pill {
+      font-size: 0.8rem;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: rgba(46, 213, 115, 0.12);
+      border: 1px solid rgba(46, 213, 115, 0.5);
+      color: #8ef6b5;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
+    }
+
+    .status-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      background: #2ed573;
+      box-shadow: 0 0 10px rgba(46, 213, 115, 0.9);
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+      gap: 18px;
+    }
+
+    @media (max-width: 800px) {
+      .grid {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+
+    label {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #9ea9d8;
+      margin-bottom: 4px;
+      display: block;
+    }
+
+    textarea {
+      width: 100%;
+      min-height: 170px;
+      border-radius: 10px;
+      padding: 10px 12px;
+      border: 1px solid rgba(129, 140, 248, 0.55);
+      background: rgba(5, 7, 18, 0.9);
+      color: #e5e7ff;
+      resize: vertical;
+      font: inherit;
+      line-height: 1.4;
+      outline: none;
+      box-sizing: border-box;
+    }
+
+    textarea:focus {
+      border-color: #a5b4fc;
+      box-shadow: 0 0 0 1px rgba(129, 140, 248, 0.5);
+    }
+
+    textarea::placeholder {
+      color: #6b7280;
+    }
+
+    .controls-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 10px;
+      align-items: center;
+    }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      min-width: 0;
+    }
+
+    select,
+    input[type="number"] {
+      border-radius: 999px;
+      padding: 5px 10px;
+      border: 1px solid rgba(148, 163, 255, 0.7);
+      background: rgba(12, 16, 32, 0.9);
+      color: #e5e7ff;
+      font: inherit;
+      outline: none;
+      min-width: 110px;
+    }
+
+    select:focus,
+    input[type="number"]:focus {
+      border-color: #a5b4fc;
+      box-shadow: 0 0 0 1px rgba(129, 140, 248, 0.5);
+    }
+
+    .btn {
+      border-radius: 999px;
+      padding: 8px 16px;
+      border: none;
+      cursor: pointer;
+      font-size: 0.9rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: linear-gradient(135deg, #4f46e5, #818cf8);
+      color: #f9fafb;
+      box-shadow:
+        0 10px 25px rgba(79, 70, 229, 0.6),
+        0 0 0 1px rgba(191, 219, 254, 0.2);
+      white-space: nowrap;
+    }
+
+    .btn span {
+      font-size: 1.05rem;
+    }
+
+    .btn:disabled {
+      opacity: 0.6;
+      cursor: default;
+      box-shadow: none;
+    }
+
+    .output-card {
+      border-radius: 12px;
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(75, 85, 99, 0.6);
+      padding: 10px 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      min-height: 70px;
+    }
+
+    .output-label-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .output-title {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.09em;
+      color: #9ca3af;
+    }
+
+    .output-meta {
+      font-size: 0.75rem;
+      color: #6b7280;
+    }
+
+    .output {
+      font-size: 0.92rem;
+      color: #e5e7eb;
+      white-space: pre-wrap;
+      word-wrap: break-word;
+    }
+
+    .error {
+      margin-top: 8px;
+      font-size: 0.8rem;
+      color: #fecaca;
+    }
+
+    .footer {
+      margin-top: 14px;
+      border-top: 1px solid rgba(31, 41, 55, 0.9);
+      padding-top: 8px;
+      font-size: 0.75rem;
+      color: #6b7280;
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .endpoint {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      font-size: 0.75rem;
+      background: rgba(15,23,42,0.9);
+      padding: 3px 6px;
+      border-radius: 999px;
+      border: 1px solid rgba(55, 65, 81, 0.8);
+      color: #9ca3af;
+    }
+  </style>
+</head>
+<body>
+  <main class="card">
+    <header class="header">
+      <div class="title-block">
+        <div class="title">G-Core Genie Test</div>
+        <div class="subtitle">
+          Direkter Testaufruf gegen <strong>api.g-core-systems.com</strong> über den eigenen Router.
+        </div>
+      </div>
+      <div class="status-pill">
+        <span class="status-dot"></span>
+        Router aktiv
+      </div>
+    </header>
+
+    <section class="grid">
+      <!-- Eingabe -->
+      <div>
+        <label for="promptInput">Prompt</label>
+        <textarea
+          id="promptInput"
+          placeholder="Schreibe hier deinen Testprompt für den G-Core Router hinein…"
+        >Sag mir bitte in einem Satz, was G-Core Systems aus deiner Sicht besonders macht.</textarea>
+
+        <div class="controls-row" style="margin-top: 12px;">
+          <div class="field">
+            <label for="modelSelect">Modell</label>
+            <select id="modelSelect">
+              <option value="gpt-4.1-mini">gpt-4.1-mini</option>
+              <!-- Bei Bedarf weitere Modelle eintragen -->
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="tempInput">Temperatur</label>
+            <input
+              id="tempInput"
+              type="number"
+              min="0"
+              max="1"
+              step="0.1"
+              value="0.7"
+            />
+          </div>
+
+          <button id="sendBtn" class="btn">
+            <span>➤</span>
+            Senden
+          </button>
+        </div>
+      </div>
+
+      <!-- Ausgabe -->
+      <div>
+        <div class="output-card">
+          <div class="output-label-row">
+            <div class="output-title">Antwort von Genie</div>
+            <div id="metaInfo" class="output-meta">
+              Noch keine Anfrage gesendet
+            </div>
+          </div>
+          <div id="replyOutput" class="output">
+            …
+          </div>
+        </div>
+
+        <div id="errorBox" class="error" style="display:none;"></div>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <div class="endpoint">
+        POST https://api.g-core-systems.com/genie
+      </div>
+      <div>
+        Dieses Tool ist nur für interne Tests in der Entwicklungsphase gedacht.
+      </div>
+    </footer>
+  </main>
+
+  <script>
+    const API_URL = "https://api.g-core-systems.com/genie";
+
+    const promptInput = document.getElementById("promptInput");
+    const modelSelect = document.getElementById("modelSelect");
+    const tempInput = document.getElementById("tempInput");
+    const sendBtn = document.getElementById("sendBtn");
+    const replyOutput = document.getElementById("replyOutput");
+    const errorBox = document.getElementById("errorBox");
+    const metaInfo = document.getElementById("metaInfo");
+
+    async function sendPrompt() {
+      const prompt = promptInput.value.trim();
+      if (!prompt) {
+        showError("Bitte gib einen Prompt ein.");
+        return;
+      }
+
+      clearError();
+      setLoading(true);
+
+      let temperature = Number(tempInput.value);
+      if (Number.isNaN(temperature)) temperature = 0.7;
+
+      const payload = {
+        prompt,
+        model: modelSelect.value,
+        temperature
+      };
+
+      try {
+        const response = await fetch(API_URL, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify(payload)
+        });
+
+        const data = await response.json();
+
+        if (!response.ok || data.ok === false) {
+          const msg =
+            data?.message ||
+            data?.error ||
+            `Fehlercode ${response.status}`;
+          throw new Error(msg);
+        }
+
+        // Antwortfeld auswerten – robust, falls das Backend-Format mal leicht variiert
+        const reply =
+          data?.data?.reply ||
+          data?.reply ||
+          data?.data ||
+          "(Keine Antwort im erwarteten Feld gefunden)";
+
+        replyOutput.textContent = String(reply);
+
+        const usedModel =
+          data?.extra?.model ||
+          data?.model ||
+          payload.model;
+
+        const usedTemp =
+          data?.extra?.temperature ??
+          payload.temperature;
+
+        metaInfo.textContent =
+          `Modell: ${usedModel} · Temperatur: ${usedTemp}`;
+      } catch (err) {
+        console.error("[Genie Test] Fehler:", err);
+        showError(err.message || "Unbekannter Fehler beim Aufruf der Genie API.");
+        replyOutput.textContent = "—";
+        metaInfo.textContent = "Fehler beim letzten Request";
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    function setLoading(isLoading) {
+      if (isLoading) {
+        sendBtn.disabled = true;
+        sendBtn.textContent = "Senden…";
+      } else {
+        sendBtn.disabled = false;
+        sendBtn.innerHTML = "<span>➤</span> Senden";
+      }
+    }
+
+    function showError(message) {
+      errorBox.style.display = "block";
+      errorBox.textContent = "Fehler: " + message;
+    }
+
+    function clearError() {
+      errorBox.style.display = "none";
+      errorBox.textContent = "";
+    }
+
+    sendBtn.addEventListener("click", (e) => {
+      e.preventDefault();
+      sendPrompt();
+    });
+
+    promptInput.addEventListener("keydown", (e) => {
+      if (e.key === "Enter" && (e.ctrlKey || e.metaKey)) {
+        e.preventDefault();
+        sendPrompt();
+      }
+    });
+  </script>
+</body>
+</html>
