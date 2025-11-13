@@ -2,1518 +2,600 @@
 <html lang="de">
 <head>
   <meta charset="UTF-8" />
-  <title>G-CORE SYSTEMS™ – Architecture of Intelligence</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-  <!-- Google Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link
-    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Montserrat:wght@400;500;600;700&display=swap"
-    rel="stylesheet"
-  />
+  <title>G-Core Mobile Host · Dev Panel v0.1</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <style>
     :root {
-      --bg-dark: #111214;
-      --bg-darker: #050506;
-      --text-light: #f5f5f7;
-      --text-muted: #c8c8c8;
-      --gold: #d7b86f;
-      --gold-soft: #d7b86f33;
+      --bg: #050816;
+      --bg-card: #0b1020;
+      --bg-card-soft: #10182a;
+      --accent: #3b82f6;
+      --accent-soft: rgba(59, 130, 246, 0.15);
+      --accent-strong: #60a5fa;
+      --text: #e5e7eb;
+      --text-soft: #9ca3af;
+      --border: rgba(148, 163, 184, 0.3);
+      --ok: #22c55e;
+      --bad: #f97373;
+      --shadow-soft: 0 18px 45px rgba(15, 23, 42, 0.8);
+      --radius-xl: 24px;
     }
 
     * {
       box-sizing: border-box;
-      margin: 0;
-      padding: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
     }
 
-html {
-  scroll-behavior: smooth;
-}
-    
     body {
-      font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont,
-        "Segoe UI", sans-serif;
-      background: radial-gradient(circle at top, #181824 0, #050506 55%);
-      color: var(--text-light);
-      line-height: 1.7;
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: stretch;
+      background: radial-gradient(circle at top, #1e293b 0, #020617 55%, #000 100%);
+      color: var(--text);
     }
 
-    a {
-      color: inherit;
-      text-decoration: none;
+    .app-shell {
+      width: 100%;
+      max-width: 1100px;
+      margin: 16px;
+      padding: 24px;
+      border-radius: 28px;
+      background: radial-gradient(circle at top left, rgba(59, 130, 246, 0.14), transparent 55%),
+                  radial-gradient(circle at bottom right, rgba(56, 189, 248, 0.16), transparent 55%),
+                  #020617;
+      box-shadow: var(--shadow-soft);
+      border: 1px solid rgba(148, 163, 184, 0.2);
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
     }
-
-    /* LAYOUT */
 
     header {
-      position: sticky;
-      top: 0;
-      z-index: 20;
-      background: linear-gradient(
-        to bottom,
-        rgba(5, 5, 6, 0.96),
-        rgba(5, 5, 6, 0.88)
-      );
-      backdrop-filter: blur(12px);
-      border-bottom: 1px solid rgba(215, 184, 111, 0.12);
-    }
-
-    .container {
-      width: 100%;
-      max-width: 1120px;
-      margin: 0 auto;
-      padding: 0 20px;
-    }
-
-    .nav {
       display: flex;
-      align-items: center;
+      flex-wrap: wrap;
       justify-content: space-between;
-      padding: 14px 0;
-    }
-
-    .nav-left {
-      display: flex;
-      align-items: center;
+      align-items: flex-start;
       gap: 12px;
     }
 
-    /* Nav-Logo: kleine Version des Emblems */
-    .nav-logo {
-      width: 36px;
-      height: 36px;
-      border-radius: 50%;
-      border: 1px solid rgba(215, 184, 111, 0.6);
-      background: radial-gradient(circle at 30% 0%, #3c3420 0%, #050506 75%);
-      box-shadow: 0 0 14px rgba(215, 184, 111, 0.25);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
-    }
-
-    .nav-logo img {
-      width: 115%;
-      height: 115%;
-      object-fit: cover;
-      transform: translateY(3%);
-    }
-
-
-    .nav-title {
+    .brand-block {
       display: flex;
       flex-direction: column;
-      gap: 2px;
+      gap: 4px;
     }
 
-    .nav-title-main {
-      font-family: "Montserrat", sans-serif;
-      letter-spacing: 0.16em;
+    .brand-title {
+      font-size: 1.6rem;
+      letter-spacing: 0.09em;
       text-transform: uppercase;
-      font-size: 0.82rem;
+      font-weight: 700;
+      color: #f9fafb;
     }
 
-    .nav-title-sub {
-      font-size: 0.7rem;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: var(--text-muted);
+    .brand-sub {
+      font-size: 0.9rem;
+      color: var(--text-soft);
     }
 
-    .nav-links {
+    .pill-row {
       display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .pill {
+      font-size: 0.75rem;
+      padding: 6px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.4);
+      color: var(--text-soft);
+      background: rgba(15, 23, 42, 0.7);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      backdrop-filter: blur(8px);
+    }
+
+    .pill strong {
+      color: var(--text);
+      font-weight: 600;
+    }
+
+    .status-dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 999px;
+      background: var(--bad);
+    }
+
+    .status-dot.ok {
+      background: var(--ok);
+      box-shadow: 0 0 16px rgba(34, 197, 94, 0.7);
+    }
+
+    main {
+      display: grid;
+      grid-template-columns: minmax(0, 1.2fr) minmax(0, 1.1fr);
       gap: 20px;
-      font-size: 0.8rem;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-      color: var(--text-muted);
     }
 
-    .nav-links a {
-      position: relative;
-      padding-bottom: 3px;
+    @media (max-width: 860px) {
+      main {
+        grid-template-columns: minmax(0, 1fr);
+      }
     }
 
-    .nav-links a::after {
-      content: "";
-      position: absolute;
-      left: 0;
-      bottom: 0;
-      width: 0;
-      height: 1px;
-      background: var(--gold);
-      transition: width 0.25s ease;
-    }
-
-    .nav-links a:hover {
-      color: var(--text-light);
-    }
-
-    .nav-links a:hover::after {
-      width: 100%;
-    }
-
-    .nav-links a {
-     letter-spacing: 0.03em;
-}
-
-    
-    /* HERO */
-
-    .hero {
-      padding: 96px 0 72px;
+    .card {
+      border-radius: var(--radius-xl);
+      background: linear-gradient(140deg, var(--bg-card) 0, var(--bg-card-soft) 100%);
+      padding: 18px 18px 20px;
+      border: 1px solid var(--border);
       position: relative;
       overflow: hidden;
     }
 
-    .hero-inner {
-      display: grid;
-      gap: 40px;
-      align-items: center;
+    .card::before {
+      content: "";
+      position: absolute;
+      inset: -40%;
+      background: radial-gradient(circle at top left, rgba(56, 189, 248, 0.2), transparent 60%);
+      opacity: 0.25;
+      pointer-events: none;
     }
 
-    .hero-left {
-      max-width: 640px;
+    .card-inner {
       position: relative;
       z-index: 1;
     }
 
-    .hero-badge {
-      display: inline-flex;
+    .card-title-row {
+      display: flex;
+      justify-content: space-between;
       align-items: center;
       gap: 8px;
-      padding: 4px 10px;
-      border-radius: 999px;
-      border: 1px solid var(--gold-soft);
-      background: rgba(15, 14, 11, 0.85);
-      font-size: 0.7rem;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-      color: var(--text-muted);
-      margin-bottom: 18px;
-    }
-
-    .hero-badge-dot {
-      width: 7px;
-      height: 7px;
-      border-radius: 50%;
-      background: var(--gold);
-      box-shadow: 0 0 12px var(--gold-soft);
-    }
-
-    .hero-title {
-      font-family: "Montserrat", sans-serif;
-      font-size: 2.4rem;
-      line-height: 1.18;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      margin-bottom: 14px;
-    }
-
-    .hero-highlight {
-      color: var(--gold);
-    }
-
-    .hero-subtitle {
-      max-width: 460px;
-      color: var(--text-muted);
-      font-size: 0.98rem;
-      margin-bottom: 26px;
-    }
-
-    .hero-actions {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 14px;
-      margin-bottom: 20px;
-    }
-
-    .btn-primary,
-    .btn-ghost {
-      padding: 10px 24px;
-      border-radius: 999px;
-      font-size: 0.78rem;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      border: 1px solid var(--gold);
-      cursor: pointer;
-      background: transparent;
-      transition: all 0.25s ease;
-      text-align: center;
-    }
-
-    .btn-primary {
-      background: var(--gold);
-      color: #111214;
-    }
-
-    .btn-primary:hover {
-      background: transparent;
-      color: var(--gold);
-    }
-
-    .btn-ghost {
-      color: var(--gold);
-      border-color: var(--gold-soft);
-    }
-
-    .btn-ghost:hover {
-      border-color: var(--gold);
-      background: rgba(215, 184, 111, 0.08);
-    }
-
-    .hero-meta {
-      font-size: 0.78rem;
-      color: var(--text-muted);
-    }
-
-    /* HERO – LOGO-KREIS */
-
-    .hero-right {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 260px;
-    }
-
-    /* G-CORE Emblem – Gold Edition */
-    .hero-orbit {
-      width: 220px;
-      height: 220px;
-      border-radius: 50%;
-      background: radial-gradient(circle at 28% 0%, #3c3420 0%, #050506 72%);
-      border: 1px solid rgba(215, 184, 111, 0.4);
-      box-shadow:
-        0 0 55px rgba(215, 184, 111, 0.25),
-        0 0 0 1px rgba(0, 0, 0, 0.9);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
-    }
-
-    .hero-orbit-inner {
-      width: 192px;
-      height: 192px;
-      border-radius: 50%;
-      overflow: hidden;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: radial-gradient(circle at 30% 0%, #2a2317 0%, #050506 80%);
-      position: relative;
-    }
-
-    .hero-orbit-inner::after {
-      /* dezenter Metallic-Glanz */
-      content: "";
-      position: absolute;
-      inset: -20%;
-      background: radial-gradient(circle at 20% 0%,
-        rgba(255, 255, 255, 0.18) 0%,
-        transparent 35%,
-        transparent 100%);
-      mix-blend-mode: screen;
-      pointer-events: none;
-    }
-      /* Light-Sweep-Spur über dem äußeren Ring */
-    .hero-orbit::before {
-      content: "";
-      position: absolute;
-      inset: -6%;              /* nur der Ringbereich, nicht die komplette Fläche */
-      border-radius: 50%;
-      background: linear-gradient(
-        120deg,
-        transparent 0%,
-        rgba(255, 255, 255, 0.45) 40%,
-        rgba(255, 255, 255, 0.15) 55%,
-        transparent 100%
-      );
-      opacity: 0;
-      transform: translateX(-150%) rotate(15deg);
-      pointer-events: none;
-      mix-blend-mode: screen;
-    }
-
-    .hero-orbit:hover::before {
-      animation: gcoreSweep 1.2s ease-out;
-    }
-
-
-    .hero-orbit-inner img {
-      width: 115%;
-      height: 115%;
-      object-fit: cover;
-      transform: translateY(3%);
-    }
-
-    .hero-orbit-ring,
-    .hero-orbit-label {
-      display: none;
-    }
-
-    .hero-orbit:hover {
-      transform: translateY(-4px) scale(1.02);
-      box-shadow:
-        0 0 70px rgba(215, 184, 111, 0.32),
-        0 0 0 1px rgba(0, 0, 0, 0.9);
-      transition: transform 0.5s ease, box-shadow 0.5s ease;
-      cursor: default;
-    }
-
-    /* sanfter Dauer-Puls des Emblems */
-    .hero-orbit {
-      animation: gcoreGlow 14s ease-in-out infinite;
-    }
-
-    @keyframes gcoreGlow {
-      0% {
-        box-shadow:
-          0 0 35px rgba(215, 184, 111, 0.18),
-          0 0 0 1px rgba(0, 0, 0, 0.9);
-      }
-      50% {
-        box-shadow:
-          0 0 55px rgba(215, 184, 111, 0.3),
-          0 0 0 1px rgba(0, 0, 0, 0.9);
-      }
-      100% {
-        box-shadow:
-          0 0 35px rgba(215, 184, 111, 0.18),
-          0 0 0 1px rgba(0, 0, 0, 0.9);
-      }
-    }
-    @keyframes gcoreSweep {
-      0% {
-        opacity: 0;
-        transform: translateX(-150%) rotate(15deg);
-      }
-      20% {
-        opacity: 0.9;
-      }
-      60% {
-        opacity: 0.4;
-      }
-      100% {
-        opacity: 0;
-        transform: translateX(150%) rotate(15deg);
-      }
-    }
-
-
-    /* SECTIONS */
-
-    section {
-      padding: 70px 0;
-    }
-
-    .section-label {
-      font-size: 0.78rem;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: var(--text-muted);
       margin-bottom: 10px;
     }
 
-    .section-title {
-      font-family: "Montserrat", sans-serif;
-      font-size: 1.6rem;
-      margin-bottom: 12px;
-    }
-
-    .section-intro {
-      color: var(--text-muted);
-      max-width: 640px;
-      margin-bottom: 26px;
-      font-size: 0.96rem;
-    }
-
-    .grid-2 {
-      display: grid;
-      gap: 26px;
-    }
-
-    .grid-4 {
-      display: grid;
-      gap: 20px;
-    }
-
-    .card {
-      border-radius: 14px;
-      border: 1px solid rgba(255, 255, 255, 0.04);
-      background: radial-gradient(circle at top left, #1c1711 0, #050506 55%);
-      padding: 18px 18px 20px;
-    }
-
-    .card h3 {
-      font-family: "Montserrat", sans-serif;
-      font-size: 1.02rem;
-      margin-bottom: 6px;
-      color: var(--gold);
-    }
-
-    .card p {
-      font-size: 0.92rem;
-      color: var(--text-muted);
-    }
-
-    .pill {
-      display: inline-flex;
-      font-size: 0.7rem;
-      letter-spacing: 0.18em;
+    .card-title {
+      font-size: 0.95rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
       text-transform: uppercase;
-      color: var(--text-muted);
+      color: var(--text-soft);
+    }
+
+    .card-tag {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      padding: 3px 8px;
       border-radius: 999px;
-      border: 1px solid rgba(255, 255, 255, 0.06);
-      padding: 3px 9px;
-      margin-bottom: 8px;
+      border: 1px solid rgba(148, 163, 184, 0.5);
+      background: rgba(15, 23, 42, 0.9);
+      color: var(--text-soft);
     }
 
-    .highlight-box {
-      border-radius: 18px;
-      border: 1px solid rgba(215, 184, 111, 0.24);
-      background: radial-gradient(circle at top, #30251a 0, #060607 58%);
-      padding: 26px 22px;
+    .divider {
+      height: 1px;
+      background: linear-gradient(90deg,
+        transparent 0,
+        rgba(148, 163, 184, 0.7) 30%,
+        rgba(148, 163, 184, 0.25) 70%,
+        transparent 100%
+      );
+      margin: 6px 0 12px;
     }
 
-    .highlight-box p {
-      color: var(--text-light);
-    }
-
-    /* Programme & Downloads */
-    .product-grid {
-      display: grid;
-      gap: 22px;
-    }
-
-    @media (min-width: 840px) {
-      .product-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-      }
-    }
-
-    .product-card {
+    .stack {
       display: flex;
       flex-direction: column;
       gap: 10px;
-      min-height: 100%;
     }
 
-    .product-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 8px;
-      margin-bottom: 4px;
-    }
-
-    .product-badge {
-      font-size: 0.68rem;
-      letter-spacing: 0.18em;
+    label {
+      font-size: 0.8rem;
+      color: var(--text-soft);
       text-transform: uppercase;
-      border-radius: 999px;
-      padding: 3px 10px;
-      border: 1px solid rgba(255, 255, 255, 0.08);
+      letter-spacing: 0.09em;
     }
 
-    .badge-free {
-      border-color: rgba(126, 196, 126, 0.7);
-      color: #b8f5b8;
-    }
-
-    .badge-pro {
-      border-color: rgba(215, 184, 111, 0.8);
-      color: var(--gold);
-    }
-
-    .product-tag {
-      font-size: 0.7rem;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-      color: var(--text-muted);
-    }
-
-    .product-text {
-      font-size: 0.9rem;
-      color: var(--text-muted);
-    }
-
-    .product-list {
-      margin: 4px 0 0;
-      padding-left: 16px;
-      font-size: 0.88rem;
-      color: var(--text-muted);
-    }
-
-    .product-list li {
-      margin-bottom: 3px;
-    }
-
-    .product-footer {
-      margin-top: 10px;
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-    }
-
-    .product-btn {
+    textarea {
       width: 100%;
-      text-align: center;
-    }
-
-    .product-note {
-      font-size: 0.76rem;
-      color: var(--text-muted);
-      opacity: 0.85;
-    }
-    /* Impressum */
-    .impressum-box {
-      border: 1px solid rgba(215, 184, 111, 0.25);
-      border-radius: 14px;
-      padding: 18px;
-      background: radial-gradient(circle at top left, #2b2417 0%, #050506 80%);
-      font-size: 0.85rem;
-      color: var(--text-muted);
-      line-height: 1.7;
-      margin-top: 10px;
-    }
-
-    .impressum-box a {
-      color: var(--gold);
-      text-decoration: none;
-    }
-
-    .impressum-box a:hover {
-      text-decoration: underline;
-    }
-
-    
-    /* KONTAKT & FOOTER */
-
-    .contact-box {
+      min-height: 160px;
+      resize: vertical;
       border-radius: 18px;
-      border: 1px solid rgba(215, 184, 111, 0.3);
-      padding: 26px 22px;
-      background: radial-gradient(circle at top left, #292018 0, #050506 65%);
+      border: 1px solid rgba(148, 163, 184, 0.45);
+      padding: 10px 12px;
+      background: rgba(15, 23, 42, 0.7);
+      color: var(--text);
+      font-size: 0.9rem;
+      outline: none;
     }
 
-    .contact-box a {
-      color: var(--gold);
-      font-weight: 500;
+    textarea:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 1px rgba(59, 130, 246, 0.5);
+    }
+
+    .row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    select,
+    input[type="number"] {
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.45);
+      background: rgba(15, 23, 42, 0.9);
+      padding: 6px 10px;
+      color: var(--text);
+      font-size: 0.85rem;
+      outline: none;
+      min-width: 140px;
+    }
+
+    select:focus,
+    input[type="number"]:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 1px rgba(59, 130, 246, 0.5);
+    }
+
+    .endpoint-pill {
+      font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      font-size: 0.75rem;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(148, 163, 184, 0.5);
+      color: var(--accent-strong);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .btn-row {
+      margin-top: 10px;
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      gap: 12px;
+    }
+
+    button {
+      border-radius: 999px;
+      padding: 10px 26px;
+      border: none;
+      cursor: pointer;
+      background: linear-gradient(135deg, #2563eb, #22c55e);
+      color: white;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      font-size: 0.8rem;
+      box-shadow: 0 15px 30px rgba(37, 99, 235, 0.35);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: transform 0.08s ease, box-shadow 0.08s ease, filter 0.08s ease;
+    }
+
+    button:disabled {
+      opacity: 0.55;
+      cursor: default;
+      box-shadow: none;
+    }
+
+    button:not(:disabled):hover {
+      transform: translateY(-1px);
+      filter: brightness(1.05);
+      box-shadow: 0 20px 40px rgba(37, 99, 235, 0.45);
+    }
+
+    .btn-label-sub {
+      font-size: 0.7rem;
+      opacity: 0.9;
+    }
+
+    .status-text {
+      font-size: 0.8rem;
+      color: var(--text-soft);
+    }
+
+    .status-text.ok {
+      color: var(--ok);
+    }
+
+    .status-text.err {
+      color: var(--bad);
+    }
+
+    .answer-box {
+      min-height: 150px;
+      border-radius: 18px;
+      border: 1px solid rgba(148, 163, 184, 0.5);
+      padding: 12px 14px;
+      background: radial-gradient(circle at top, rgba(34, 197, 94, 0.08), transparent 60%),
+                  rgba(15, 23, 42, 0.9);
+      font-size: 0.9rem;
+      color: var(--text);
+      white-space: pre-wrap;
+    }
+
+    .answer-placeholder {
+      color: var(--text-soft);
+    }
+
+    .router-meta {
+      font-size: 0.78rem;
+      color: var(--text-soft);
+      margin-top: 6px;
+    }
+
+    .router-meta code {
+      font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      font-size: 0.75rem;
+      background: rgba(15, 23, 42, 0.9);
+      padding: 2px 6px;
+      border-radius: 6px;
+      border: 1px solid rgba(148, 163, 184, 0.45);
     }
 
     footer {
-      border-top: 1px solid rgba(255, 255, 255, 0.06);
-      padding: 26px 0 30px;
-      background: #050506;
-      font-size: 0.78rem;
-      color: var(--text-muted);
-    }
-
-    footer .footer-inner {
+      font-size: 0.75rem;
+      color: var(--text-soft);
       display: flex;
-      flex-wrap: wrap;
-      align-items: center;
       justify-content: space-between;
-      gap: 10px;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 4px;
     }
 
-/* Footer-Links */
-.footer-legal {
-  text-align: center;
-  margin-top: 30px;
-  padding: 15px;
-  font-size: 0.85rem;
-  color: var(--text-muted);
-}
-
-.footer-legal a {
-  color: var(--gold);
-  text-decoration: none;
-  margin: 0 5px;
-  transition: color 0.3s ease;
-}
-
-.footer-legal a:hover {
-  color: #f6d76b;
-  text-decoration: underline;
-}
-
-    
-    /* RESPONSIVE */
-
-    @media (min-width: 840px) {
-      .hero-inner {
-        grid-template-columns: minmax(0, 3fr) minmax(0, 2.2fr);
-      }
-      .grid-2 {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-      }
-      .grid-4 {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-      }
+    footer span {
+      opacity: 0.8;
     }
-
-    @media (min-width: 1080px) {
-      .grid-4 {
-        grid-template-columns: repeat(4, minmax(0, 1fr));
-      }
-    }
-
-    @media (max-width: 720px) {
-      .nav-links {
-        display: none;
-      }
-      .hero {
-        padding-top: 70px;
-      }
-      .hero-title {
-        font-size: 1.9rem;
-      }
-      section {
-        padding: 54px 0;
-      }
-    }
-/* Funktions-Sektion: Wie G-CORE SYSTEMS™ arbeitet */
-#funktion {
-  padding: 80px 0;
-}
-
-/* Überschrift & Einleitung in dieser Sektion linksbündig */
-#funktion .section-label,
-#funktion .section-title,
-#funktion .section-intro {
-  text-align: left;
-  margin-left: 0;
-}
-
-#funktion .section-intro {
-  max-width: 720px;
-  margin: 0 auto 40px;
-}
-
-
-
-.funktion-grid {
-  max-width: 1000px;
-  margin: 0 auto;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 26px;
-}
-
-.funktion-card {
-  background: rgba(0, 0, 0, 0.35);
-  border: 1px solid rgba(215, 184, 111, 0.28); /* goldiger Rand */
-  border-radius: 16px;
-  padding: 22px 24px;
-  text-align: left;
-}
-
-.funktion-card h3 {
-  color: var(--gold);
-  margin-bottom: 10px;
-  font-size: 1.05rem;
-}
-
-    
-/* === Founder Signature Layout mit Wasserzeichen === */
-#founder {
-  background: transparent;
-  color: var(--text-light);
-  padding: 70px 0;
-}
-
-.founder-wrapper {
-  display: flex;
-  justify-content: center;
-  align-items: stretch;
-  max-width: 1100px;
-  margin: 0 auto;
-  gap: 50px;
-  padding: 0 20px;
-  position: relative;
-}
-
-.founder-signature {
-  flex: 0 0 260px;
-  position: relative;
-  background: linear-gradient(180deg, rgba(215,184,111,0.14) 0%, rgba(215,184,111,0.04) 100%);
-  border-left: 3px solid var(--gold);
-  padding: 40px 25px;
-  border-radius: 12px;
-  text-align: left;
-  overflow: hidden;
-}
-
-/* Wasserzeichen-Hintergrund */
-.founder-logo {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 180px;
-  height: 180px;
-  background: url('logo-g-core.png') no-repeat center/contain;
-  opacity: 0.08;
-  transform: translate(-50%, -50%);
-  pointer-events: none;
-  filter: brightness(1.2);
-}
-
-.founder-signature h3 {
-  color: var(--gold);
-  font-size: 1.35rem;
-  margin-bottom: 6px;
-  position: relative;
-  z-index: 2;
-}
-
-.founder-signature p {
-  color: var(--text-muted);
-  font-size: 0.95rem;
-  margin: 0;
-  position: relative;
-  z-index: 2;
-}
-
-.founder-text {
-  flex: 1;
-  text-align: left;
-  position: relative;
-  z-index: 1;
-}
-
-.founder-text h2 {
-  font-size: 1.9rem;
-  color: var(--gold);
-  margin-bottom: 22px;
-}
-
-.founder-text p {
-  line-height: 1.8;
-  color: var(--text-light);
-  font-size: 1.05rem;
-}
-
-.highlight {
-  color: var(--gold);
-  font-weight: 600;
-}
-
-/* --- Responsive Anpassungen --- */
-@media (max-width: 880px) {
-  .founder-wrapper {
-    flex-direction: column;
-    gap: 30px;
-    padding: 0 25px;
-  }
-
-  .founder-signature {
-    flex: none;
-    border-left: none;
-    border-top: 3px solid var(--gold);
-    text-align: center;
-  }
-
-  .founder-logo {
-    top: 60%;
-    width: 120px;
-    height: 120px;
-    opacity: 0.1;
-  }
-}
-/* Programme-Sektion: Was G-CORE Programme auszeichnet */
-
-#programme {
-  padding: 80px 0;
-}
-
-/* Überschrift & Einleitung in dieser Sektion linksbündig */
-#programme .section-label,
-#programme .section-title,
-#programme .section-intro {
-  text-align: left;
-  margin-left: 0;
-}
-
-#programme .section-intro {
-  max-width: 720px;
-  margin: 0 auto 40px;
-}
-
-
-.programme-grid {
-  max-width: 1000px;
-  margin: 0 auto;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 26px;
-}
-
-.programme-card {
-  background: rgba(0, 0, 0, 0.35);
-  border-radius: 18px;
-  padding: 26px 24px;
-  border: 1px solid rgba(215, 184, 111, 0.25);
-  box-shadow: 0 18px 48px rgba(0, 0, 0, 0.45);
-}
-
-.programme-pill {
-  display: inline-block;
-  font-size: 0.78rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  padding: 5px 10px;
-  border-radius: 999px;
-  border: 1px solid rgba(215, 184, 111, 0.6);
-  color: var(--gold);
-  margin-bottom: 10px;
-}
-
-.programme-card-title {
-  font-size: 1.1rem;
-  margin-bottom: 10px;
-  color: var(--text-light);
-}
-
-.programme-card p {
-  font-size: 0.95rem;
-  line-height: 1.7;
-  color: var(--text-muted);
-}
-
-/* Korrektur: Systemlogik & Programme linksbündig ausrichten */
-#funktion .section-label,
-#funktion .section-title,
-#funktion .section-intro,
-#programme .section-label,
-#programme .section-title,
-#programme .section-intro {
-  text-align: left !important;
-  margin-left: 0;
-}
-
-#funktion .section-intro,
-#programme .section-intro {
-  max-width: 720px;
-  margin: 0 auto 40px;
-}
-
- 
   </style>
 </head>
 <body>
-  <!-- NAVBAR -->
-  <header>
-    <div class="container">
-      <nav class="nav">
-        <div class="nav-left">
-          <div class="nav-logo">
-            <img src="logo-g-core.png" alt="G-CORE SYSTEMS Logo" />
+  <div class="app-shell">
+    <header>
+      <div class="brand-block">
+        <div class="brand-title">G-CORE MOBILE HOST</div>
+        <div class="brand-sub">Interner Dev-Host für Router-Tests und Genie-Anbindung</div>
+      </div>
+      <div class="pill-row">
+        <div class="pill">
+          <span class="status-dot" id="router-dot"></span>
+          <span><strong id="router-state-label">Router-Status:</strong> <span id="router-state-text">Wird geprüft…</span></span>
+        </div>
+        <div class="pill">
+          <strong>API</strong> api.g-core-systems.com
+        </div>
+        <div class="pill">
+          <strong>Build</strong> v0.1 · Dev
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <!-- Linke Karte: Genie-Test -->
+      <section class="card">
+        <div class="card-inner">
+          <div class="card-title-row">
+            <div class="card-title">G-Core Genie Test</div>
+            <div class="card-tag">Prompt · Router</div>
           </div>
-          <div class="nav-title">
-            <div class="nav-title-main">G-CORE SYSTEMS™</div>
-            <div class="nav-title-sub">ARCHITECTURE OF INTELLIGENCE</div>
-          </div>
-        </div>
-        <div class="nav-links">
-          <a href="#start">Start</a>
-          <a href="#founder">ÜBER G-CORE</a>
-          <a href="#anwendungen">Anwendungen</a>
-          <a href="#loesungen">Lösungen</a>
-          <a href="#programme">Programme</a>
-          <a href="#philosophie">Philosophie</a>
-          <a href="#projekte">Projekte</a>
-          <a href="#kontakt">Kontakt</a>
-        </div>
-      </nav>
-    </div>
-  </header>
+          <div class="divider"></div>
 
-  <!-- HERO -->
-  <main id="start" class="hero">
-    <div class="container hero-inner">
-      <div class="hero-left">
-        <div class="hero-badge">
-          <span class="hero-badge-dot"></span>
-          <span>Individuelle KI-Lösungen</span>
-        </div>
-        <h1 class="hero-title">
-          KI, die <span class="hero-highlight">Menschen stärkt</span> – nicht
-          ersetzt.
-        </h1>
-        <p class="hero-subtitle">
-          G-CORE SYSTEMS™ entwickelt individuelle, intelligente Lösungen, die
-          Denken, Arbeiten und Gestalten leichter machen – ohne Ihr Menschsein
-          zu ersetzen.
-        </p>
-        <div class="hero-actions">
-          <a href="#anwendungen" class="btn-primary">Jetzt entdecken</a>
-          <a href="#kontakt" class="btn-ghost">Projekt anfragen</a>
-        </div>
-        <p class="hero-meta">
-          Für Unternehmen, Selbstständige, Kreative und Privatpersonen, die
-          Technologie bewusst einsetzen möchten.
-        </p>
-      </div>
+          <div class="stack">
+            <div>
+              <label for="prompt-input">Prompt</label>
+              <textarea id="prompt-input" placeholder="Schreib hier deinen Prompt…">Sag mir bitte in einem Satz, was G-Core Systems aus deiner Sicht besonders macht.</textarea>
+            </div>
 
-      <div class="hero-right">
-        <div class="hero-orbit">
-          <div class="hero-orbit-inner">
-            <img src="logo-g-core.png" alt="G-CORE SYSTEMS Emblem" />
-          </div>
-        </div>
-      </div>
-    </div>
-  </main>
+            <div class="row">
+              <div>
+                <label for="model-select">Modell</label><br />
+                <select id="model-select">
+                  <option value="gpt-4o-mini" selected>gpt-4o-mini</option>
+                  <option value="gpt-4.1-mini">gpt-4.1-mini</option>
+                </select>
+              </div>
 
-  <!-- VISION -->
-  <section id="philosophie">
-    <div class="container">
-      <div class="section-label">Vision</div>
-      <h2 class="section-title">
-        Technologie soll Bewusstsein erweitern – nicht verdrängen.
-      </h2>
-      <p class="section-intro">
-        G-CORE SYSTEMS™ steht für einen reflektierten Umgang mit künstlicher
-        Intelligenz. Technologie ist für uns ein Werkzeug menschlicher
-        Kreativität – nicht ihr Ersatz. Unsere Aufgabe ist es, Systeme zu
-        schaffen, die Ihnen helfen, Klarheit zu gewinnen, Entscheidungen zu
-        treffen und Potenziale zu entfalten.
-      </p>
+              <div>
+                <label for="temp-input">Temperatur</label><br />
+                <input id="temp-input" type="number" step="0.1" min="0" max="1.5" value="0.7" />
+              </div>
 
-      <div class="grid-2">
-        <div>
-          <div class="pill">Haltung</div>
-          <p>
-            Wir glauben daran, dass jeder Mensch mit KI denken kann, wenn sie
-            verständlich, menschlich und zugänglich gestaltet ist. Darum
-            entwickeln wir Systeme, die Struktur und Intuition verbinden –
-            ohne Fachjargon, ohne technische Überforderung.
-          </p>
-        </div>
-        <div>
-          <div class="pill">Versprechen</div>
-          <p>
-            G-CORE SYSTEMS™ ersetzt keine Menschen. Wir entlasten sie. Ihre
-            Zeit soll wieder frei werden für das Wesentliche: Begegnung,
-            Kreativität, Entscheidung, Verantwortung.
-          </p>
-        </div>
-      </div>
-    </div>
-  </section>
+              <div>
+                <label>Endpoint</label><br />
+                <div class="endpoint-pill" title="POST https://api.g-core-systems.com/genie">
+                  POST https://api.g-core-systems.com/genie
+                </div>
+              </div>
+            </div>
 
-<!-- FOUNDER SECTION -->
-<section id="founder">
-  <div class="founder-wrapper">
-    <div class="founder-signature">
-      <div class="founder-logo"></div>
-      <h3>Gerrit Gutsch</h3>
-      <p>Founder & System Architect</p>
-    </div>
-
-    <div class="founder-text">
-      <h2>Der Mensch hinter <span class="highlight">G-CORE SYSTEMS™</span></h2>
-      <p>
-        Hinter G-CORE SYSTEMS™ steht <strong>Gerrit Gutsch</strong> – Entwickler und Architekt intelligenter KI-Strukturen.  
-        Sein Fokus liegt darauf, komplexe Prozesse verständlich, nutzbar und effizient zu gestalten.  
-        <br><br>
-        Ziel ist es, Technologie so zu entwickeln, dass sie Arbeitsabläufe vereinfacht,  
-        Kreativität unterstützt und nachhaltige Ergebnisse ermöglicht – klar, funktional und praxisorientiert.  
-        <br><br>
-        <strong>G-CORE SYSTEMS™</strong> steht damit für eine moderne Verbindung aus  
-        technischer Präzision, menschlichem Denken und systemischer Klarheit.
-      </p>
-    </div>
-  </div>
-</section>
-
-
-  
-  <!-- ANWENDUNGSBEREICHE -->
-  <section id="anwendungen">
-    <div class="container">
-      <div class="section-label">Anwendungsbereiche</div>
-      <h2 class="section-title">KI dort, wo sie wirklich gebraucht wird.</h2>
-      <p class="section-intro">
-        G-CORE SYSTEMS™ entwickelt maßgeschneiderte Lösungen für unterschiedliche
-        Lebens- und Arbeitsfelder. Ob im Büro, im Studio, in der Beratung oder
-        im privaten Alltag – überall, wo Menschen Prozesse verbessern oder Ideen
-        realisieren wollen, kann KI sinnvoll unterstützen.
-      </p>
-
-      <div class="grid-4">
-        <div class="card">
-          <div class="pill">Unternehmen</div>
-          <h3>Unternehmen & Organisationen</h3>
-          <p>
-            Systeme, die Abläufe verstehen, Dokumentationen erleichtern und
-            Kommunikation strukturieren – ohne Ihre Arbeitsweise von Grund auf
-            zu verändern.
-          </p>
-        </div>
-        <div class="card">
-          <div class="pill">Fachkräfte</div>
-          <h3>Selbstständige & Fachkräfte</h3>
-          <p>
-            Ihr Wissen in Form: individuelle Assistenten für Text, Planung,
-            Kundenkommunikation und Marketing, abgestimmt auf Ihre Sprache und
-            Ihr Angebot.
-          </p>
-        </div>
-        <div class="card">
-          <div class="pill">Kreative</div>
-          <h3>Kreative & Innovatoren</h3>
-          <p>
-            KI als Co-Kreator: Tools wie Story-, Music- oder Brand-Assistenz,
-            die kreative Prozesse strukturieren, ohne sie zu ersticken.
-          </p>
-        </div>
-        <div class="card">
-          <div class="pill">Privat</div>
-          <h3>Privatpersonen & Lernende</h3>
-          <p>
-            Intelligente Werkzeuge für Fokus, Lernen, mentale Klarheit und
-            Alltagsorganisation – für Menschen, die ihr Leben bewusster
-            gestalten wollen.
-          </p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- TECHNOLOGISCHER KERN -->
-  <section id="kern">
-    <div class="container">
-      <div class="section-label">Architektur</div>
-      <h2 class="section-title">Der Kern, der alles verbindet.</h2>
-      <p class="section-intro">
-        Hinter allen G-CORE SYSTEMS-Lösungen arbeitet eine eigens entwickelte
-        Architektur – ein Master-System, das Denken, Struktur und Sprache
-        miteinander verbindet. Dieser Kern ist urheberrechtlich geschützt, nicht
-        verkäuflich und bildet die Grundlage für jede unserer Anwendungen.
-      </p>
-
-      <div class="highlight-box">
-        <p>
-          Unsichtbar nach außen – aber in jeder Lösung enthalten. So bleibt
-          G-CORE SYSTEMS™ unabhängig, sicher und einzigartig. Sie erhalten
-          Anwendungen, keine Blackbox-Technik.
-        </p>
-      </div>
-    </div>
-  </section>
-
-<section id="funktion">
-  <div class="container">
-    <div class="section-label">Systemlogik</div>
-    <h2 class="section-title">Wie G-CORE SYSTEMS™ denkt und arbeitet</h2>
-
-    <p class="section-intro"
-      style="text-align:left; max-width:720px; margin:0 0 40px 0;">
-      G-CORE SYSTEMS™ entwickelt keine losen KI-Tools, sondern klare Architekturen.
-      Jede Lösung folgt einer festen Systemlogik: nachvollziehbar, strukturiert
-      und auf den Menschen ausgerichtet – ohne Blackbox, ohne Chaos.
-    </p>
-
-    <div class="funktion-grid">
-      <div class="funktion-card">
-        <h3>1. Logische Ebene</h3>
-        <p>
-          Hier wird festgelegt, wie ein System denkt: welche Informationen wichtig sind,
-          wie sie geordnet werden und in welche Richtung Entscheidungen gehen.
-          Für Nutzer wirkt das einfach – im Hintergrund läuft eine klare Struktur.
-        </p>
-      </div>
-
-      <div class="funktion-card">
-        <h3>2. Interaktionsebene</h3>
-        <p>
-          Die Programme führen Menschen durch Prozesse: Fragen, Rückfragen, Vorschläge.
-          Sie reagieren auf Kontext, behalten den roten Faden und helfen, Entscheidungen
-          fokussiert zu treffen – wie ein strukturierter Dialog statt einem chaotischen Chat.
-        </p>
-      </div>
-
-      <div class="funktion-card">
-        <h3>3. Integritäts-Ebene</h3>
-        <p>
-          Diese Ebene schützt die Architektur. Sie setzt Grenzen, sichert Abläufe
-          und sorgt dafür, dass Systeme verlässlich bleiben. So bleiben G-CORE SYSTEMS™
-          Programme stabil, verständlich und verantwortungsvoll nutzbar.
-        </p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section id="programme">
-  <div class="container">
-    <div class="section-label">Programme</div>
-    <h2 class="section-title">Was G-CORE Programme auszeichnet</h2>
-
-    <p class="section-intro"
-      style="text-align:left; max-width:720px; margin:0 0 40px 0;">
-      G-CORE Programme sind strukturierte Arbeitsumgebungen rund um KI.
-      Sie führen Menschen durch klare Schritte, halten den Kontext und
-      machen Entscheidungen leichter – ohne dass technische Details im
-      Vordergrund stehen.
-    </p>
-
-    <div class="programme-grid">
-      <div class="programme-card">
-        <div class="programme-pill">Prinzip&nbsp;1</div>
-        <h3 class="programme-card-title">Strukturierte Abläufe</h3>
-        <p>
-          Statt einzelner Eingaben arbeiten Sie mit einem geführten Ablauf.
-          Das Programm ordnet Themen, stellt die passenden Fragen in der
-          richtigen Reihenfolge und führt von der Ausgangsidee zu einem
-          klaren Ergebnis.
-        </p>
-      </div>
-
-      <div class="programme-card">
-        <div class="programme-pill">Prinzip&nbsp;2</div>
-        <h3 class="programme-card-title">Assistenz mit Kontext</h3>
-        <p>
-          Ein G-CORE Programm reagiert nicht nur auf Befehle, sondern
-          versteht Zusammenhänge. Es merkt sich Ziele, Zwischenschritte
-          und Entscheidungen, behält den Kontext im Blick und
-          unterstützt dort, wo Orientierung und Klarheit gebraucht
-          werden.
-        </p>
-      </div>
-
-      <div class="programme-card">
-        <div class="programme-pill">Prinzip&nbsp;3</div>
-        <h3 class="programme-card-title">Architektur im Hintergrund</h3>
-        <p>
-          Die zugrunde liegende Systemlogik bleibt im Hintergrund.
-          Für Anwender fühlt sich das Programm wie ein klarer
-          Gesprächspartner an – verständlich, nachvollziehbar und
-          konsistent –, während die eigentliche Architektur geschützt
-          bleibt und nicht im Detail sichtbar ist.
-        </p>
-      </div>
-    </div>
-  </div>
-</section>
-
-
-
-  <!-- INDIVIDUELLE LÖSUNGEN -->
-  <section id="loesungen">
-    <div class="container">
-      <div class="section-label">Lösungen</div>
-      <h2 class="section-title">
-        Jedes Projekt ist anders. Jede Lösung individuell.
-      </h2>
-      <p class="section-intro">
-        Wir glauben nicht an Standardsoftware. Wir entwickeln Systeme, die zu
-        Ihrem Denken, Ihrem Alltag und Ihren Zielen passen. Sie beschreiben
-        Ihre Situation – wir formen daraus ein Werkzeug, das Sie entlastet,
-        begleitet und inspiriert.
-      </p>
-
-      <div class="grid-2">
-        <div class="card">
-          <h3>Analyse & Konzeption</h3>
-          <p>
-            Wir hören zu, stellen Fragen und verstehen Ihre Realität – erst
-            dann entsteht ein Konzept. Klar, verständlich und in Ihrer Sprache
-            formuliert.
-          </p>
-        </div>
-        <div class="card">
-          <h3>Implementierung & Begleitung</h3>
-          <p>
-            Auf Basis des Konzepts entwickeln wir Ihr System, testen es mit
-            Ihnen und passen es an, bis es sich wirklich stimmig anfühlt.
-          </p>
-        </div>
-      </div>
-
-      <div style="margin-top: 26px;">
-        <a href="#kontakt" class="btn-primary">Projekt anfragen</a>
-      </div>
-    </div>
-  </section>
-
-    <!-- PROGRAMME & DOWNLOADS -->
-  <section id="programme">
-    <div class="container">
-      <div class="section-label">Programme & Downloads</div>
-      <h2 class="section-title">G-CORE Werkzeuge für Ihren Alltag.</h2>
-      <p class="section-intro">
-        Hier entstehen schrittweise Ihre persönlichen G-CORE SYSTEMS™ Tools:
-        Master-Prompts, geführte KI-Programme und ausgewählte Freebies.
-        Starten Sie mit kostenlosen Einstiegen oder sichern Sie sich
-        vertiefende Profi-Pakete.
-      </p>
-
-      <div class="product-grid">
-        <!-- FREEBIES -->
-        <div class="card product-card">
-          <div class="product-header">
-            <span class="product-badge badge-free">Freebie</span>
-            <span class="product-tag">Einstieg</span>
-          </div>
-          <h3>G-CORE Starter Prompts</h3>
-          <p class="product-text">
-            Eine kleine Sammlung grundlegender Prompts, mit denen Sie
-            sofort beginnen können, KI klarer, strukturierter
-            und bewusster zu nutzen – ohne technische Vorkenntnisse.
-          </p>
-          <ul class="product-list">
-            <li>Alltags- & Berufs-Prompts</li>
-            <li>Strukturierte Fragelogik</li>
-            <li>Ideal zum Ausprobieren mit ChatGPT</li>
-          </ul>
-          <div class="product-footer">
-            <!-- Später: Link zu echter Datei -->
-            <a href="#" class="btn-primary product-btn">
-              Kostenlos herunterladen
-            </a>
-            <div class="product-note">
-              Download-Link wird hier hinterlegt.
+            <div class="btn-row">
+              <button id="send-btn" type="button">
+                <span>▶ Senden</span>
+                <span class="btn-label-sub">gegen eigenen Router</span>
+              </button>
+              <div id="req-status" class="status-text"></div>
             </div>
           </div>
         </div>
+      </section>
 
-        <!-- MASTER-PROMPTS / PROGRAMME -->
-        <div class="card product-card">
-          <div class="product-header">
-            <span class="product-badge badge-pro">Master Prompt</span>
-            <span class="product-tag">Professionell</span>
+      <!-- Rechte Karte: Antwort + Router-Info -->
+      <section class="card">
+        <div class="card-inner">
+          <div class="card-title-row">
+            <div class="card-title">Antwort von Genie</div>
+            <div class="card-tag">Output · Debug</div>
           </div>
-          <h3>G-CORE Session Architect</h3>
-          <p class="product-text">
-            Ein geführtes Master-Prompt-System, das Ihnen hilft,
-            komplexe Gespräche, Analysen oder Projekte mit KI
-            Schritt für Schritt aufzubauen – strukturiert, sicher,
-            an Ihre Sprache anpassbar.
-          </p>
-          <ul class="product-list">
-            <li>Geführter Gesprächsaufbau</li>
-            <li>Klare Rollen, Ziele & Grenzen</li>
-            <li>Für Beratung, Kreativarbeit & Planung</li>
-          </ul>
-          <div class="product-footer">
-            <!-- Später: Stripe/PayPal-Link oder Download-Seite -->
-            <a href="#" class="btn-ghost product-btn">
-              Details & Kaufoptionen
-            </a>
-            <div class="product-note">
-              Zahlungs- & Download-Link folgen, sobald Sie verkaufen möchten.
+          <div class="divider"></div>
+
+          <div class="stack">
+            <div id="answer-box" class="answer-box">
+              <span class="answer-placeholder">(Noch keine Antwort erhalten)</span>
+            </div>
+            <div class="router-meta" id="router-meta">
+              Router-Info wird geladen…
             </div>
           </div>
         </div>
-      </div>
-    </div>
-  </section>
+      </section>
+    </main>
 
-  
-  <!-- PROJEKTE -->
-  <section id="projekte">
-    <div class="container">
-      <div class="section-label">Projekte</div>
-      <h2 class="section-title">Wo G-CORE SYSTEMS™ bereits wirkt.</h2>
-      <p class="section-intro">
-        Unsere Lösungen unterstützen heute Menschen in Unternehmen, Bildung,
-        kreativen Studios und beratenden Berufen. Jede Zusammenarbeit beginnt
-        mit Zuhören und Analysieren – und endet mit einer Lösung, die im
-        Alltag wirklich genutzt wird.
-      </p>
+    <footer>
+      <span>G-Core Systems · Interner Entwicklungs-Host (Etappe 4.0 – UI-Shell)</span>
+      <span>API-Layer: <code>/health</code> · <code>/genie</code></span>
+    </footer>
+  </div>
 
-      <div class="grid-2">
-        <div class="card">
-          <h3>Kommunikation & Dokumentation</h3>
-          <p>
-            Strukturierte Bericht- und Kommunikationshilfen, die Sprache
-            ordnen, Zeit sparen und fachliche Qualität sichern.
-          </p>
-        </div>
-        <div class="card">
-          <h3>Kreativ- & Markenprojekte</h3>
-          <p>
-            Assistenten für Text, Storytelling, Musik und Markenaufbau, die
-            Kreativität verstärken statt zu ersetzen.
-          </p>
-        </div>
-      </div>
-    </div>
-  </section>
+  <script>
+    const API_BASE = "https://api.g-core-systems.com";
+    const HEALTH_URL = API_BASE + "/health";
+    const GENIE_URL = API_BASE + "/genie";
 
-  <!-- KONTAKT -->
-  <section id="kontakt">
-    <div class="container">
-      <div class="section-label">Kontakt</div>
-      <h2 class="section-title">Lassen Sie uns gemeinsam denken.</h2>
-      <p class="section-intro">
-        Sie haben ein Ziel, eine Idee oder eine Herausforderung und möchten
-        wissen, ob KI dabei helfen kann? Schreiben Sie uns. Wir hören zu,
-        denken mit – und entwickeln gemeinsam die Lösung, die wirklich zu
-        Ihnen passt.
-      </p>
+    const routerDot = document.getElementById("router-dot");
+    const routerStateLabel = document.getElementById("router-state-label");
+    const routerStateText = document.getElementById("router-state-text");
+    const routerMeta = document.getElementById("router-meta");
+    const promptInput = document.getElementById("prompt-input");
+    const modelSelect = document.getElementById("model-select");
+    const tempInput = document.getElementById("temp-input");
+    const sendBtn = document.getElementById("send-btn");
+    const reqStatus = document.getElementById("req-status");
+    const answerBox = document.getElementById("answer-box");
 
-      <div class="contact-box">
-        <p>
-          ✉️ E-Mail:
-          <a href="mailto:info@g-core-systems.com"
-            >info@g-core-systems.com</a
-          ><br />
-          📍 Standort: Deutschland
-        </p>
-      </div>
-    </div>
-  </section>
-  <section id="impressum">
-    <div class="container">
-      <div class="section-label">Rechtliches</div>
-      <h2 class="section-title">Impressum</h2>
+    function setRouterStatus(ok, message, meta) {
+      if (ok) {
+        routerDot.classList.add("ok");
+        routerStateText.textContent = "Aktiv";
+        routerStateText.classList.remove("err");
+        routerStateText.classList.add("ok");
+        routerMeta.innerHTML =
+          "Router meldet: <code>" +
+          (meta || message || "healthy") +
+          "</code>";
+      } else {
+        routerDot.classList.remove("ok");
+        routerStateText.textContent = "Fehler";
+        routerStateText.classList.remove("ok");
+        routerStateText.classList.add("err");
+        routerMeta.innerHTML =
+          "Fehler beim Health-Check: <code>" +
+          (message || "unbekannt") +
+          "</code>";
+      }
+    }
 
-      <p class="section-intro">
-        Angaben gemäß § 5 TMG
-      </p>
+    function setAnswer(html) {
+      answerBox.innerHTML = html || "<span class='answer-placeholder'>(Keine Antwort erhalten)</span>";
+    }
 
-      <div class="impressum-box">
-        <p><strong>Verantwortlich für den Inhalt:</strong><br>
-        Gerrit Gutsch<br>
-        G-CORE SYSTEMS™<br>
-        (Einzelunternehmen)<br>
-        </p>
+    async function checkHealth() {
+      try {
+        const res = await fetch(HEALTH_URL, { method: "GET" });
+        if (!res.ok) {
+          const text = await res.text();
+          setRouterStatus(false, res.status + " " + res.statusText + " · " + text.slice(0, 200));
+          return;
+        }
+        const data = await res.json();
+        const service = data.service || data._service || "gcore-router";
+        const status = data.status || "healthy";
+        const port = data.port || "3000";
+        const ok = data.ok !== false && status === "healthy";
 
-        <p>
-        E-Mail: <a href="mailto:[E-Mail-Adresse einsetzen]">[E-Mail-Adresse einsetzen]</a><br>
-        Internet: <a href="https://www.g-core-systems.com" target="_blank">www.g-core-systems.com</a><br>
-        Sitz: Iserlohn (NRW), Deutschland<br>
-        </p>
+        setRouterStatus(ok, status, service + " · Port " + port);
+      } catch (err) {
+        setRouterStatus(false, String(err));
+      }
+    }
 
-        <p>
-        Umsatzsteuer-ID: Wird nachgereicht.<br>
-        Verantwortlich gemäß § 18 Abs. 2 MStV: Gerrit Gutsch
-        </p>
+    async function sendPrompt() {
+      const prompt = (promptInput.value || "").trim();
+      const model = modelSelect.value;
+      const temp = Number(tempInput.value || "0.7");
 
-        <p>
-        ⚖️ <strong>Haftungshinweis:</strong><br>
-        Trotz sorgfältiger inhaltlicher Kontrolle übernehmen wir keine Haftung für die Inhalte externer Links.
-        Für den Inhalt der verlinkten Seiten sind ausschließlich deren Betreiber verantwortlich.
-        </p>
+      if (!prompt) {
+        reqStatus.textContent = "Bitte gib einen Prompt ein.";
+        reqStatus.className = "status-text err";
+        return;
+      }
 
-        
-  </section>
-  
-      <!-- IMPRESSUM -->
+      sendBtn.disabled = true;
+      reqStatus.textContent = "Sende Anfrage…";
+      reqStatus.className = "status-text";
 
-  <!-- DATENSCHUTZERKLÄRUNG -->
-  <section id="datenschutz">
-    <div class="container">
-      <div class="section-label">Rechtliches</div>
-      <h2 class="section-title">Datenschutzerklärung</h2>
+      try {
+        const res = await fetch(GENIE_URL, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            prompt,
+            model,
+            temperature: temp
+          })
+        });
 
-      <p class="section-intro">
-        Informationen zum Umgang mit personenbezogenen Daten gemäß Art. 13 DSGVO.
-      </p>
+        if (!res.ok) {
+          const text = await res.text();
+          reqStatus.textContent = `HTTP-Fehler ${res.status} – ${res.statusText}`;
+          reqStatus.className = "status-text err";
+          setAnswer(
+            "Die API hat mit einem Fehler geantwortet:\n\n" +
+            text.slice(0, 1200)
+          );
+          return;
+        }
 
-      <div class="impressum-box">
-        <p>
-          <strong>1. Verantwortliche Stelle</strong><br>
-          Verantwortlich für die Datenverarbeitung auf dieser Website ist:<br>
-          Gerrit Gutsch · G-CORE SYSTEMS™ · Iserlohn, Deutschland
-        </p>
+        const data = await res.json();
+        const reply =
+          data.reply ||
+          (data.data && data.data.reply) ||
+          data.response ||
+          "(Keine Antwort im JSON gefunden)";
 
-        <p>
-          <strong>2. Art und Zweck der Datenverarbeitung</strong><br>
-          Diese Website dient der Information über G-CORE SYSTEMS™ und angebotene Leistungen.
-          Es werden nur solche personenbezogenen Daten verarbeitet, die Sie uns
-          freiwillig zur Verfügung stellen (z.&nbsp;B. per E-Mail-Kontakt).
-        </p>
+        setAnswer(reply);
+        reqStatus.textContent = "Antwort erfolgreich von Genie erhalten.";
+        reqStatus.className = "status-text ok";
 
-        <p>
-          <strong>3. Server-Logfiles</strong><br>
-          Beim Aufruf dieser Website werden durch den Hosting-Dienstleister (z.&nbsp;B. GitHub Pages
-          oder der jeweilige Serverbetreiber) automatisch Informationen in sogenannten
-          Server-Logfiles erhoben. Diese können u.&nbsp;a. folgende Daten enthalten:
-          IP-Adresse, Datum und Uhrzeit des Abrufs, abgerufene Seite, verwendeter Browser
-          und Betriebssystem. Diese Daten werden aus Sicherheitsgründen (z.&nbsp;B. zur
-          Abwehr von Angriffen) gespeichert und nach einer angemessenen Frist automatisch gelöscht.
-          Eine Zusammenführung dieser Daten mit anderen Datenquellen findet nicht statt.
-        </p>
+        if (data.model || (data.data && data.data.model)) {
+          const mdl = data.model || (data.data && data.data.model);
+          routerMeta.innerHTML =
+            "Modell: <code>" +
+            mdl +
+            "</code> · Router läuft über <code>/genie</code>";
+        }
+      } catch (err) {
+        console.error("Fehler in sendPrompt:", err);
+        reqStatus.textContent = "Fetch-Fehler – Details in der Browser-Konsole.";
+        reqStatus.className = "status-text err";
+        setAnswer(
+          "Der Browser konnte die Anfrage nicht erfolgreich abschließen.\n\n" +
+          "Mögliche Ursachen:\n" +
+          "• Temporäres Netzwerkproblem\n" +
+          "• API-Timeout\n\n" +
+          "Technische Details:\n" +
+          String(err)
+        );
+      } finally {
+        sendBtn.disabled = false;
+      }
+    }
 
-        <p>
-          <strong>4. Kontaktaufnahme per E-Mail</strong><br>
-          Wenn Sie uns per E-Mail kontaktieren, werden Ihre Angaben aus der E-Mail
-          inklusive der von Ihnen dort angegebenen Kontaktdaten zur Bearbeitung der Anfrage
-          und für den Fall von Anschlussfragen gespeichert. Diese Daten geben wir nicht ohne
-          Ihre Einwilligung weiter.
-        </p>
-
-        <p>
-          <strong>5. Cookies & Tracking</strong><br>
-          Diese Website setzt derzeit keine eigenen Tracking-Cookies, Analyse- oder Marketing-Tools ein.
-          Dienste des Hosting-Anbieters (z.&nbsp;B. GitHub, IONOS oder vergleichbare Provider)
-          können aus technischen Gründen eigene Cookies verwenden. Näheres entnehmen Sie bitte
-          den Datenschutzhinweisen des jeweiligen Anbieters.
-        </p>
-
-        <p>
-          <strong>6. Rechtsgrundlagen</strong><br>
-          Die Verarbeitung Ihrer Daten erfolgt auf Grundlage von Art. 6 Abs. 1 lit. f DSGVO
-          (berechtigtes Interesse an einem sicheren Betrieb der Website) sowie Art. 6 Abs. 1 lit. b DSGVO
-          (Vertragserfüllung bzw. vorvertragliche Maßnahmen), sofern Sie uns aktiv kontaktieren.
-        </p>
-
-        <p>
-          <strong>7. Ihre Rechte</strong><br>
-          Sie haben das Recht auf Auskunft über die von uns verarbeiteten personenbezogenen Daten,
-          auf Berichtigung, Löschung, Einschränkung der Verarbeitung, Widerspruch sowie
-          Datenübertragbarkeit im Rahmen der gesetzlichen Vorgaben. Zudem haben Sie das Recht,
-          sich bei einer Datenschutz-Aufsichtsbehörde zu beschweren.
-        </p>
-
-        <p>
-          <strong>8. Speicherung & Löschung</strong><br>
-          Personenbezogene Daten, die Sie uns mitteilen, speichern wir nur so lange,
-          wie es für den jeweiligen Zweck erforderlich ist oder wie es gesetzliche
-          Aufbewahrungsfristen vorgeben. Danach werden die Daten gelöscht.
-        </p>
-
-        <p>
-          Stand dieser Datenschutzerklärung: 2025
-        </p>
-      </div>
-    </div>
-  </section>
-          <!-- FOOTER -->
-  <footer>
-    <div class="container footer-inner">
-      <div>
-        © 2025 G-CORE SYSTEMS™ · Individuelle KI-Lösungen für Arbeit, Alltag und Kreativität. Alle Rechte vorbehalten.
-      </div>
-      <div>Architecture of Intelligence.</div>
-    </div>
-
-    <div class="footer-legal">
-      <p>
-        <a href="#impressum">Impressum</a> ·
-        <a href="#datenschutz">Datenschutzerklärung</a>
-      </p>
-    </div>
-  </footer>
+    sendBtn.addEventListener("click", sendPrompt);
+    checkHealth();
+  </script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
