@@ -415,37 +415,36 @@
     }
 
     input[type="range"] {
-      flex: 1;
-      appearance: none;
-      height: 4px;
-      border-radius: 999px;
-      background: linear-gradient(
-        to right,
-        rgba(215, 184, 111, 0.9),
-        rgba(215, 184, 111, 0.2)
-      );
-      outline: none;
-    }
+  flex: 1;
+  appearance: none;
+  height: 4px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.14); /* dezente Linie statt Leuchtstreifen */
+  outline: none;
+}
 
-    input[type="range"]::-webkit-slider-thumb {
-      appearance: none;
-      width: 14px;
-      height: 14px;
-      border-radius: 50%;
-      background: var(--gold);
-      box-shadow: 0 0 12px rgba(215, 184, 111, 0.9);
-      cursor: pointer;
-    }
 
-    input[type="range"]::-moz-range-thumb {
-      width: 14px;
-      height: 14px;
-      border-radius: 50%;
-      background: var(--gold);
-      border: none;
-      box-shadow: 0 0 12px rgba(215, 184, 111, 0.9);
-      cursor: pointer;
-    }
+   input[type="range"]::-webkit-slider-thumb {
+  appearance: none;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--gold);
+  box-shadow: 0 0 6px rgba(215, 184, 111, 0.6); /* weniger Glow */
+  cursor: pointer;
+}
+
+
+   input[type="range"]::-moz-range-thumb {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--gold);
+  border: none;
+  box-shadow: 0 0 6px rgba(215, 184, 111, 0.6);
+  cursor: pointer;
+}
+
 
     .range-value {
       font-size: 12px;
