@@ -1,0 +1,29 @@
+{
+  "name": "G-Core Mobile Host",
+  "short_name": "G-Core Host",
+  "description": "Interner G-Core Genie Host zum Testen der eigenen KI-Router-Verbindung.",
+  "start_url": "/gcore_host.html",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#050506",
+  "theme_color": "#111214",
+  "icons": [
+    {
+      "src": "/icons/gcore-icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/icons/gcore-icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "/icons/gcore-icon-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}
