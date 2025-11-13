@@ -586,6 +586,17 @@
 
     // Beim Laden der Seite direkt einmal prüfen
     checkRouterStatus();
+        // Service Worker Registrierung für PWA-Funktionalität
+    if ("serviceWorker" in navigator) {
+      window.addEventListener("load", () => {
+        navigator.serviceWorker
+          .register("/sw.js")
+          .catch(err => {
+            console.warn("Service Worker Registrierung fehlgeschlagen:", err);
+          });
+      });
+    }
+
   </script>
 </body>
 </html>
