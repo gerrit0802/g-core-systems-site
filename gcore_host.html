@@ -1,21 +1,26 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-  <meta charset="utf-8" />
-  <title>G-CORE MOBILE HOST v0.2</title>
+  <meta charset="UTF-8" />
+  <title>G-CORE GENIE HOST</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-<link rel="manifest" href="/manifest.webmanifest">
-<meta name="theme-color" content="#d7b86f">
 
-  <!-- Grund-Design im G-CORE-Stil -->
   <style>
     :root {
-      --bg-dark:   #111214;
+      --bg-dark: #111214;
       --bg-darker: #050506;
-      --text-light:#f5f5f7;
-      --text-muted:#c8c8c8;
-      --gold:      #d7b86f;
+      --text-light: #f5f5f7;
+      --text-muted: #c8c8c8;
+      --gold: #d7b86f;
       --gold-soft: #d7b86f33;
+
+      --radius-xl: 24px;
+      --radius-lg: 18px;
+      --radius-pill: 999px;
+      --shadow-soft: 0 28px 60px rgba(0, 0, 0, 0.65);
+      --border-glass: 1px solid rgba(255, 255, 255, 0.06);
+      --transition-fast: 150ms ease-out;
+      --transition-med: 220ms ease-out;
     }
 
     * {
@@ -24,10 +29,14 @@
       padding: 0;
     }
 
+    html, body {
+      height: 100%;
+    }
+
     body {
-      min-height: 100vh;
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      background: radial-gradient(circle at top, #1d1f24 0, var(--bg-dark) 45%, var(--bg-darker) 100%);
+      background:
+        radial-gradient(circle at top, #1d1f24 0, var(--bg-dark) 45%, var(--bg-darker) 100%);
       color: var(--text-light);
       display: flex;
       align-items: center;
@@ -36,369 +45,558 @@
     }
 
     .host-shell {
-      max-width: 1024px;
       width: 100%;
-      background: linear-gradient(145deg, #15161a, #09090b);
+      max-width: 1120px;
+      min-height: 520px;
+      display: grid;
+      grid-template-columns: minmax(0, 1.1fr) minmax(0, 1.3fr);
+      gap: 24px;
+      background: linear-gradient(
+        135deg,
+        rgba(255, 255, 255, 0.01),
+        rgba(215, 184, 111, 0.04)
+      );
       border-radius: 32px;
-      padding: 22px 22px 30px;
-      box-shadow:
-        0 24px 80px rgba(0, 0, 0, 0.75),
-        0 0 0 1px #1f2024;
-      border: 1px solid rgba(255, 255, 255, 0.03);
+      padding: 26px 28px;
+      border: 1px solid rgba(255, 255, 255, 0.04);
+      box-shadow: var(--shadow-soft);
+      backdrop-filter: blur(30px);
+    }
+
+    /* Mobile Layout */
+    @media (max-width: 960px) {
+      body {
+        padding: 14px;
+      }
+
+      .host-shell {
+        grid-template-columns: minmax(0, 1fr);
+        min-height: auto;
+        padding: 20px 18px;
+      }
+    }
+
+    /* Link-Style neutralisieren */
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    /* Linker Bereich – Brand / Erklärung */
+    .host-panel {
       position: relative;
+      border-radius: var(--radius-xl);
+      padding: 20px 18px;
+      border: var(--border-glass);
+      background: radial-gradient(circle at top left,
+        rgba(215, 184, 111, 0.12) 0,
+        rgba(13, 13, 16, 0.85) 38%,
+        rgba(3, 3, 5, 0.98) 100%
+      );
       overflow: hidden;
     }
 
-    .host-shell::before {
+    .host-panel::before {
       content: "";
       position: absolute;
       inset: -40%;
       background:
-        radial-gradient(circle at 0% 0%, var(--gold-soft), transparent 55%),
-        radial-gradient(circle at 100% 100%, rgba(215, 184, 111, 0.12), transparent 55%);
-      opacity: 0.7;
+        radial-gradient(circle at 0 0, rgba(215, 184, 111, 0.11), transparent 55%),
+        radial-gradient(circle at 100% 100%, rgba(255, 255, 255, 0.05), transparent 60%);
+      opacity: 0.6;
       pointer-events: none;
     }
 
-    .host-content {
+    .host-panel-inner {
       position: relative;
       z-index: 1;
-    }
-
-    /* Topbar / Mini-Menü */
-
-    .host-topbar {
       display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 4px 4px 14px;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-      margin-bottom: 18px;
+      flex-direction: column;
+      gap: 16px;
+      height: 100%;
     }
 
-    .top-left {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .top-logo-circle {
-      width: 28px;
-      height: 28px;
-      border-radius: 50%;
-      background: radial-gradient(circle at 30% 20%, #fff7da, var(--gold));
-      box-shadow:
-        0 0 0 5px rgba(215, 184, 111, 0.14),
-        0 10px 26px rgba(0, 0, 0, 0.8);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 14px;
-      font-weight: 700;
-      color: #181818;
-    }
-
-    .top-text-main {
-      font-size: 13px;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-    }
-
-    .top-text-sub {
-      font-size: 11px;
-      color: var(--text-muted);
-    }
-
-    .top-right {
-      display: flex;
+    .brand-chip {
+      display: inline-flex;
       align-items: center;
       gap: 8px;
-      flex-wrap: wrap;
-    }
-
-    .menu-chip {
-      font-size: 11px;
-      padding: 5px 11px;
-      border-radius: 999px;
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      background: rgba(0, 0, 0, 0.45);
-      color: var(--text-muted);
-      cursor: pointer;
-      text-decoration: none;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      transition: background 0.12s ease, border-color 0.12s ease, color 0.12s ease, transform 0.08s ease;
-    }
-
-    .menu-chip span {
-      white-space: nowrap;
-    }
-
-    .menu-chip:hover {
-      background: rgba(0, 0, 0, 0.7);
-      border-color: rgba(255, 255, 255, 0.18);
+      padding: 6px 12px;
+      border-radius: var(--radius-pill);
+      border: 1px solid rgba(215, 184, 111, 0.4);
+      background: radial-gradient(circle at top left,
+        rgba(215, 184, 111, 0.25),
+        rgba(0, 0, 0, 0.55)
+      );
+      font-size: 12px;
+      letter-spacing: 0.09em;
+      text-transform: uppercase;
       color: var(--text-light);
-      transform: translateY(-1px);
     }
 
-    .menu-chip.primary {
-      border-color: rgba(215, 184, 111, 0.7);
-      color: var(--gold);
-      background: rgba(0, 0, 0, 0.7);
-    }
-
-    .menu-chip.primary:hover {
-      background: rgba(0, 0, 0, 0.9);
-    }
-
-    .router-indicator {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      font-size: 11px;
-      padding: 5px 10px;
-      border-radius: 999px;
-      background: rgba(0, 0, 0, 0.6);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      color: var(--text-muted);
-    }
-
-    .router-dot {
+    .brand-chip span.dot {
       width: 8px;
       height: 8px;
       border-radius: 50%;
-      background: var(--gold-soft);
+      background: var(--gold);
+      box-shadow: 0 0 12px rgba(215, 184, 111, 0.8);
     }
 
-    .router-dot.ok {
-      background: #4caf50;
-      box-shadow: 0 0 0 4px rgba(76, 175, 80, 0.25);
+    .hero-title {
+      font-size: 24px;
+      line-height: 1.26;
+      font-weight: 650;
     }
 
-    .router-dot.err {
-      background: #ff5252;
-      box-shadow: 0 0 0 4px rgba(255, 82, 82, 0.25);
-    }
-
-    /* Hauptbereich */
-
-    .host-inner {
-      display: grid;
-      grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
-      gap: 28px;
-    }
-
-    @media (max-width: 800px) {
-      .host-inner {
-        grid-template-columns: 1fr;
-      }
-      .host-shell {
-        padding: 18px 16px 24px;
-        border-radius: 24px;
-      }
-      .host-topbar {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 8px;
-      }
-      .top-right {
-        justify-content: flex-start;
-      }
-    }
-
-    .host-header {
-      margin-bottom: 18px;
-    }
-
-    .host-eyebrow {
-      font-size: 11px;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
+    .hero-title span {
       color: var(--gold);
-      margin-bottom: 6px;
     }
 
-    .host-title {
-      font-size: 26px;
-      line-height: 1.2;
-      font-weight: 600;
-    }
-
-    .host-sub {
-      margin-top: 8px;
-      font-size: 13px;
-      line-height: 1.5;
+    .hero-sub {
+      font-size: 14px;
       color: var(--text-muted);
+      max-width: 420px;
     }
 
     .pill-row {
       display: flex;
-      gap: 10px;
-      margin-top: 18px;
       flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 6px;
     }
 
     .pill {
-      padding: 5px 11px;
-      border-radius: 999px;
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      background: rgba(0, 0, 0, 0.35);
       font-size: 11px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 6px 12px;
+      border-radius: var(--radius-pill);
+      border: 1px solid rgba(255, 255, 255, 0.07);
       color: var(--text-muted);
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
+      background: rgba(0, 0, 0, 0.35);
+      backdrop-filter: blur(18px);
     }
 
-    .pill-dot {
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background: var(--gold-soft);
+    .pill strong {
+      color: var(--gold);
+      font-weight: 600;
     }
 
-    .pill-dot.ok {
-      background: #4caf50;
-      box-shadow: 0 0 0 4px rgba(76, 175, 80, 0.25);
-    }
-
-    .pill-dot.err {
-      background: #ff5252;
-      box-shadow: 0 0 0 4px rgba(255, 82, 82, 0.25);
-    }
-
-    .host-main-actions {
-      margin-top: 26px;
+    .feature-list {
+      list-style: none;
       display: flex;
       flex-direction: column;
-      gap: 14px;
+      gap: 10px;
+      margin-top: 10px;
+      font-size: 13px;
+      color: var(--text-muted);
     }
 
-    .btn {
-      position: relative;
+    .feature-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+    }
+
+    .feature-icon {
+      width: 18px;
+      height: 18px;
+      border-radius: 8px;
+      background: radial-gradient(circle at 30% 0,
+        rgba(215, 184, 111, 0.85),
+        rgba(69, 56, 26, 0.9)
+      );
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      gap: 10px;
-      padding: 12px 18px;
-      border-radius: 999px;
-      border: none;
-      cursor: pointer;
-      font-size: 14px;
-      font-weight: 500;
-      text-decoration: none;
-      transition: transform 0.12s ease, box-shadow 0.12s ease, background 0.12s ease;
-      outline: none;
-      white-space: nowrap;
-    }
-
-    .btn-primary {
-      background: linear-gradient(135deg, var(--gold), #f6e2a4);
-      color: #181818;
-      box-shadow:
-        0 12px 32px rgba(0, 0, 0, 0.65),
-        0 0 0 1px rgba(255, 255, 255, 0.06);
-    }
-
-    .btn-primary:hover {
-      transform: translateY(-1px);
-      box-shadow:
-        0 18px 42px rgba(0, 0, 0, 0.8),
-        0 0 0 1px rgba(255, 255, 255, 0.1);
-    }
-
-    .btn-secondary {
-      background: radial-gradient(circle at top, rgba(255,255,255,0.08), rgba(0,0,0,0.7));
-      color: var(--text-light);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-    }
-
-    .btn-secondary:hover {
-      transform: translateY(-1px);
-      border-color: rgba(255, 255, 255, 0.18);
-    }
-
-    .btn-label {
-      font-size: 12px;
-      opacity: 0.7;
-    }
-
-    .btn-col {
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-    }
-
-    .host-status {
-      margin-top: 18px;
-      font-size: 12px;
-      color: var(--text-muted);
-      line-height: 1.6;
-    }
-
-    .host-status strong {
-      color: var(--text-light);
-    }
-
-    .host-status code {
-      font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
       font-size: 11px;
-      padding: 2px 4px;
-      border-radius: 4px;
-      background: rgba(0, 0, 0, 0.55);
-      border: 1px solid rgba(255, 255, 255, 0.06);
+      box-shadow: 0 0 14px rgba(215, 184, 111, 0.8);
+      flex-shrink: 0;
     }
 
-    .side-panel {
-      padding: 12px 16px 14px;
-      border-radius: 24px;
-      background: radial-gradient(circle at top, rgba(255,255,255,0.12), rgba(0,0,0,0.9));
-      border: 1px solid rgba(255, 255, 255, 0.04);
-      box-shadow: 0 14px 50px rgba(0, 0, 0, 0.9);
+    .feature-item span.text {
+      flex: 1;
+    }
+
+    .panel-footer {
+      margin-top: auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      font-size: 11px;
+      color: var(--text-muted);
+      padding-top: 10px;
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 10px;
+      border-radius: var(--radius-pill);
+      background: rgba(0, 140, 60, 0.06);
+      border: 1px solid rgba(0, 180, 90, 0.4);
+      color: #7bffa8;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .status-pill-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #7bffa8;
+      box-shadow: 0 0 10px rgba(123, 255, 168, 0.9);
+    }
+
+    /* Rechter Bereich – Host UI */
+    .control-panel {
+      border-radius: var(--radius-xl);
+      padding: 20px 18px;
+      border: var(--border-glass);
+      background: radial-gradient(circle at top right,
+        rgba(215, 184, 111, 0.13),
+        rgba(7, 7, 9, 0.96)
+      );
       display: flex;
       flex-direction: column;
-      gap: 14px;
+      gap: 16px;
     }
 
-    .side-title {
-      font-size: 13px;
+    .panel-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 4px;
+    }
+
+    .panel-title {
+      font-size: 15px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
       text-transform: uppercase;
-      letter-spacing: 0.16em;
-      color: var(--gold);
+      color: var(--text-light);
     }
 
-    .side-list {
-      list-style: none;
+    .panel-subtitle {
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    .router-chip {
+      padding: 6px 10px;
+      border-radius: var(--radius-pill);
+      border: 1px solid rgba(0, 0, 0, 0.7);
+      background: radial-gradient(circle at top,
+        rgba(123, 255, 168, 0.16),
+        rgba(2, 24, 11, 0.95)
+      );
+      font-size: 11px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .router-chip span.light {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #7bffa8;
+      box-shadow: 0 0 12px rgba(123, 255, 168, 0.9);
+      flex-shrink: 0;
+    }
+
+    .router-chip span.label {
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .host-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+      gap: 12px;
+      align-items: flex-start;
+    }
+
+    @media (max-width: 960px) {
+      .host-grid {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+
+    .field-group {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      font-size: 13px;
+    }
+
+    .field-label {
       font-size: 12px;
       color: var(--text-muted);
-      display: grid;
-      gap: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      margin-bottom: 4px;
     }
 
-    .side-list li {
+    textarea {
+      width: 100%;
+      min-height: 130px;
+      resize: vertical;
+      border-radius: var(--radius-lg);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      background: rgba(5, 5, 7, 0.92);
+      color: var(--text-light);
+      padding: 10px 12px;
+      font-family: inherit;
+      font-size: 13px;
+      outline: none;
+      transition: border-color var(--transition-fast),
+                  box-shadow var(--transition-fast),
+                  background var(--transition-fast);
+    }
+
+    textarea:focus {
+      border-color: rgba(215, 184, 111, 0.9);
+      box-shadow: 0 0 0 1px rgba(215, 184, 111, 0.6);
+      background: rgba(10, 10, 13, 0.98);
+    }
+
+    .stack {
       display: flex;
-      align-items: flex-start;
-      gap: 6px;
+      flex-direction: column;
+      gap: 10px;
     }
 
-    .side-bullet {
+    .inline {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .input-chip {
+      border-radius: var(--radius-pill);
+      padding: 7px 10px;
+      background: rgba(5, 5, 7, 0.9);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      color: var(--text-light);
+      font-size: 12px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      min-width: 0;
+    }
+
+    select,
+    input[type="number"] {
+      border: none;
+      background: transparent;
+      color: inherit;
+      font: inherit;
+      outline: none;
+      min-width: 0;
+      appearance: none;
+    }
+
+    input[type="number"] {
+      max-width: 60px;
+      text-align: right;
+    }
+
+    .range-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      width: 100%;
+    }
+
+    input[type="range"] {
+      flex: 1;
+      appearance: none;
+      height: 4px;
+      border-radius: 999px;
+      background: linear-gradient(
+        to right,
+        rgba(215, 184, 111, 0.9),
+        rgba(215, 184, 111, 0.2)
+      );
+      outline: none;
+    }
+
+    input[type="range"]::-webkit-slider-thumb {
+      appearance: none;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: var(--gold);
+      box-shadow: 0 0 12px rgba(215, 184, 111, 0.9);
+      cursor: pointer;
+    }
+
+    input[type="range"]::-moz-range-thumb {
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: var(--gold);
+      border: none;
+      box-shadow: 0 0 12px rgba(215, 184, 111, 0.9);
+      cursor: pointer;
+    }
+
+    .range-value {
+      font-size: 12px;
+      color: var(--text-muted);
+      min-width: 48px;
+      text-align: right;
+    }
+
+    .endpoint-hint {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    .endpoint-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 10px;
+      border-radius: var(--radius-pill);
+      border: 1px dotted rgba(255, 255, 255, 0.18);
+      background: rgba(0, 0, 0, 0.4);
+      font-family: "SF Mono", ui-monospace, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      font-size: 11px;
+      margin-top: 4px;
+      color: var(--text-muted);
+    }
+
+    .endpoint-pill span.dot {
       width: 6px;
       height: 6px;
       border-radius: 50%;
-      background: var(--gold-soft);
-      margin-top: 5px;
+      background: var(--gold);
     }
 
-    .side-footer {
+    .send-row {
+      display: flex;
+      justify-content: flex-end;
+      margin-top: 12px;
+    }
+
+    .btn-send {
+      border: none;
+      outline: none;
+      border-radius: var(--radius-pill);
+      padding: 10px 24px;
+      background: radial-gradient(circle at 0 0,
+        rgba(255, 255, 255, 0.08),
+        rgba(215, 184, 111, 0.98)
+      );
+      color: #1a1305;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      box-shadow:
+        0 16px 40px rgba(0, 0, 0, 0.85),
+        0 0 18px rgba(215, 184, 111, 0.8);
+      transform: translateY(0);
+      transition:
+        transform var(--transition-med),
+        box-shadow var(--transition-med),
+        filter var(--transition-fast),
+        background var(--transition-med);
+    }
+
+    .btn-send span.icon {
+      font-size: 14px;
+    }
+
+    .btn-send:hover {
+      transform: translateY(-1px);
+      filter: brightness(1.03);
+      box-shadow:
+        0 20px 60px rgba(0, 0, 0, 0.95),
+        0 0 24px rgba(215, 184, 111, 0.95);
+    }
+
+    .btn-send:active {
+      transform: translateY(0);
+      box-shadow:
+        0 12px 28px rgba(0, 0, 0, 0.9),
+        0 0 14px rgba(215, 184, 111, 0.9);
+    }
+
+    .btn-send[disabled] {
+      opacity: 0.6;
+      cursor: default;
+      box-shadow: 0 10px 26px rgba(0, 0, 0, 0.7);
+      filter: grayscale(0.1) brightness(0.96);
+    }
+
+    .answer-box {
+      margin-top: 12px;
+      border-radius: var(--radius-lg);
+      padding: 14px 14px 16px;
+      background: rgba(3, 3, 5, 0.96);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      min-height: 120px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .answer-label {
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+
+    .answer-content {
+      font-size: 13px;
+      line-height: 1.5;
+      white-space: pre-wrap;
+      color: var(--text-light);
+      margin-top: 4px;
+    }
+
+    .status-row {
+      margin-top: 6px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
       font-size: 11px;
       color: var(--text-muted);
-      border-top: 1px solid rgba(255, 255, 255, 0.06);
-      padding-top: 8px;
-      margin-top: 2px;
     }
 
-    .side-footer span {
+    .status-message {
+      min-height: 1.2em;
+    }
+
+    .status-message span.ok {
+      color: #7bffa8;
+    }
+
+    .status-message span.err {
+      color: #ff8f8f;
+    }
+
+    .meta-text {
+      opacity: 0.75;
+      text-align: right;
+    }
+
+    .meta-text span.key {
       color: var(--gold);
       font-weight: 500;
     }
@@ -406,197 +604,296 @@
 </head>
 <body>
   <main class="host-shell">
-    <div class="host-content">
-      <!-- Topbar / Mini-Menü -->
-      <header class="host-topbar">
-        <div class="top-left">
-          <div class="top-logo-circle">G</div>
+    <!-- Linke Seite – Brand und Erklärung -->
+    <section class="host-panel">
+      <div class="host-panel-inner">
+        <div class="brand-chip">
+          <span class="dot"></span>
+          <span>G-CORE SYSTEMS</span>
+        </div>
+
+        <h1 class="hero-title">
+          Deine eigene <span>Genie-Instanz</span><br />
+          direkt über G-Core Router.
+        </h1>
+
+        <p class="hero-sub">
+          Teste in Echtzeit, ob dein Router sauber mit OpenAI spricht.
+          Alles läuft über deine Infrastruktur – nicht über fremde Oberflächen.
+        </p>
+
+        <div class="pill-row">
+          <div class="pill"><strong>Router</strong> gcore-router</div>
+          <div class="pill"><strong>Endpoint</strong> /genie</div>
+          <div class="pill"><strong>Modus</strong> Entwicklungs-Test</div>
+        </div>
+
+        <ul class="feature-list">
+          <li class="feature-item">
+            <span class="feature-icon">◆</span>
+            <span class="text">
+              Direkter POST-Aufruf gegen <strong>api.g-core-systems.com</strong>
+              mit Modell, Temperatur und Prompt.
+            </span>
+          </li>
+          <li class="feature-item">
+            <span class="feature-icon">◆</span>
+            <span class="text">
+              Antwort wird im G-Core Stil angezeigt – klar, aufgeräumt, ohne technische Überladung.
+            </span>
+          </li>
+          <li class="feature-item">
+            <span class="feature-icon">◆</span>
+            <span class="text">
+              Bei Fehlern zeigt dir der Host verständliche Statusmeldungen und Hinweise an.
+            </span>
+          </li>
+        </ul>
+
+        <div class="panel-footer">
+          <div class="status-pill" id="routerStatus">
+            <span class="status-pill-dot"></span>
+            <span>Router aktiv</span>
+          </div>
           <div>
-            <div class="top-text-main">G-CORE SYSTEMS</div>
-            <div class="top-text-sub">Architecture of Intelligence · Mobile Host</div>
+            <div>G-Core Genie Host · Internal Test Tool</div>
+            <div style="opacity: 0.7;">Alle Anfragen laufen über deinen Router.</div>
           </div>
         </div>
-        <div class="top-right">
-          <a class="menu-chip" href="./index.html">
-            <span>Zur Hauptseite</span>
-          </a>
-          <a class="menu-chip primary" href="./genie_test.html">
-            <span>Genie Test</span>
-          </a>
-          <div class="router-indicator" id="router-indicator">
-            <span class="router-dot" id="router-dot-top"></span>
-            <span id="router-indicator-text">Router wird geprüft …</span>
-          </div>
+      </div>
+    </section>
+
+    <!-- Rechte Seite – Steuerung -->
+    <section class="control-panel">
+      <header class="panel-header">
+        <div>
+          <div class="panel-title">Genie Host Console</div>
+          <div class="panel-subtitle">Direkter Testaufruf gegen deinen API-Router</div>
+        </div>
+        <div class="router-chip" id="routerChip">
+          <span class="light"></span>
+          <span class="label">Router aktiv</span>
         </div>
       </header>
 
-      <!-- Hauptbereich -->
-      <div class="host-inner">
-        <!-- Linke Seite: Host-Steuerung -->
-        <section>
-          <header class="host-header">
-            <div class="host-eyebrow">G-CORE SYSTEMS · INTERNAL HOST</div>
-            <h1 class="host-title">G-CORE Mobile Host</h1>
-            <p class="host-sub">
-              Zentrale Startoberfläche für deinen eigenen KI-Router.  
-              Prüfe den Status und starte Tests direkt über <code>api.g-core-systems.com</code>.
-            </p>
-          </header>
+      <div class="host-grid">
+        <!-- Prompt -->
+        <div class="field-group">
+          <div class="field-label">Prompt</div>
+          <textarea id="promptInput" placeholder="Schreibe hier deinen Testprompt hinein...">Sag mir bitte in einem Satz, was G-Core Systems aus deiner Sicht besonders macht.</textarea>
+        </div>
 
-          <div class="pill-row">
-            <div class="pill">
-              <span class="pill-dot" id="router-pill-dot"></span>
-              <span id="router-pill-text">Router wird geprüft …</span>
-            </div>
-            <div class="pill">
-              <span class="pill-dot"></span>
-              <span>API Endpunkt: <code>/health</code></span>
-            </div>
-          </div>
-
-          <div class="host-main-actions">
-            <div class="btn-col">
-              <button class="btn btn-secondary" id="btn-refresh">
-                <span>Routerstatus neu prüfen</span>
-                <span class="btn-label">Live-Check gegen <code>/health</code></span>
-              </button>
-            </div>
-
-            <div class="btn-col">
-              <a class="btn btn-primary" href="./genie_test.html">
-                <span>Genie Testoberfläche öffnen</span>
-                <span class="btn-label">Direkter Aufruf gegen <code>/genie</code></span>
-              </a>
-            </div>
-          </div>
-
-          <div class="host-status" id="router-status">
-            <strong>Status:</strong> Initialisiere Router-Check …
-          </div>
-        </section>
-
-        <!-- Rechte Seite: Info-Panel -->
-        <aside class="side-panel">
+        <!-- Modell / Temperatur / Endpoint -->
+        <div class="stack">
           <div>
-            <div class="side-title">Host Übersicht</div>
+            <div class="field-label">Modell und Temperatur</div>
+            <div class="inline">
+              <div class="input-chip">
+                <span>Modell</span>
+                <select id="modelSelect">
+                  <option value="gpt-4.1-mini">gpt-4.1-mini</option>
+                  <option value="gpt-4.1">gpt-4.1</option>
+                  <option value="gpt-4.1-nano">gpt-4.1-nano</option>
+                </select>
+              </div>
+
+              <div class="input-chip" style="flex: 1;">
+                <span>Temperatur</span>
+                <div class="range-row">
+                  <input type="range" id="tempRange" min="0" max="1" step="0.1" value="0.7" />
+                  <div class="range-value" id="tempValue">0.7</div>
+                </div>
+              </div>
+            </div>
           </div>
-          <ul class="side-list">
-            <li>
-              <span class="side-bullet"></span>
-              <span>Dieser Host ist deine interne Steuerzentrale für G-CORE Programme.</span>
-            </li>
-            <li>
-              <span class="side-bullet"></span>
-              <span>Alle Aufrufe laufen über deinen Router und den Endpunkt <code>https://api.g-core-systems.com</code>.</span>
-            </li>
-            <li>
-              <span class="side-bullet"></span>
-              <span>Über den Genie Test kannst du später jede Retail-Prompt-App gegen deinen eigenen Router testen.</span>
-            </li>
-          </ul>
-          <div class="side-footer">
-            Aktuelle Version <span>v0.2</span> · Fokus auf Router-Check, Genie-Test und Host-Menü.  
-            Erweiterungen wie PWA-Installation und Lizenzstatus folgen in den nächsten Etappen.
+
+          <div>
+            <div class="field-label">Endpoint</div>
+            <div class="endpoint-hint">
+              Alle Tests laufen aktuell gegen deinen produktiven Router-Endpoint.
+            </div>
+            <div class="endpoint-pill">
+              <span class="dot"></span>
+              <span id="endpointText">POST https://api.g-core-systems.com/genie</span>
+            </div>
           </div>
-        </aside>
+        </div>
       </div>
-    </div>
+
+      <!-- Button -->
+      <div class="send-row">
+        <button class="btn-send" id="sendButton">
+          <span class="icon">➜</span>
+          <span>Senden</span>
+        </button>
+      </div>
+
+      <!-- Antwort -->
+      <div class="answer-box">
+        <div class="answer-label">Antwort von Genie</div>
+        <div class="answer-content" id="answerBox">
+          Noch keine Antwort erhalten.
+        </div>
+
+        <div class="status-row">
+          <div class="status-message" id="statusMessage"></div>
+          <div class="meta-text">
+            Aktives Modell:
+            <span class="key" id="metaModel">gpt-4.1-mini</span>
+          </div>
+        </div>
+      </div>
+    </section>
   </main>
 
   <script>
-    const API_BASE = "https://api.g-core-systems.com";
+    const API_URL = "https://api.g-core-systems.com/genie";
 
-    const statusEl = document.getElementById("router-status");
-    const pillText = document.getElementById("router-pill-text");
-    const pillDot = document.getElementById("router-pill-dot");
-    const topDot = document.getElementById("router-dot-top");
-    const topText = document.getElementById("router-indicator-text");
-    const btnRefresh = document.getElementById("btn-refresh");
+    const promptInput = document.getElementById("promptInput");
+    const modelSelect = document.getElementById("modelSelect");
+    const tempRange = document.getElementById("tempRange");
+    const tempValue = document.getElementById("tempValue");
+    const sendButton = document.getElementById("sendButton");
+    const answerBox = document.getElementById("answerBox");
+    const statusMessage = document.getElementById("statusMessage");
+    const metaModel = document.getElementById("metaModel");
 
-    function setRouterState(state, message, detailHtml) {
-      pillDot.classList.remove("ok", "err");
-      topDot.classList.remove("ok", "err");
+    const routerChip = document.getElementById("routerChip");
+    const routerStatus = document.getElementById("routerStatus");
 
-      if (state === "ok") {
-        pillDot.classList.add("ok");
-        topDot.classList.add("ok");
-        pillText.textContent = "Router aktiv";
-        topText.textContent = "Router aktiv";
-      } else if (state === "err") {
-        pillDot.classList.add("err");
-        topDot.classList.add("err");
-        pillText.textContent = "Router nicht erreichbar";
-        topText.textContent = "Router nicht erreichbar";
+    function setStatus(text, type = "idle") {
+      let html = "";
+      if (type === "ok") {
+        html = '<span class="ok">' + text + "</span>";
+      } else if (type === "err") {
+        html = '<span class="err">' + text + "</span>";
       } else {
-        pillText.textContent = "Router wird geprüft …";
-        topText.textContent = "Router wird geprüft …";
+        html = text || "";
       }
-
-      statusEl.innerHTML = message + (detailHtml || "");
+      statusMessage.innerHTML = html;
     }
 
-    async function checkRouterStatus() {
-      try {
-        setRouterState(
-          "loading",
-          "<strong>Status:</strong> Prüfe Router …"
-        );
+    function setRouterActive(active) {
+      const chipLabel = routerChip.querySelector(".label");
+      const pillLabel = routerStatus.querySelector("span:last-child");
 
-        const res = await fetch(API_BASE + "/health", {
-          method: "GET",
+      if (active) {
+        chipLabel.textContent = "Router aktiv";
+        pillLabel.textContent = "Router aktiv";
+        routerChip.style.opacity = "1";
+      } else {
+        chipLabel.textContent = "Router nicht erreichbar";
+        pillLabel.textContent = "Router nicht erreichbar";
+        routerChip.style.opacity = "0.7";
+      }
+    }
+
+    tempRange.addEventListener("input", () => {
+      tempValue.textContent = Number(tempRange.value).toFixed(1);
+    });
+
+    modelSelect.addEventListener("change", () => {
+      metaModel.textContent = modelSelect.value;
+    });
+
+    async function sendPrompt() {
+      const prompt = (promptInput.value || "").trim();
+      const model = modelSelect.value;
+      const temperature = Number(tempRange.value);
+
+      if (!prompt) {
+        setStatus("Bitte gib einen Prompt ein.", "err");
+        promptInput.focus();
+        return;
+      }
+
+      sendButton.disabled = true;
+      setStatus("Anfrage wird gesendet ...");
+      answerBox.textContent = "Warte auf Antwort von Genie ...";
+
+      try {
+        const res = await fetch(API_URL, {
+          method: "POST",
           headers: {
-            "Accept": "application/json"
-          }
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            prompt,
+            model,
+            temperature
+          })
         });
 
         if (!res.ok) {
           const text = await res.text();
-          setRouterState(
-            "err",
-            "<strong>Status:</strong> Fehler beim Aufruf von <code>/health</code> · HTTP " +
-              res.status + " " + res.statusText,
-            "<br><br><code>" + text.replace(/</g, "&lt;") + "</code>"
+          setStatus(
+            "HTTP-Fehler " + res.status + " – " + res.statusText,
+            "err"
           );
+          answerBox.innerHTML =
+            "Die API hat mit einem Fehler geantwortet:\n\n" + text;
+          setRouterActive(false);
           return;
         }
 
         const data = await res.json();
-        const service = data.service || "gcore-router";
-        const status = data.status || "healthy";
-        const port = data.port || "3000";
+        const reply = (data && (data.reply || data.response)) || "";
 
-        setRouterState(
-          "ok",
-          "<strong>Status:</strong> OK · Service <code>" + service +
-            "</code> meldet <code>" + status + "</code> (Port " + port + ")"
-        );
+        answerBox.textContent = reply || "(Keine Antwort erhalten)";
+        setStatus("Antwort erfolgreich von Genie erhalten.", "ok");
+        setRouterActive(true);
+
+        if (data && data.model) {
+          metaModel.textContent = data.model;
+        }
       } catch (err) {
-        console.error("Router-Check Fehler:", err);
-        setRouterState(
-          "err",
-          "<strong>Status:</strong> Es konnte keine Verbindung zum Router aufgebaut werden.",
-          "<br><br><code>" + String(err).replace(/</g, "&lt;") + "</code>"
-        );
+        console.error("Fehler im Host:", err);
+        answerBox.textContent =
+          "Der Browser konnte die Anfrage nicht abschließen.\n" +
+          "Mögliche Ursachen:\n" +
+          "• Netzwerk- oder DNS-Problem\n" +
+          "• Router ist nicht erreichbar\n" +
+          "• Zertifikats- oder HTTPS-Problem\n\n" +
+          "Details siehe Browser-Konsole (F12 → Console).";
+        setStatus("Failed to fetch – Anfrage fehlgeschlagen.", "err");
+        setRouterActive(false);
+      } finally {
+        sendButton.disabled = false;
       }
     }
 
-    btnRefresh.addEventListener("click", () => {
-      checkRouterStatus();
+    sendButton.addEventListener("click", (e) => {
+      e.preventDefault();
+      sendPrompt();
     });
 
-    // Beim Laden der Seite direkt einmal prüfen
-    checkRouterStatus();
-        // Service Worker Registrierung für PWA-Funktionalität
-    if ("serviceWorker" in navigator) {
-      window.addEventListener("load", () => {
-        navigator.serviceWorker
-          .register("/sw.js")
-          .catch(err => {
-            console.warn("Service Worker Registrierung fehlgeschlagen:", err);
-          });
-      });
-    }
+    promptInput.addEventListener("keydown", (e) => {
+      if (e.ctrlKey && e.key === "Enter") {
+        e.preventDefault();
+        sendPrompt();
+      }
+    });
 
+    // optionaler schneller Health-Check beim Laden
+    (async function quickHealthCheck() {
+      try {
+        const res = await fetch("https://api.g-core-systems.com/health", {
+          method: "GET"
+        });
+        setRouterActive(res.ok);
+      } catch {
+        setRouterActive(false);
+      }
+    })();
+
+    // Service Worker Registrierung – falls noch nicht vorhanden
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker
+        .register("/sw.js")
+        .catch(() => {
+          // Fehlende Registrierung ist hier nicht kritisch
+        });
+    }
   </script>
 </body>
 </html>
