@@ -1,0 +1,24 @@
+{
+  "name": "G-CORE Mobile Host",
+  "short_name": "G-CORE Host",
+  "description": "Zentrale Startoberfläche für den G-CORE KI-Router und Testoberflächen.",
+  "lang": "de-DE",
+  "start_url": "/gcore_host.html",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#050506",
+  "theme_color": "#d7b86f",
+  "icons": [
+    {
+      "src": "/icons/gcore-icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/icons/gcore-icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
