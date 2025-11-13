@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <title>G-CORE MOBILE HOST v0.1</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- Grund-Design im G-CORE-Stil -->
+  <style>
+    :root {
+      --bg-dark:   #111214;
+      --bg-darker: #050506;
+      --text-light:#f5f5f7;
+      --text-muted:#c8c8c8;
+      --gold:      #d7b86f;
+      --gold-soft: #d7b86f33;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      min-height: 100vh;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: radial-gradient(circle at top, #1d1f24 0, var(--bg-dark) 45%, var(--bg-darker) 100%);
+      color: var(--text-light);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+
+    .host-shell {
+      max-width: 960px;
+      width: 100%;
+      background: linear-gradient(145deg, #15161a, #09090b);
+      border-radius: 32px;
+      padding: 32px 28px;
+      box-shadow:
+        0 24px 80px rgba(0, 0, 0, 0.75),
+        0 0 0 1px #1f2024;
+      border: 1px solid rgba(255, 255, 255, 0.03);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .host-shell::before {
+      content: "";
+      position: absolute;
+      inset: -40%;
+      background:
+        radial-gradient(circle at 0% 0%, var(--gold-soft), transparent 55%),
+        radial-gradient(circle at 100% 100%, rgba(215, 184, 111, 0.12), transparent 55%);
+      opacity: 0.7;
+      pointer-events: none;
+    }
+
+    .host-inner {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+      gap: 28px;
+    }
+
+    @media (max-width: 800px) {
+      .host-inner {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .host-header {
+      margin-bottom: 18px;
+    }
+
+    .host-eyebrow {
+      font-size: 11px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 6px;
+    }
+
+    .host-title {
+      font-size: 26px;
+      line-height: 1.2;
+      font-weight: 600;
+    }
+
+    .host-sub {
+      margin-top: 8px;
+      font-size: 13px;
+      line-height: 1.5;
+      color: var(--text-muted);
+    }
+
+    .pill-row {
+      display: flex;
+      gap: 10px;
+      margin-top: 18px;
+      flex-wrap: wrap;
+    }
+
+    .pill {
+      padding: 5px 11px;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      background: rgba(0, 0, 0, 0.35);
+      font-size: 11px;
+      color: var(--text-muted);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .pill-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--gold-soft);
+    }
+
+    .pill-dot.ok {
+      background: #4caf50;
+      box-shadow: 0 0 0 4px rgba(76, 175, 80, 0.25);
+    }
+
+    .pill-dot.err {
+      background: #ff5252;
+      box-shadow: 0 0 0 4px rgba(255, 82, 82, 0.25);
+    }
+
+    .host-main-actions {
+      margin-top: 26px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .btn {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 12px 18px;
+      border-radius: 999px;
+      border: none;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 500;
+      text-decoration: none;
+      transition: transform 0.12s ease, box-shadow 0.12s ease, background 0.12s ease;
+      outline: none;
+      white-space: nowrap;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--gold), #f6e2a4);
+      color: #181818;
+      box-shadow:
+        0 12px 32px rgba(0, 0, 0, 0.65),
+        0 0 0 1px rgba(255, 255, 255, 0.06);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-1px);
+      box-shadow:
+        0 18px 42px rgba(0, 0, 0, 0.8),
+        0 0 0 1px rgba(255, 255, 255, 0.1);
+    }
+
+    .btn-secondary {
+      background: radial-gradient(circle at top, rgba(255,255,255,0.08), rgba(0,0,0,0.7));
+      color: var(--text-light);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .btn-secondary:hover {
+      transform: translateY(-1px);
+      border-color: rgba(255, 255, 255, 0.18);
+    }
+
+    .btn-label {
+      font-size: 12px;
+      opacity: 0.7;
+    }
+
+    .btn-col {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .host-status {
+      margin-top: 18px;
+      font-size: 12px;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    .host-status strong {
+      color: var(--text-light);
+    }
+
+    .host-status code {
+      font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      font-size: 11px;
+      padding: 2px 4px;
+      border-radius: 4px;
+      background: rgba(0, 0, 0, 0.55);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .side-panel {
+      padding: 12px 16px 14px;
+      border-radius: 24px;
+      background: radial-gradient(circle at top, rgba(255,255,255,0.12), rgba(0,0,0,0.9));
+      border: 1px solid rgba(255, 255, 255, 0.04);
+      box-shadow: 0 14px 50px rgba(0, 0, 0, 0.9);
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .side-title {
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: var(--gold);
+    }
+
+    .side-list {
+      list-style: none;
+      font-size: 12px;
+      color: var(--text-muted);
+      display: grid;
+      gap: 6px;
+    }
+
+    .side-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 6px;
+    }
+
+    .side-bullet {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--gold-soft);
+      margin-top: 5px;
+    }
+
+    .side-footer {
+      font-size: 11px;
+      color: var(--text-muted);
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+      padding-top: 8px;
+      margin-top: 2px;
+    }
+
+    .side-footer span {
+      color: var(--gold);
+      font-weight: 500;
+    }
+  </style>
+</head>
+<body>
+  <main class="host-shell">
+    <div class="host-inner">
+      <!-- Linke Seite: Host-Steuerung -->
+      <section>
+        <header class="host-header">
+          <div class="host-eyebrow">G-CORE SYSTEMS · INTERNAL HOST</div>
+          <h1 class="host-title">G-CORE Mobile Host</h1>
+          <p class="host-sub">
+            Zentrale Startoberfläche für deinen eigenen KI-Router.  
+            Prüfe den Status und starte Tests direkt über <code>api.g-core-systems.com</code>.
+          </p>
+        </header>
+
+        <div class="pill-row">
+          <div class="pill">
+            <span class="pill-dot ok" id="router-dot"></span>
+            <span id="router-pill-text">Router wird geprüft …</span>
+          </div>
+          <div class="pill">
+            <span class="pill-dot"></span>
+            <span>API Endpunkt: <code>/health</code></span>
+          </div>
+        </div>
+
+        <div class="host-main-actions">
+          <div class="btn-col">
+            <button class="btn btn-secondary" id="btn-refresh">
+              <span>Routerstatus neu prüfen</span>
+              <span class="btn-label">Live-Check gegen <code>/health</code></span>
+            </button>
+          </div>
+
+          <div class="btn-col">
+            <a class="btn btn-primary" href="./genie_test.html">
+              <span>Genie Testoberfläche öffnen</span>
+              <span class="btn-label">Direkter Aufruf gegen <code>/genie</code></span>
+            </a>
+          </div>
+        </div>
+
+        <div class="host-status" id="router-status">
+          <strong>Status:</strong> Initialisiere Router-Check …
+        </div>
+      </section>
+
+      <!-- Rechte Seite: Info-Panel -->
+      <aside class="side-panel">
+        <div>
+          <div class="side-title">Host Übersicht</div>
+        </div>
+        <ul class="side-list">
+          <li>
+            <span class="side-bullet"></span>
+            <span>Dieser Host ist deine interne Steuerzentrale für G-CORE Programme.</span>
+          </li>
+          <li>
+            <span class="side-bullet"></span>
+            <span>Alle Aufrufe laufen über deinen Router und den Endpunkt <code>https://api.g-core-systems.com</code>.</span>
+          </li>
+          <li>
+            <span class="side-bullet"></span>
+            <span>Über den Genie Test kannst du später jede Retail-Prompt-App gegen deinen eigenen Router testen.</span>
+          </li>
+        </ul>
+        <div class="side-footer">
+          Aktuelle Version <span>v0.1</span> · Fokus auf Router-Check und Genie-Test.  
+          Erweiterungen wie Menü, PWA-Installation und Lizenzstatus folgen in den nächsten Etappen.
+        </div>
+      </aside>
+    </div>
+  </main>
+
+  <script>
+    const API_BASE = "https://api.g-core-systems.com";
+    const statusEl = document.getElementById("router-status");
+    const pillText = document.getElementById("router-pill-text");
+    const dot = document.getElementById("router-dot");
+    const btnRefresh = document.getElementById("btn-refresh");
+
+    async function checkRouterStatus() {
+      try {
+        statusEl.innerHTML = "<strong>Status:</strong> Prüfe Router …";
+        pillText.textContent = "Router wird geprüft …";
+        dot.classList.remove("ok", "err");
+
+        const res = await fetch(API_BASE + "/health", {
+          method: "GET",
+          headers: {
+            "Accept": "application/json"
+          }
+        });
+
+        if (!res.ok) {
+          const text = await res.text();
+          statusEl.innerHTML =
+            "<strong>Status:</strong> Fehler beim Aufruf von <code>/health</code> · HTTP " +
+            res.status + " " + res.statusText +
+            "<br><br><code>" + text.replace(/</g, "&lt;") + "</code>";
+          dot.classList.add("err");
+          pillText.textContent = "Router nicht erreichbar";
+          return;
+        }
+
+        const data = await res.json();
+        dot.classList.add("ok");
+        pillText.textContent = "Router aktiv";
+
+        statusEl.innerHTML =
+          "<strong>Status:</strong> OK · " +
+          "Service <code>" + (data.service || "gcore-router") + "</code> meldet <code>" +
+          (data.status || "healthy") +
+          "</code> (Port " + (data.port || "3000") + ")";
+      } catch (err) {
+        console.error("Router-Check Fehler:", err);
+        dot.classList.add("err");
+        pillText.textContent = "Router nicht erreichbar";
+        statusEl.innerHTML =
+          "<strong>Status:</strong> Es konnte keine Verbindung zum Router aufgebaut werden." +
+          "<br><br><code>" + String(err).replace(/</g, "&lt;") + "</code>";
+      }
+    }
+
+    btnRefresh.addEventListener("click", () => {
+      checkRouterStatus();
+    });
+
+    // Beim Laden der Seite direkt einmal prüfen
+    checkRouterStatus();
+  </script>
+</body>
+</html>
