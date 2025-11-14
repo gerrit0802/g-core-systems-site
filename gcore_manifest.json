@@ -1,35 +1,54 @@
 {
-  "name": "G-Core Mobile Host",
+  "name": "G-CORE SYSTEMS · G-Core Mobile Host",
   "short_name": "G-Core Host",
-  "description": "Interner G-Core Genie Host zur Verbindung mit deinem eigenen Router.",
+  "description": "Interner G-Core Genie Host zur Verbindung mit deinem eigenen G-Core Router.",
+  "lang": "de",
   "start_url": "/gcore_host.html",
+  "scope": "/",
   "display": "standalone",
-  "background_color": "#111214",
-  "theme_color": "#111214",
+  "orientation": "portrait",
+  "background_color": "#050506",
+  "theme_color": "#050506",
   "icons": [
     {
-      "src": "/assets_icons/gcore_icon_192.png",
+      "src": "/assets_icons/gcore_icon_16x16.png",
+      "sizes": "16x16",
+      "type": "image/png"
+    },
+    {
+      "src": "/assets_icons/gcore_icon_32x32.png",
+      "sizes": "32x32",
+      "type": "image/png"
+    },
+    {
+      "src": "/assets_icons/gcore_icon_48x48.png",
+      "sizes": "48x48",
+      "type": "image/png"
+    },
+
+    {
+      "src": "/assets_icons/gcore_branding_softglow_192.png",
       "sizes": "192x192",
-      "type": "image/png",
-      "purpose": "any maskable"
-    },
-    {
-      "src": "/assets_icons/gcore_icon_512.png",
-      "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "any maskable"
-    },
-    {
-      "src": "/assets_icons/gcore_icon_128.png",
-      "sizes": "128x128",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "/assets_icons/gcore_icon_256.png",
+      "src": "/assets_icons/gcore_branding_softglow_256.png",
       "sizes": "256x256",
       "type": "image/png",
       "purpose": "any"
+    },
+    {
+      "src": "/assets_icons/gcore_branding_softglow_512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/assets_icons/gcore_branding_softglow_1024.png",
+      "sizes": "1024x1024",
+      "type": "image/png",
+      "purpose": "maskable"
     }
   ]
 }
