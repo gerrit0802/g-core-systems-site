@@ -221,7 +221,7 @@
     }
 
     .endpoint-pill code {
-      font-family: "SF Mono", ui-monospace, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
       font-size: 11px;
       color: var(--gold);
     }
@@ -278,6 +278,7 @@
       font-size: 13px;
       line-height: 1.4;
       white-space: pre-wrap;
+      word-wrap: break-word;
     }
 
     .answer-label {
@@ -335,6 +336,9 @@
       flex-direction: column;
       gap: 6px;
       flex: 1;
+      padding: 6px 4px 2px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, rgba(255,255,255,0.02), rgba(0,0,0,0.65));
     }
 
     .temp-header {
@@ -343,6 +347,7 @@
       align-items: center;
       font-size: 11px;
       color: var(--text-muted);
+      padding: 0 4px;
     }
 
     .temp-value {
@@ -389,8 +394,6 @@
       border-radius: 999px;
       background: linear-gradient(90deg, var(--gold), #66512f);
     }
-
-    /* Status und Button */
 
     .status-row {
       display: flex;
@@ -483,7 +486,7 @@
 </head>
 <body>
   <main class="host-shell">
-    <!-- Linke Seite: Erklärung und Status -->
+    <!-- Linke Seite -->
     <section class="host-layout">
       <header class="host-header">
         <div class="host-badge">
@@ -509,10 +512,10 @@
         <ul class="info-list">
           <li>Direkter POST-Aufruf gegen <code>api.g-core-systems.com/genie</code> mit Modell, Temperatur und Prompt.</li>
           <li>Antwort wird klar angezeigt – ideal zur Fehlersuche, ohne technische Details im Vordergrund.</li>
-          <li>Darüber siehst du den Host verständliche Statusmeldungen und Hinweise an.</li>
+          <li>Darüber siehst du verständliche Statusmeldungen und Hinweise an.</li>
         </ul>
         <div class="host-status">
-          <div>Konsole ist nur für interne Tests in der Entwicklungsphase gedacht.</div>
+          <div>Konsole nur für interne Tests in der Entwicklungsphase gedacht.</div>
           <div class="router-chip">
             <span class="router-dot"></span>
             <span>Router aktiv</span>
@@ -537,7 +540,7 @@
         <!-- Prompt links -->
         <div class="field-group">
           <div class="field-label">Prompt</div>
-          <textarea id="promptInput" placeholder="Schreibe hier deinen Testprompt hinein.&#10;Beispiel: &quot;Sag mir bitte in einem Satz, was G-Core Systems aus deiner Sicht besonders macht.&quot;"></textarea>
+          <textarea id="promptInput" placeholder="Schreibe hier deinen Testprompt hinein.&#10;Beispiel: &quot;Was ist ein Orca?&quot;"></textarea>
 
           <div class="answer-label">Antwort von Genie</div>
           <div id="answerBox" class="answer-box">
@@ -656,11 +659,27 @@
 
         const data = await res.json();
 
-        const reply =
-          data.reply ||
-          (data.data && data.data.reply) ||
-          (data.choices && data.choices[0] && data.choices[0].message && data.choices[0].message.content) ||
-          "(Keine Antwort erhalten)";
+        // 1. bevorzugt ein Feld "reply"
+        let reply = data.reply;
+
+        // 2. sonst beliebte Alternativen
+        if (!reply && data.data && typeof data.data.reply === "string") {
+          reply = data.data.reply;
+        }
+        if (
+          !reply &&
+          data.choices &&
+          data.choices[0] &&
+          data.choices[0].message &&
+          typeof data.choices[0].message.content === "string"
+        ) {
+          reply = data.choices[0].message.content;
+        }
+
+        // 3. falls immer noch nichts: komplettes JSON anzeigen
+        if (!reply) {
+          reply = "Rohantwort von Genie:\n\n" + JSON.stringify(data, null, 2);
+        }
 
         answerBox.textContent = reply;
         statusMessage.textContent = "Antwort erfolgreich von Genie erhalten.";
@@ -670,7 +689,8 @@
       } catch (err) {
         console.error("Fetch-Fehler:", err);
         statusMessage.textContent = "Fehler beim Abrufen der Antwort.";
-        answerBox.textContent = (err && err.message) || "Unerwarteter Fehler – bitte später erneut versuchen.";
+        answerBox.textContent =
+          (err && err.message) || "Unerwarteter Fehler – bitte später erneut versuchen.";
       } finally {
         sendButton.disabled = false;
       }
@@ -699,7 +719,10 @@
 
       if (tempRange && tempValue) {
         const syncTemp = () => {
-          tempValue.textContent = parseFloat(tempRange.value).toFixed(2).replace(/0+$/, "").replace(/\.$/, "");
+          tempValue.textContent = parseFloat(tempRange.value)
+            .toFixed(2)
+            .replace(/0+$/, "")
+            .replace(/\.$/, "");
         };
         tempRange.addEventListener("input", syncTemp);
         syncTemp();
