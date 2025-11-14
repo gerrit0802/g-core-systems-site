@@ -591,8 +591,11 @@
         // Erwartete Struktur aus deinem Router:
         // { ok: true, reply: "...", model: "...", ... }
         const reply =
-          (data && (data.reply || (data.data && data.data.reply))) ||
-          "(Keine Antwort im Feld „reply“ zurückbekommen)";
+  data.response ||
+  data.reply ||
+  (data.data && data.data.reply) ||
+  "(Keine Antwort im JSON gefunden)";
+
 
         const usedModel = data.model || model;
 
