@@ -359,109 +359,121 @@
   </main>
 
   <script>
-    const API_URL = "https://api.g-core-systems.com/genie";
+  const API_URL = "https://api.g-core-systems.com/genie";
 
-    const promptInput = document.getElementById("promptInput");
-    const modelSelect = document.getElementById("modelSelect");
-    const tempRange = document.getElementById("tempRange");
-    const tempLabel = document.querySelector(".temp-label");
-    const sendButton = document.getElementById("sendButton");
-    const answerBox = document.getElementById("answerBox");
-    const statusLine = document.getElementById("statusLine");
-    const activeModelLabel = document.getElementById("activeModelLabel");
+  const promptInput = document.getElementById("promptInput");
+  const modelSelect = document.getElementById("modelSelect");
+  const tempRange = document.getElementById("tempRange");
+  const tempLabel = document.querySelector(".temp-label");
+  const sendButton = document.getElementById("sendButton");
+  const answerBox = document.getElementById("answerBox");
+  const statusLine = document.getElementById("statusLine");
+  const activeModelLabel = document.getElementById("activeModelLabel");
 
-    // Temperatur-Label aktualisieren
-    tempRange.addEventListener("input", () => {
-      tempLabel.textContent = Number(tempRange.value).toFixed(1);
-    });
+  // Temperatur-Label aktualisieren
+  tempRange.addEventListener("input", () => {
+    tempLabel.textContent = Number(tempRange.value).toFixed(1);
+  });
 
-    // Kleine Hilfsfunktion für Chatverlauf
-    function appendBlock(role, text) {
-      // Platzhalter entfernen, falls noch vorhanden
-      if (answerBox.textContent.trim() === "Noch keine Antwort erhalten.") {
-        answerBox.textContent = "";
-      }
-
-      const prefix = role === "user" ? "Prompt" : "Antwort";
-      const line = 
-        prefix + ":\n" +
-        text +
-        "\n\n" +
-        "────────────────────────\n\n";
-
-      answerBox.textContent += line;
-      answerBox.scrollTop = answerBox.scrollHeight;
+  // Chatverlauf-Baustein
+  function appendBlock(role, text) {
+    if (answerBox.textContent.trim() === "Noch keine Antwort erhalten.") {
+      answerBox.textContent = "";
     }
 
-    sendButton.addEventListener("click", async () => {
-      const prompt = promptInput.value.trim();
-      if (!prompt) {
-        statusLine.textContent = "Bitte gib zuerst einen Prompt ein.";
+    const prefix = role === "user" ? "Prompt" : "Antwort";
+    const block =
+      prefix + ":\n" +
+      text +
+      "\n\n" +
+      "────────────────────────\n\n";
+
+    answerBox.textContent += block;
+    answerBox.scrollTop = answerBox.scrollHeight;
+  }
+
+  // Enter = senden, Shift+Enter = neue Zeile
+  promptInput.addEventListener("keydown", (event) => {
+    if (event.key === "Enter" && !event.shiftKey) {
+      event.preventDefault();       // kein Zeilenumbruch
+      sendButton.click();           // so, als hätte man auf Senden gedrückt
+    }
+  });
+
+  sendButton.addEventListener("click", async () => {
+    const prompt = promptInput.value.trim();
+    if (!prompt) {
+      statusLine.textContent = "Bitte gib zuerst einen Prompt ein.";
+      return;
+    }
+
+    const model = modelSelect.value;
+    const temperature = Number(tempRange.value);
+
+    activeModelLabel.textContent = model;
+    statusLine.textContent = "Sende Anfrage an Genie …";
+    sendButton.disabled = true;
+    sendButton.classList.add("is-busy");
+
+    // Prompt zuerst im Verlauf anzeigen
+    appendBlock("user", prompt);
+
+    // Promptfeld anschließend leeren und Fokus setzen
+    promptInput.value = "";
+    promptInput.focus();
+
+    try {
+      const res = await fetch(API_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ prompt, model, temperature })
+      });
+
+      const rawText = await res.text();
+      let data = null;
+      try {
+        data = JSON.parse(rawText);
+      } catch (e) {
+        // bleibt Text
+      }
+
+      if (!res.ok) {
+        statusLine.textContent = "HTTP Fehler " + res.status + " " + res.statusText;
+        appendBlock("assistant", rawText || "Keine Detailinformationen verfügbar.");
         return;
       }
 
-      const model = modelSelect.value;
-      const temperature = Number(tempRange.value);
+      let reply = null;
 
-      activeModelLabel.textContent = model;
-      statusLine.textContent = "Sende Anfrage an Genie …";
-      sendButton.disabled = true;
-      sendButton.classList.add("is-busy");
-
-      // Prompt direkt in den Verlauf schreiben
-      appendBlock("user", prompt);
-
-      try {
-        const res = await fetch(API_URL, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ prompt, model, temperature })
-        });
-
-        const rawText = await res.text();
-        let data = null;
-        try {
-          data = JSON.parse(rawText);
-        } catch (e) {
-          // bleibt Text
-        }
-
-        if (!res.ok) {
-          statusLine.textContent = "HTTP Fehler " + res.status + " " + res.statusText;
-          appendBlock("assistant", rawText || "Keine Detailinformationen verfügbar.");
-          return;
-        }
-
-        let reply = null;
-
-        if (data && typeof data === "object") {
-          reply =
-            data.reply ||
-            data.response ||
-            data.message ||
-            data.content ||
-            data.output ||
-            null;
-        }
-
-        if (reply) {
-          appendBlock("assistant", reply);
-          statusLine.textContent = "Antwort erfolgreich von Genie erhalten.";
-        } else if (data) {
-          appendBlock("assistant", JSON.stringify(data, null, 2));
-          statusLine.textContent = "Antwort erhalten, aber kein Klartextfeld gefunden.";
-        } else {
-          appendBlock("assistant", rawText || "Leere Antwort.");
-          statusLine.textContent = "Antwort erhalten, Format nicht eindeutig.";
-        }
-      } catch (err) {
-        statusLine.textContent = "Fehler beim Senden der Anfrage.";
-        appendBlock("assistant", String(err));
-      } finally {
-        sendButton.disabled = false;
-        sendButton.classList.remove("is-busy");
+      if (data && typeof data === "object") {
+        reply =
+          data.reply ||
+          data.response ||
+          data.message ||
+          data.content ||
+          data.output ||
+          null;
       }
-    });
-  </script>
+
+      if (reply) {
+        appendBlock("assistant", reply);
+        statusLine.textContent = "Antwort erfolgreich von Genie erhalten.";
+      } else if (data) {
+        appendBlock("assistant", JSON.stringify(data, null, 2));
+        statusLine.textContent = "Antwort erhalten, aber kein Klartextfeld gefunden.";
+      } else {
+        appendBlock("assistant", rawText || "Leere Antwort.");
+        statusLine.textContent = "Antwort erhalten, Format nicht eindeutig.";
+      }
+    } catch (err) {
+      statusLine.textContent = "Fehler beim Senden der Anfrage.";
+      appendBlock("assistant", String(err));
+    } finally {
+      sendButton.disabled = false;
+      sendButton.classList.remove("is-busy");
+    }
+  });
+</script>
+
 </body>
 </html>
