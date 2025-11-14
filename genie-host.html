@@ -2,28 +2,25 @@
 <html lang="de">
 <head>
   <meta charset="UTF-8" />
-  <title>Genie Host – G-Core Systems</title>
+  <title>G-CORE MOBILE HOST – Genie</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="G-CORE MOBILE HOST – dein persönlicher KI-Assistent Genie von G-Core Systems." />
+  <meta name="theme-color" content="#0e0e0e" />
 
-  <!-- Basis-Branding -->
-  <meta name="description" content="Genie Host – Dein persönlicher KI-Assistent von G-Core Systems." />
-  <meta name="theme-color" content="#111214" />
-
-  <!-- Icons (du hast assets_icons bereits angelegt) -->
-  <link rel="icon" type="image/png" sizes="32x32" href="assets_icons/genie-32.png" />
-  <link rel="icon" type="image/png" sizes="64x64" href="assets_icons/genie-64.png" />
-  <link rel="icon" type="image/png" sizes="192x192" href="assets_icons/genie-192.png" />
-  <link rel="apple-touch-icon" sizes="192x192" href="assets_icons/genie-192.png" />
-  <link rel="apple-touch-icon" sizes="512x512" href="assets_icons/genie-512.png" />
+  <!-- Softglow-Icons aus assets_icons -->
+  <link rel="icon" type="image/png" sizes="32x32" href="assets_icons/genie-softglow-32.png" />
+  <link rel="icon" type="image/png" sizes="64x64" href="assets_icons/genie-softglow-64.png" />
+  <link rel="apple-touch-icon" sizes="192x192" href="assets_icons/genie-softglow-192.png" />
+  <link rel="apple-touch-icon" sizes="512x512" href="assets_icons/genie-softglow-512.png" />
 
   <style>
     :root {
-      --bg-dark: #111214;
-      --bg-darker: #050506;
-      --text-light: #f5f5f7;
-      --text-muted: #c8c8c8;
-      --gold: #d7b86f;
-      --gold-soft: #d7b86f33;
+      --bg-dark: #0e0e0e;
+      --bg-darker: #050505;
+      --text-light: #f2f2f2;
+      --text-muted: #bbbbbb;
+      --gold: #d9b15f;
+      --gold-soft: #e5c57a;
     }
 
     * {
@@ -37,94 +34,93 @@
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       color: var(--text-light);
       background:
-        radial-gradient(circle at top, #1d1f24 0, var(--bg-dark) 45%, var(--bg-darker) 100%);
+        radial-gradient(circle at top, #232323 0, var(--bg-dark) 45%, var(--bg-darker) 100%);
       display: flex;
       align-items: center;
       justify-content: center;
       padding: 16px;
     }
 
-    .shell {
+    .app-shell {
       width: 100%;
-      max-width: 960px;
+      max-width: 1040px;
       height: 100%;
-      max-height: 720px;
-      background: radial-gradient(circle at top, #1a1c22 0, #0c0d10 55%, #050506 100%);
+      max-height: 780px;
+      background:
+        radial-gradient(circle at top, #1f1f1f 0, #101010 55%, #050505 100%);
       border-radius: 32px;
-      border: 1px solid rgba(215, 184, 111, 0.25);
+      border: 1px solid rgba(217, 177, 95, 0.35);
       box-shadow:
-        0 0 60px rgba(0, 0, 0, 0.8),
-        0 0 40px rgba(215, 184, 111, 0.18);
-      padding: 24px 22px;
+        0 0 60px rgba(0, 0, 0, 0.9),
+        0 0 40px rgba(217, 177, 95, 0.25);
+      padding: 22px 20px;
       display: flex;
       flex-direction: column;
       gap: 16px;
       overflow: hidden;
     }
 
-    /* HEADER – zentriertes G-Core Branding */
-    .header {
+    /* HEADER */
+    .app-header {
       text-align: center;
       display: flex;
       flex-direction: column;
       gap: 6px;
     }
 
-    .badge {
+    .app-badge {
       font-size: 11px;
-      letter-spacing: 0.20em;
+      letter-spacing: 0.22em;
       text-transform: uppercase;
       color: var(--gold);
     }
 
-    .title {
+    .app-title {
       font-size: 24px;
       letter-spacing: 0.22em;
       text-transform: uppercase;
       color: var(--text-light);
     }
 
-    .subtitle {
+    .app-subtitle {
       font-size: 13px;
       color: var(--text-muted);
-      max-width: 520px;
+      max-width: 540px;
       margin: 0 auto;
+      line-height: 1.5;
     }
 
-    .endpoint-info {
+    .router-pill-row {
       margin-top: 6px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .router-pill {
+      padding: 4px 12px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, #151515, #060606);
+      border: 1px solid rgba(217, 177, 95, 0.5);
       display: inline-flex;
       align-items: center;
-      justify-content: center;
       gap: 8px;
       font-size: 11px;
       color: var(--text-muted);
+      box-shadow: 0 0 16px rgba(217, 177, 95, 0.25);
     }
 
-    .endpoint-pill {
-      padding: 4px 10px;
-      border-radius: 999px;
-      background: rgba(5, 5, 6, 0.9);
-      border: 1px solid rgba(215, 184, 111, 0.35);
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      max-width: 280px;
-    }
-
-    .endpoint-pill span.label {
+    .router-label {
       font-size: 10px;
       letter-spacing: 0.16em;
       text-transform: uppercase;
       color: var(--gold);
-      white-space: nowrap;
     }
 
-    .endpoint-pill span.value {
-      font-size: 11px;
+    .router-value {
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
+      max-width: 260px;
     }
 
     .status-dot {
@@ -132,27 +128,29 @@
       height: 9px;
       border-radius: 50%;
       background: radial-gradient(circle, #5ffb85 0, #1fbf54 40%, #077933 100%);
-      box-shadow: 0 0 8px rgba(95, 251, 133, 0.7);
+      box-shadow: 0 0 10px rgba(95, 251, 133, 0.9);
     }
 
-    /* MAIN – 2 Bereiche: Eingabe + Chatverlauf */
-    .main {
+    /* MAIN LAYOUT */
+    .app-main {
       flex: 1;
       display: grid;
-      grid-template-columns: minmax(0, 1.1fr) minmax(0, 1.4fr);
+      grid-template-columns: minmax(0, 1.05fr) minmax(0, 1.45fr);
       gap: 16px;
       min-height: 0;
     }
 
     .panel {
       border-radius: 24px;
-      background: radial-gradient(circle at top, #171820 0, #0a0b0f 40%, #050506 100%);
-      border: 1px solid rgba(215, 184, 111, 0.18);
+      background:
+        radial-gradient(circle at top, #1b1b1b 0, #101010 45%, #050505 100%);
+      border: 1px solid rgba(217, 177, 95, 0.25);
       padding: 16px 18px;
       display: flex;
       flex-direction: column;
       gap: 12px;
       min-height: 0;
+      box-shadow: 0 0 18px rgba(0, 0, 0, 0.6);
     }
 
     .panel-header {
@@ -172,7 +170,6 @@
     .panel-sub {
       font-size: 11px;
       color: var(--text-muted);
-      opacity: 0.9;
     }
 
     .input-stack {
@@ -199,21 +196,24 @@
     .prompt-input {
       width: 100%;
       height: 100%;
-      min-height: 120px;
-      resize: none;
-      background: radial-gradient(circle at top left, #20222c 0, #12141b 40%, #090a0f 100%);
+      min-height: 140px;
+      resize: vertical;
+      background:
+        radial-gradient(circle at top left, #222 0, #141414 40%, #070707 100%);
       border-radius: 18px;
-      border: 1px solid rgba(215, 184, 111, 0.25);
+      border: 1px solid rgba(217, 177, 95, 0.4);
       padding: 14px 16px;
       color: var(--text-light);
-      font-size: 14px;
-      line-height: 1.45;
+      font-size: 15px;
+      line-height: 1.5;
       outline: none;
-      box-shadow: inset 0 0 18px rgba(0, 0, 0, 0.6);
+      box-shadow:
+        inset 0 0 22px rgba(0, 0, 0, 0.9),
+        0 0 24px rgba(217, 177, 95, 0.12);
     }
 
     .prompt-input::placeholder {
-      color: rgba(200, 200, 200, 0.55);
+      color: rgba(187, 187, 187, 0.7);
     }
 
     .prompt-hint {
@@ -221,53 +221,53 @@
       bottom: 10px;
       right: 14px;
       font-size: 11px;
-      color: rgba(200, 200, 200, 0.6);
+      color: rgba(187, 187, 187, 0.8);
     }
 
     .hint-text {
       font-size: 11px;
       color: var(--text-muted);
-      line-height: 1.4;
+      line-height: 1.5;
     }
 
     .send-row {
-      margin-top: 2px;
+      margin-top: 4px;
       display: flex;
       justify-content: flex-end;
     }
 
     .send-btn {
       position: relative;
-      padding: 10px 26px;
+      padding: 10px 28px;
       border-radius: 999px;
       border: none;
       cursor: pointer;
-      background: radial-gradient(circle at top, #ffe39d 0, #f0c56a 40%, #c58a2e 100%);
-      color: #201910;
+      background: radial-gradient(circle at top, #ffe3a0 0, #f0c56a 40%, #c58a2e 100%);
+      color: #20160c;
       font-weight: 600;
       font-size: 13px;
-      letter-spacing: 0.16em;
+      letter-spacing: 0.18em;
       text-transform: uppercase;
       box-shadow:
-        0 0 18px rgba(240, 197, 106, 0.5),
-        0 12px 25px rgba(0, 0, 0, 0.7);
+        0 0 22px rgba(255, 227, 160, 0.6),
+        0 14px 28px rgba(0, 0, 0, 0.85);
       display: inline-flex;
       align-items: center;
-      gap: 8px;
+      gap: 10px;
     }
 
     .send-btn span.icon {
-      font-size: 14px;
+      font-size: 15px;
       transform: translateY(1px);
     }
 
     .send-btn:disabled {
       opacity: 0.55;
       cursor: default;
-      box-shadow: 0 0 8px rgba(0, 0, 0, 0.7);
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.9);
     }
 
-    /* CHAT-PANEL */
+    /* CHAT */
     .answer-panel {
       flex: 1;
       min-height: 0;
@@ -279,17 +279,21 @@
     .chat-log {
       flex: 1;
       min-height: 0;
-      background: radial-gradient(circle at top left, #20222c 0, #12141b 40%, #090a0f 100%);
+      background:
+        radial-gradient(circle at top left, #232323 0, #151515 40%, #080808 100%);
       border-radius: 18px;
-      border: 1px solid rgba(215, 184, 111, 0.25);
+      border: 1px solid rgba(217, 177, 95, 0.25);
       padding: 14px 16px;
       overflow-y: auto;
       font-size: 13px;
-      line-height: 1.5;
+      line-height: 1.6;
+      box-shadow:
+        inset 0 0 20px rgba(0, 0, 0, 0.8),
+        0 0 22px rgba(217, 177, 95, 0.18);
     }
 
     .chat-placeholder {
-      color: rgba(200, 200, 200, 0.6);
+      color: rgba(187, 187, 187, 0.8);
       font-size: 13px;
     }
 
@@ -301,28 +305,29 @@
     }
 
     .chat-label {
-      font-size: 11px;
+      font-size: 10px;
       letter-spacing: 0.16em;
       text-transform: uppercase;
-      color: rgba(200, 200, 200, 0.7);
+      color: rgba(200, 200, 200, 0.75);
     }
 
     .chat-bubble {
-      background: rgba(5, 5, 6, 0.85);
-      border-radius: 12px;
-      border: 1px solid rgba(215, 184, 111, 0.2);
-      padding: 8px 10px;
+      background: rgba(10, 10, 10, 0.95);
+      border-radius: 14px;
+      border: 1px solid rgba(217, 177, 95, 0.3);
+      padding: 9px 11px;
       white-space: pre-wrap;
     }
 
     .chat-row.user .chat-bubble {
-      border-color: rgba(215, 184, 111, 0.45);
-      background: rgba(12, 10, 7, 0.95);
+      background: radial-gradient(circle at top, #2b2417 0, #181007 45%, #090402 100%);
+      border-color: rgba(217, 177, 95, 0.7);
     }
 
     .chat-row.error .chat-bubble {
       border-color: #ff6b6b;
-      color: #ffdede;
+      color: #ffe0e0;
+      background: radial-gradient(circle at top, #3a1010 0, #200808 45%, #100303 100%);
     }
 
     .status-line {
@@ -332,6 +337,7 @@
       justify-content: space-between;
       gap: 10px;
       flex-wrap: wrap;
+      margin-top: 2px;
     }
 
     .status-main {
@@ -340,64 +346,67 @@
       text-overflow: ellipsis;
     }
 
-    .status-model {
-      color: var(--gold);
-      white-space: nowrap;
+    .status-hint {
+      opacity: 0.9;
     }
 
     @media (max-width: 900px) {
-      .shell {
-        padding: 20px 16px;
-        border-radius: 24px;
+      .app-shell {
+        padding: 18px 14px;
+        border-radius: 26px;
       }
-      .main {
+      .app-main {
         grid-template-columns: 1fr;
         grid-auto-rows: minmax(0, 1fr);
       }
       .panel {
-        min-height: 240px;
+        min-height: 260px;
       }
     }
 
     @media (max-width: 540px) {
-      .title {
+      .app-title {
         font-size: 20px;
-        letter-spacing: 0.18em;
+        letter-spacing: 0.2em;
       }
-      .subtitle {
+      .app-subtitle {
         font-size: 12px;
       }
-      .shell {
-        padding: 18px 12px;
+      .router-value {
+        max-width: 180px;
+      }
+      .prompt-input {
+        min-height: 130px;
+        font-size: 14px;
       }
     }
   </style>
 </head>
 
 <body>
-  <div class="shell">
-    <header class="header">
-      <div class="badge">G-CORE SYSTEMS · GENIE HOST</div>
-      <h1 class="title">GENIE HOST</h1>
-      <p class="subtitle">
-        Dein persönlicher KI-Assistent von G-Core Systems. Schreibe deine Frage,
-        Aufgabe oder Idee – Genie unterstützt dich bei Texten, E-Mails, Konzepten und mehr.
+  <main class="app-shell">
+    <header class="app-header">
+      <div class="app-badge">G-CORE SYSTEMS · MOBILE CLIENT</div>
+      <h1 class="app-title">GENIE HOST</h1>
+      <p class="app-subtitle">
+        Genie ist dein persönlicher KI-Assistent. Formuliere deine Frage, Aufgabe oder Idee –
+        Genie hilft dir beim Schreiben von Texten, E-Mails, Antworten, Konzepten und vielem mehr.
       </p>
-      <div class="endpoint-info">
-        <div class="endpoint-pill">
-          <span class="label">Router</span>
-          <span class="value">https://rp.g-core-systems.com/genie</span>
+      <div class="router-pill-row">
+        <div class="router-pill">
+          <span class="router-label">Router</span>
+          <span class="router-value">https://api.g-core-systems.com/genie</span>
           <span class="status-dot" title="Router aktiv"></span>
         </div>
       </div>
     </header>
 
-    <main class="main">
+    <section class="app-main">
       <!-- LINKES PANEL: EINGABE -->
       <section class="panel">
         <div class="panel-header">
           <div class="panel-title">Eingabe</div>
-          <div class="panel-sub">Formuliere hier, wobei Genie dir helfen soll.</div>
+          <div class="panel-sub">Beschreibe, wobei Genie dir helfen soll.</div>
         </div>
 
         <div class="input-stack">
@@ -406,14 +415,14 @@
             <textarea
               id="promptInput"
               class="prompt-input"
-              placeholder="Beispiel: 'Formuliere eine freundliche E-Mail an meinen Vermieter, weil ich um eine Ratenzahlung bitten möchte.'"
+              placeholder="Beispiel: „Formuliere eine freundliche E-Mail an meinen Vermieter und bitte um eine Ratenzahlung für die nächste Miete.“"
             ></textarea>
             <div class="prompt-hint">Enter = Senden · Shift+Enter = Zeilenumbruch</div>
           </div>
 
           <div class="hint-text">
-            Tipp: Je genauer du beschreibst, was du brauchst, desto besser kann Genie reagieren.
-            Du kannst jederzeit nach Überarbeitungen oder Alternativen fragen.
+            Tipp: Erwähne wichtige Details gleich mit (Person, Anlass, gewünschter Stil).
+            Du kannst danach jederzeit um Änderungen, Kürzungen oder einen anderen Ton bitten.
           </div>
 
           <div class="send-row">
@@ -425,7 +434,7 @@
         </div>
       </section>
 
-      <!-- RECHTES PANEL: CHAT / ANTWORT -->
+      <!-- RECHTES PANEL: GENIE-ANTWORT / CHATVERLAUF -->
       <section class="panel answer-panel">
         <div class="panel-header">
           <div class="panel-title">Genie Antwort</div>
@@ -434,31 +443,33 @@
 
         <div id="chatLog" class="chat-log">
           <div class="chat-placeholder">
-            Noch keine Unterhaltung gestartet. Schreibe links eine Nachricht und drücke Enter oder den Senden-Button.
+            Noch keine Unterhaltung gestartet. Schreibe links deine erste Nachricht und drücke Enter
+            oder klicke auf „Senden“.
           </div>
         </div>
 
         <div class="status-line">
           <div id="statusText" class="status-main">
-            Bereit. Router ist aktiv.
+            Bereit. Genie wartet auf deine erste Nachricht.
           </div>
-          <div id="statusModel" class="status-model">
-            Modell: gpt-4.1-mini · Temperatur: 0,70
+          <div class="status-hint">
+            Hinweis: Inhalte werden nur zur Beantwortung deiner Anfrage genutzt.
           </div>
         </div>
       </section>
-    </main>
-  </div>
+    </section>
+  </main>
 
   <script>
     (function () {
-      const API_URL = "https://rp.g-core-systems.com/genie";
+      const API_URL = "https://api.g-core-systems.com/genie";
+      const MODEL = "gpt-4.1-mini";
+      const TEMPERATURE = 0.7;
 
       const promptInput = document.getElementById("promptInput");
       const sendBtn = document.getElementById("sendBtn");
       const chatLog = document.getElementById("chatLog");
       const statusText = document.getElementById("statusText");
-      const statusModel = document.getElementById("statusModel");
 
       function appendMessage(role, text) {
         const placeholder = chatLog.querySelector(".chat-placeholder");
@@ -490,14 +501,11 @@
         const prompt = promptInput.value.trim();
         if (!prompt) return;
 
-        const model = "gpt-4.1-mini";
-        const temperature = 0.7;
-
         appendMessage("user", prompt);
         promptInput.value = "";
-        statusText.textContent = "Sende Anfrage an deinen G-Core Router …";
-        statusModel.textContent =
-          "Modell: " + model + " · Temperatur: " + temperature.toFixed(2).replace(".", ",");
+        promptInput.focus();
+
+        statusText.textContent = "Genie denkt über deine Anfrage nach …";
 
         sendBtn.disabled = true;
 
@@ -505,13 +513,13 @@
           const res = await fetch(API_URL, {
             method: "POST",
             headers: {
-              "Content-Type": "application/json",
+              "Content-Type": "application/json"
             },
             body: JSON.stringify({
               prompt: prompt,
-              model: model,
-              temperature: temperature,
-            }),
+              model: MODEL,
+              temperature: TEMPERATURE
+            })
           });
 
           if (!res.ok) {
@@ -525,7 +533,7 @@
                 "\n\nAntwort des Routers:\n" +
                 txt
             );
-            statusText.textContent = "Die API hat mit einem Fehler geantwortet.";
+            statusText.textContent = "Es ist ein Verbindungsfehler aufgetreten.";
             return;
           }
 
@@ -535,26 +543,25 @@
             JSON.stringify(data, null, 2);
 
           appendMessage("genie", reply);
-          statusText.textContent = "Antwort erfolgreich von Genie erhalten.";
+          statusText.textContent = "Antwort von Genie erhalten. Du kannst weiter nachfragen oder verfeinern.";
         } catch (err) {
           appendMessage(
             "error",
             "Fetch-Fehler: " +
               (err && err.message ? err.message : String(err))
           );
-          statusText.textContent =
-            "Der Browser konnte die Anfrage nicht erfolgreich abschließen.";
+          statusText.textContent = "Der Browser konnte die Anfrage nicht erfolgreich abschließen.";
         } finally {
           sendBtn.disabled = false;
         }
       }
 
-      sendBtn.addEventListener("click", (e) => {
+      sendBtn.addEventListener("click", function (e) {
         e.preventDefault();
         sendPrompt();
       });
 
-      promptInput.addEventListener("keydown", (e) => {
+      promptInput.addEventListener("keydown", function (e) {
         if (e.key === "Enter" && !e.shiftKey) {
           e.preventDefault();
           sendPrompt();
