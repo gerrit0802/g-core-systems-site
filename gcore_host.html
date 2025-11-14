@@ -785,153 +785,97 @@
   </main>
 
   <script>
-    const API_URL = "https://api.g-core-systems.com/genie";
+  // Ziel-Endpoint deines Routers
+  const API_URL = "https://api.g-core-systems.com/genie";
 
-    const promptInput = document.getElementById("promptInput");
-    const modelSelect = document.getElementById("modelSelect");
-    const tempRange = document.getElementById("tempRange");
-    const tempValue = document.getElementById("tempValue");
-    const sendButton = document.getElementById("sendButton");
-    const answerBox = document.getElementById("answerBox");
-    const statusMessage = document.getElementById("statusMessage");
-    const metaModel = document.getElementById("metaModel");
+  // DOM-Elemente holen
+  const promptInput  = document.getElementById("promptInput");
+  const modelSelect  = document.getElementById("modelSelect");
+  const tempSlider   = document.getElementById("tempSlider");
+  const tempValue    = document.getElementById("tempValue");
+  const answerBox    = document.getElementById("answerBox");
+  const statusBox    = document.getElementById("statusBox");
+  const sendButton   = document.getElementById("sendButton");
 
-    const routerChip = document.getElementById("routerChip");
-    const routerStatus = document.getElementById("routerStatus");
+  // Temperaturanzeige live aktualisieren
+  if (tempSlider && tempValue) {
+    tempValue.textContent = tempSlider.value;
+    tempSlider.addEventListener("input", () => {
+      tempValue.textContent = tempSlider.value;
+    });
+  }
 
-    function setStatus(text, type = "idle") {
-      let html = "";
-      if (type === "ok") {
-        html = '<span class="ok">' + text + "</span>";
-      } else if (type === "err") {
-        html = '<span class="err">' + text + "</span>";
-      } else {
-        html = text || "";
-      }
-      statusMessage.innerHTML = html;
+  async function sendPrompt() {
+    if (!promptInput || !answerBox || !statusBox) {
+      console.error("Wichtige Elemente wurden nicht gefunden.");
+      return;
     }
 
-    function setRouterActive(active) {
-      const chipLabel = routerChip.querySelector(".label");
-      const pillLabel = routerStatus.querySelector("span:last-child");
+    const prompt = promptInput.value.trim();
+    const model  = modelSelect ? modelSelect.value : "gpt-4.1-mini";
+    const temp   = tempSlider ? parseFloat(tempSlider.value) : 0.7;
 
-      if (active) {
-        chipLabel.textContent = "Router aktiv";
-        pillLabel.textContent = "Router aktiv";
-        routerChip.style.opacity = "1";
-      } else {
-        chipLabel.textContent = "Router nicht erreichbar";
-        pillLabel.textContent = "Router nicht erreichbar";
-        routerChip.style.opacity = "0.7";
-      }
+    if (!prompt) {
+      statusBox.textContent = "Bitte gib einen Prompt ein.";
+      return;
     }
 
-    tempRange.addEventListener("input", () => {
-      tempValue.textContent = Number(tempRange.value).toFixed(1);
-    });
+    statusBox.textContent = "Sende Anfrage an deinen Router …";
+    answerBox.textContent = "(Noch keine Antwort erhalten)";
 
-    modelSelect.addEventListener("change", () => {
-      metaModel.textContent = modelSelect.value;
-    });
+    try {
+      const res = await fetch(API_URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          prompt,
+          model,
+          temperature: temp
+        })
+      });
 
-    async function sendPrompt() {
-      const prompt = (promptInput.value || "").trim();
-      const model = modelSelect.value;
-      const temperature = Number(tempRange.value);
-
-      if (!prompt) {
-        setStatus("Bitte gib einen Prompt ein.", "err");
-        promptInput.focus();
+      if (!res.ok) {
+        const text = await res.text();
+        statusBox.textContent = `HTTP-Fehler ${res.status}: ${res.statusText}`;
+        answerBox.innerHTML =
+          "Die API hat mit einem Fehler geantwortet:<br><br><code>" +
+          text.replace(/</g, "&lt;") +
+          "</code>";
         return;
       }
 
-      sendButton.disabled = true;
-      setStatus("Anfrage wird gesendet ...");
-      answerBox.textContent = "Warte auf Antwort von Genie ...";
+      const data = await res.json();
 
-      try {
-        const res = await fetch(API_URL, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({
-            prompt,
-            model,
-            temperature
-          })
-        });
+      const reply =
+        (data && data.data && data.data.reply) ||
+        data.reply ||
+        (data.choices && data.choices[0] && data.choices[0].message && data.choices[0].message.content) ||
+        "(Keine Antwort enthalten)";
 
-        if (!res.ok) {
-          const text = await res.text();
-          setStatus(
-            "HTTP-Fehler " + res.status + " – " + res.statusText,
-            "err"
-          );
-          answerBox.innerHTML =
-            "Die API hat mit einem Fehler geantwortet:\n\n" + text;
-          setRouterActive(false);
-          return;
-        }
-
-        const data = await res.json();
-        const reply = (data && (data.reply || data.response)) || "";
-
-        answerBox.textContent = reply || "(Keine Antwort erhalten)";
-        setStatus("Antwort erfolgreich von Genie erhalten.", "ok");
-        setRouterActive(true);
-
-        if (data && data.model) {
-          metaModel.textContent = data.model;
-        }
-      } catch (err) {
-        console.error("Fehler im Host:", err);
-        answerBox.textContent =
-          "Der Browser konnte die Anfrage nicht abschließen.\n" +
-          "Mögliche Ursachen:\n" +
-          "• Netzwerk- oder DNS-Problem\n" +
-          "• Router ist nicht erreichbar\n" +
-          "• Zertifikats- oder HTTPS-Problem\n\n" +
-          "Details siehe Browser-Konsole (F12 → Console).";
-        setStatus("Failed to fetch – Anfrage fehlgeschlagen.", "err");
-        setRouterActive(false);
-      } finally {
-        sendButton.disabled = false;
-      }
+      answerBox.textContent = reply;
+      statusBox.textContent = "Antwort erfolgreich von Genie erhalten.";
+    } catch (err) {
+      console.error("Fetch-Fehler:", err);
+      statusBox.textContent = "Fehler beim Senden der Anfrage.";
+      answerBox.innerHTML =
+        "Mögliche Ursachen:<br>" +
+        "• Router nicht erreichbar<br>" +
+        "• Netzwerkproblem oder HTTPS-Fehler<br>" +
+        "Details siehe Browser-Konsole.";
     }
+  }
 
-    sendButton.addEventListener("click", (e) => {
-      e.preventDefault();
+  // Klick-Handler aktivieren
+  if (sendButton) {
+    sendButton.addEventListener("click", (event) => {
+      event.preventDefault();
       sendPrompt();
     });
+  }
+</script>
 
-    promptInput.addEventListener("keydown", (e) => {
-      if (e.ctrlKey && e.key === "Enter") {
-        e.preventDefault();
-        sendPrompt();
-      }
-    });
-
-    // optionaler schneller Health-Check beim Laden
-    (async function quickHealthCheck() {
-      try {
-        const res = await fetch("https://api.g-core-systems.com/health", {
-          method: "GET"
-        });
-        setRouterActive(res.ok);
-      } catch {
-        setRouterActive(false);
-      }
-    })();
-
-    // Service Worker Registrierung – falls noch nicht vorhanden
-    if ("serviceWorker" in navigator) {
-      navigator.serviceWorker
-        .register("/sw.js")
-        .catch(() => {
-          // Fehlende Registrierung ist hier nicht kritisch
-        });
-    }
   </script>
 </body>
 </html>
