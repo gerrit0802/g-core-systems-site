@@ -388,7 +388,6 @@
 
       activeModelLabel.textContent = model;
       statusLine.textContent = "Sende Anfrage an Genie …";
-      answerBox.textContent = "";
       sendButton.disabled = true;
       sendButton.classList.add("is-busy");
 
@@ -422,13 +421,30 @@
            data.output);
 
         if (reply) {
-          answerBox.textContent = reply;
-          statusLine.textContent = "Antwort erfolgreich von Genie erhalten.";
-        } else if (data) {
-          answerBox.textContent = JSON.stringify(data, null, 2);
-          statusLine.textContent = "Antwort erhalten, aber kein Klartextfeld gefunden.";
+       // Chat-Formatierung
+const bubble =
+  "🟡 Antwort:\n" +
+  reply +
+  "\n--------------------------------------\n\n";
+
+answerBox.textContent += bubble;
+
+statusLine.textContent = "Antwort erfolgreich von Genie erhalten.";
+
+        const bubble =
+  "📄 Rohdaten:\n" +
+  JSON.stringify(data, null, 2) +
+  "\n--------------------------------------\n\n";
+
+answerBox.textContent += bubble;
+statusLine.textContent = "Rohdaten erhalten (kein Klartextfeld gefunden).";
+
         } else {
-          answerBox.textContent = rawText || "Leere Antwort.";
+          answerBox.textContent +=
+  "📄 Antwort (unformatiert):\n" +
+  (rawText || "Leere Antwort.") +
+  "\n--------------------------------------\n\n";
+
           statusLine.textContent = "Antwort erhalten, Format unbekannt.";
         }
       } catch (err) {
