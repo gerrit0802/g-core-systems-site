@@ -5,12 +5,11 @@
   <title>G-CORE GENIE HOST · Konsole</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-  <!-- Fallback-Icon (dein App-Icon) -->
+  <!-- Fallback Icon -->
   <link rel="icon" href="/assets_icons/gcore_icon_192.png" />
 
   <style>
     :root {
-      /* Falls die Variablen nicht global gesetzt sind, hier Fallbacks */
       --bg-dark:   #111214;
       --bg-darker: #050506;
       --text-light: #f5f5f7;
@@ -292,7 +291,7 @@
     <header class="host-header">
       <div class="host-title">G-CORE GENIE HOST KONSOLE</div>
       <div class="host-subtitle">
-        Direkter Testaufruf gegen deinen G-Core Router. Antworten kommen in Klartext zurück – ohne technische Details.
+        Direkter Testaufruf gegen deinen G-Core Router. Antworten kommen in Klartext zurück ohne technische Details.
       </div>
     </header>
 
@@ -304,7 +303,7 @@
         <div class="field-row">
           <label class="field-label" for="promptInput">Prompt</label>
           <textarea id="promptInput" class="prompt-input"
-            placeholder="Schreibe hier deinen Testprompt hinein …&#10;Beispiel: „Sag mir bitte in einem Satz, was G-Core Systems aus deiner Sicht besonders macht.“"></textarea>
+            placeholder="Schreibe hier deinen Testprompt hinein …&#10;Beispiel: Sag mir in einem Satz, was G-Core Systems besonders macht."></textarea>
         </div>
 
         <div class="field-row two-cols">
@@ -332,9 +331,9 @@
         </p>
       </article>
 
-      <!-- Rechtes Panel: Antwort -->
+      <!-- Rechtes Panel: Antwort / Chatverlauf -->
       <article class="panel">
-        <div class="panel-label">Antwort von Genie</div>
+        <div class="panel-label">Antworten von Genie</div>
 
         <div id="answerBox" class="answer-box">
           Noch keine Antwort erhalten.
@@ -376,6 +375,24 @@
       tempLabel.textContent = Number(tempRange.value).toFixed(1);
     });
 
+    // Kleine Hilfsfunktion für Chatverlauf
+    function appendBlock(role, text) {
+      // Platzhalter entfernen, falls noch vorhanden
+      if (answerBox.textContent.trim() === "Noch keine Antwort erhalten.") {
+        answerBox.textContent = "";
+      }
+
+      const prefix = role === "user" ? "Prompt" : "Antwort";
+      const line = 
+        prefix + ":\n" +
+        text +
+        "\n\n" +
+        "────────────────────────\n\n";
+
+      answerBox.textContent += line;
+      answerBox.scrollTop = answerBox.scrollHeight;
+    }
+
     sendButton.addEventListener("click", async () => {
       const prompt = promptInput.value.trim();
       if (!prompt) {
@@ -391,6 +408,9 @@
       sendButton.disabled = true;
       sendButton.classList.add("is-busy");
 
+      // Prompt direkt in den Verlauf schreiben
+      appendBlock("user", prompt);
+
       try {
         const res = await fetch(API_URL, {
           method: "POST",
@@ -403,53 +423,40 @@
         try {
           data = JSON.parse(rawText);
         } catch (e) {
-          // falls keine gültige JSON, zeigen wir den Rohtext
+          // bleibt Text
         }
 
         if (!res.ok) {
-          statusLine.textContent = `HTTP-Fehler ${res.status} – ${res.statusText}`;
-          answerBox.textContent = rawText || "Keine Detailinformationen verfügbar.";
+          statusLine.textContent = "HTTP Fehler " + res.status + " " + res.statusText;
+          appendBlock("assistant", rawText || "Keine Detailinformationen verfügbar.");
           return;
         }
 
-        const reply =
-          data &&
-          (data.reply ||
-           data.response ||
-           data.message ||
-           data.content ||
-           data.output);
+        let reply = null;
+
+        if (data && typeof data === "object") {
+          reply =
+            data.reply ||
+            data.response ||
+            data.message ||
+            data.content ||
+            data.output ||
+            null;
+        }
 
         if (reply) {
-       // Chat-Formatierung
-const bubble =
-  "🟡 Antwort:\n" +
-  reply +
-  "\n--------------------------------------\n\n";
-
-answerBox.textContent += bubble;
-
-statusLine.textContent = "Antwort erfolgreich von Genie erhalten.";
-
-        const bubble =
-  "📄 Rohdaten:\n" +
-  JSON.stringify(data, null, 2) +
-  "\n--------------------------------------\n\n";
-
-answerBox.textContent += bubble;
-statusLine.textContent = "Rohdaten erhalten (kein Klartextfeld gefunden).";
-
+          appendBlock("assistant", reply);
+          statusLine.textContent = "Antwort erfolgreich von Genie erhalten.";
+        } else if (data) {
+          appendBlock("assistant", JSON.stringify(data, null, 2));
+          statusLine.textContent = "Antwort erhalten, aber kein Klartextfeld gefunden.";
         } else {
-          answerBox.textContent +=
-  "📄 Antwort (unformatiert):\n" +
-  (rawText || "Leere Antwort.") +
-  "\n--------------------------------------\n\n";
-
-          statusLine.textContent = "Antwort erhalten, Format unbekannt.";
+          appendBlock("assistant", rawText || "Leere Antwort.");
+          statusLine.textContent = "Antwort erhalten, Format nicht eindeutig.";
         }
       } catch (err) {
         statusLine.textContent = "Fehler beim Senden der Anfrage.";
-        answerBox.textContent = String(err);
+        appendBlock("assistant", String(err));
       } finally {
         sendButton.disabled = false;
         sendButton.classList.remove("is-busy");
