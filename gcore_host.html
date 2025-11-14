@@ -1,345 +1,442 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-  <meta charset="UTF-8">
-  <title>G-CORE GENIE HOST</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="utf-8" />
+  <title>G-CORE GENIE HOST · Konsole</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-  <!-- Farben wie auf der Hauptseite -->
+  <!-- Fallback-Icon (dein App-Icon) -->
+  <link rel="icon" href="/assets_icons/gcore_icon_192.png" />
+
   <style>
     :root {
+      /* Falls die Variablen nicht global gesetzt sind, hier Fallbacks */
       --bg-dark:   #111214;
       --bg-darker: #050506;
-      --text-light:#f5f5f7;
-      --text-muted:#c8c8c8;
+      --text-light: #f5f5f7;
+      --text-muted: #c8c8c8;
       --gold:      #d7b86f;
-      --gold-soft: #d7b86f33;
+      --gold-soft: rgba(215,184,111,0.25);
     }
 
-    /* Layout Container */
-.console-container {
-    width: 100%;
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    gap: 22px;
-}
+    * {
+      box-sizing: border-box;
+    }
 
-/* Überschriften */
-.section-title {
-    font-size: 1.6rem;
-    margin-bottom: 10px;
-}
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+    }
 
-/* Prompt Input */
-#prompt-input {
-    width: 100%;
-    height: 160px;
-    font-size: 1rem;
-    padding: 15px;
-    border-radius: 14px;
-}
+    body {
+      min-height: 100vh;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--text-light);
+      background:
+        radial-gradient(circle at top, #1d1f24 0, var(--bg-dark) 48%, var(--bg-darker) 100%);
+      display: flex;
+      justify-content: center;
+      align-items: stretch;
+    }
 
-/* Antwortbox */
-#answer-box {
-    width: 100%;
-    height: 250px;
-    padding: 25px;
-    overflow-y: auto;
-    border-radius: 20px;
-}
+    .host-shell {
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 24px 16px 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
 
-/* Blöcke links rechts */
-.input-section, .output-section {
-    padding: 24px;
-    height: auto;
-    min-height: 260px;
-}
+    .host-header {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
 
-/* Modell + Temperatur nebeneinander */
-.settings-row {
-    display: flex;
-    gap: 20px;
-    flex-wrap: wrap;
-}
+    .host-title {
+      font-size: 1.4rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--gold);
+    }
 
-.settings-block {
-    flex: 1;
-    min-width: 260px;
-}
+    .host-subtitle {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+    }
 
-/* Temperatur-Schieberegler */
-#temperature {
-    width: 100%;
-}
+    .host-grid {
+      flex: 1 1 auto;
+      min-height: 0;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
 
-/* Senden-Button */
-.send-button {
-    width: 190px;
-    height: 60px;
-    font-size: 1.1rem;
-    border-radius: 16px;
-    cursor: pointer;
-}
+    .panel {
+      flex: 1 1 360px;
+      min-height: 260px;
+      background: linear-gradient(145deg, rgba(255,255,255,0.02), rgba(0,0,0,0.55));
+      border-radius: 26px;
+      border: 1px solid rgba(255,255,255,0.04);
+      box-shadow:
+        0 14px 40px rgba(0,0,0,0.65),
+        0 0 0 1px rgba(0,0,0,0.8);
+      padding: 20px 18px 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
 
+    .panel-label {
+      font-size: 0.8rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
 
-  <!-- Manifest & Icons -->
-  <link rel="manifest" href="gcore_manifest.json">
-  <link rel="icon" type="image/png" sizes="192x192" href="assets_icons/gcore_icon_192.png">
-  <link rel="icon" type="image/png" sizes="512x512" href="assets_icons/gcore_icon_512.png">
-  <meta name="theme-color" content="#111214">
+    .field-row {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .field-label {
+      font-size: 0.8rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+
+    .prompt-input {
+      width: 100%;
+      min-height: 160px;
+      max-height: 260px;
+      resize: vertical;
+      border-radius: 18px;
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(0,0,0,0.36);
+      color: var(--text-light);
+      padding: 12px 14px;
+      font-size: 0.95rem;
+      outline: none;
+      line-height: 1.5;
+    }
+
+    .prompt-input::placeholder {
+      color: rgba(255,255,255,0.35);
+    }
+
+    .two-cols {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .two-cols .field {
+      flex: 1 1 140px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .select-input {
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(0,0,0,0.5);
+      color: var(--text-light);
+      padding: 8px 14px;
+      font-size: 0.9rem;
+      outline: none;
+      appearance: none;
+    }
+
+    .select-input:focus {
+      border-color: var(--gold);
+      box-shadow: 0 0 0 1px rgba(215,184,111,0.5);
+    }
+
+    .temp-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .temp-row input[type="range"] {
+      flex: 1 1 auto;
+      accent-color: var(--gold);
+    }
+
+    .temp-label {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      min-width: 3.0rem;
+      text-align: right;
+    }
+
+    .endpoint-hint {
+      margin: 0;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    .endpoint-hint span {
+      color: var(--gold);
+      font-family: "Consolas", "SF Mono", ui-monospace, monospace;
+      font-size: 0.78rem;
+    }
+
+    .answer-box {
+      flex: 1 1 auto;
+      min-height: 160px;
+      max-height: 320px;
+      border-radius: 20px;
+      border: 1px solid rgba(255,255,255,0.14);
+      background: rgba(0,0,0,0.42);
+      padding: 14px 16px;
+      font-size: 0.95rem;
+      line-height: 1.55;
+      overflow-y: auto;
+      white-space: pre-wrap;
+    }
+
+    .status-line {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    .host-footer {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 6px;
+    }
+
+    .btn-send {
+      position: relative;
+      border: none;
+      border-radius: 999px;
+      padding: 12px 26px 12px 24px;
+      font-size: 0.95rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      cursor: pointer;
+      background: radial-gradient(circle at top, #ffe49a 0, #d6a93f 40%, #b9871f 100%);
+      color: #1a1205;
+      box-shadow:
+        0 12px 28px rgba(0,0,0,0.7),
+        0 0 0 1px rgba(0,0,0,0.55);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-send .icon-arrow {
+      font-size: 1.1rem;
+    }
+
+    .btn-send.is-busy {
+      opacity: 0.7;
+      cursor: wait;
+    }
+
+    .footer-model {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    .footer-model span {
+      color: var(--gold);
+    }
+
+    @media (max-width: 900px) {
+      body {
+        align-items: flex-start;
+      }
+      .host-shell {
+        padding: 16px 10px 18px;
+      }
+      .panel {
+        min-height: auto;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .host-title {
+        font-size: 1.1rem;
+      }
+      .host-shell {
+        gap: 14px;
+      }
+      .host-footer {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      .btn-send {
+        width: 100%;
+        justify-content: center;
+      }
+      .answer-box {
+        max-height: 260px;
+      }
+    }
+  </style>
 </head>
 <body>
   <main class="host-shell">
     <header class="host-header">
-      <div>
-        <div class="host-title">G-CORE GENIE HOST CONSOLE</div>
-        <div class="host-sub">
-          Direkter Testaufruf gegen deinen G-Core Router.
-        </div>
-      </div>
-      <div class="router-pill">
-        <span class="router-dot"></span>
-        <span>Router aktiv</span>
+      <div class="host-title">G-CORE GENIE HOST KONSOLE</div>
+      <div class="host-subtitle">
+        Direkter Testaufruf gegen deinen G-Core Router. Antworten kommen in Klartext zurück – ohne technische Details.
       </div>
     </header>
 
     <section class="host-grid">
-      <!-- Linke Seite: Router Infos -->
-      <aside class="panel">
-        <div class="panel-label"><span>G-CORE SYSTEMS</span> · Router</div>
-        <ul class="router-list">
-          <li>Alle Anfragen laufen über deinen eigenen API-Router.</li>
-          <li>Modell und Temperatur steuerst du direkt in der Konsole.</li>
-          <li>Antworten kommen im Klartext zurück – ohne technische Details.</li>
-          <li>Nutze diese Seite nur für interne Tests deiner Programme.</li>
-        </ul>
-        <div class="endpoint-pill">
-          Endpoint
-          <code id="endpointLabel">POST https://api.g-core-systems.com/genie</code>
+      <!-- Linkes Panel: Prompt + Modell + Temperatur -->
+      <article class="panel">
+        <div class="panel-label">Genie Host Console</div>
+
+        <div class="field-row">
+          <label class="field-label" for="promptInput">Prompt</label>
+          <textarea id="promptInput" class="prompt-input"
+            placeholder="Schreibe hier deinen Testprompt hinein …&#10;Beispiel: „Sag mir bitte in einem Satz, was G-Core Systems aus deiner Sicht besonders macht.“"></textarea>
         </div>
-      </aside>
 
-      <!-- Rechte Seite: Genie Host Console -->
-      <section class="panel">
-        <div class="panel-label"><span>Genie Host Console</span> · Prompt & Antwort</div>
-
-        <div class="console-grid">
-          <!-- Prompt -->
-          <div>
-            <div class="field-label"><span>Prompt</span></div>
-            <div class="prompt-box">
-              <textarea
-                id="promptInput"
-                placeholder="Schreibe hier deinen Test-Prompt hinein, zum Beispiel: &#10;„Sag mir bitte in einem Satz, was G-Core Systems aus deiner Sicht besonders macht.“"
-              >Was ist ein Orca?</textarea>
-            </div>
+        <div class="field-row two-cols">
+          <div class="field">
+            <span class="field-label">Modell</span>
+            <select id="modelSelect" class="select-input">
+              <option value="gpt-4.1-mini" selected>gpt-4.1-mini</option>
+              <option value="gpt-4.1">gpt-4.1</option>
+              <option value="gpt-4.1-nano">gpt-4.1-nano</option>
+            </select>
           </div>
 
-          <!-- Modell & Temperatur -->
-          <div class="model-temp-row">
-            <div class="card-soft">
-              <div class="field-label"><span>Modell</span></div>
-              <div class="model-select-wrap select-shell">
-                <select id="modelSelect">
-                  <option value="gpt-4.1-mini">gpt-4.1-mini</option>
-                  <option value="gpt-4.1">gpt-4.1</option>
-                  <option value="gpt-4.1-nano">gpt-4.1-nano</option>
-                </select>
-              </div>
-            </div>
-            <div class="card-soft">
-              <div class="field-label"><span>Temperatur</span></div>
-              <div class="slider-wrap">
-                <input
-                  id="tempRange"
-                  type="range"
-                  min="0"
-                  max="1"
-                  step="0.1"
-                  value="0.7"
-                >
-                <div class="temp-value" id="tempValueLabel">
-                  Aktuelle Einstellung: 0.7
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Antwort -->
-          <div>
-            <div class="field-label"><span>Antwort von Genie</span></div>
-            <div class="answer-box-wrapper">
-              <div id="answerBox">
-                Noch keine Antwort erhalten.
-              </div>
-            </div>
-          </div>
-
-          <!-- Button + Status -->
-          <div class="send-row">
-            <button
-              type="button"
-              class="btn-send"
-              id="sendButton"
-              onclick="sendPrompt()"
-            >
-              <span class="icon">➜</span>
-              <span>Senden</span>
-            </button>
-            <div class="status-line">
-              <span id="statusMessage">
-                Bereit. Aktives Modell: <strong id="activeModelLabel">gpt-4.1-mini</strong>.
-              </span>
+          <div class="field">
+            <span class="field-label">Temperatur</span>
+            <div class="temp-row">
+              <input id="tempRange" type="range" min="0" max="1" step="0.1" value="0.7" />
+              <span class="temp-label">0.7</span>
             </div>
           </div>
         </div>
 
-        <div class="footline">
-          Alle Antworten laufen über deinen <span>G-Core Router</span>.
+        <p class="endpoint-hint">
+          Endpoint&nbsp;POST
+          <span>https://api.g-core-systems.com/genie</span>
+        </p>
+      </article>
+
+      <!-- Rechtes Panel: Antwort -->
+      <article class="panel">
+        <div class="panel-label">Antwort von Genie</div>
+
+        <div id="answerBox" class="answer-box">
+          Noch keine Antwort erhalten.
         </div>
-      </section>
+
+        <div id="statusLine" class="status-line">
+          Aktives Modell: gpt-4.1-mini
+        </div>
+      </article>
     </section>
+
+    <footer class="host-footer">
+      <button id="sendButton" class="btn-send">
+        <span class="icon-arrow">➜</span>
+        <span>Senden</span>
+      </button>
+
+      <div class="footer-model">
+        Aktives Modell:
+        <span id="activeModelLabel">gpt-4.1-mini</span>
+      </div>
+    </footer>
   </main>
 
   <script>
     const API_URL = "https://api.g-core-systems.com/genie";
 
-    function updateTempLabel() {
-      const range = document.getElementById("tempRange");
-      const label = document.getElementById("tempValueLabel");
-      if (range && label) {
-        label.textContent = "Aktuelle Einstellung: " + range.value;
-      }
-    }
+    const promptInput = document.getElementById("promptInput");
+    const modelSelect = document.getElementById("modelSelect");
+    const tempRange = document.getElementById("tempRange");
+    const tempLabel = document.querySelector(".temp-label");
+    const sendButton = document.getElementById("sendButton");
+    const answerBox = document.getElementById("answerBox");
+    const statusLine = document.getElementById("statusLine");
+    const activeModelLabel = document.getElementById("activeModelLabel");
 
-    function updateActiveModelLabel() {
-      const select = document.getElementById("modelSelect");
-      const label = document.getElementById("activeModelLabel");
-      if (select && label) {
-        label.textContent = select.value;
-      }
-    }
+    // Temperatur-Label aktualisieren
+    tempRange.addEventListener("input", () => {
+      tempLabel.textContent = Number(tempRange.value).toFixed(1);
+    });
 
-    async function sendPrompt() {
-      const promptEl = document.getElementById("promptInput");
-      const modelEl = document.getElementById("modelSelect");
-      const tempEl = document.getElementById("tempRange");
-      const answerBox = document.getElementById("answerBox");
-      const statusEl = document.getElementById("statusMessage");
-
-      const prompt = promptEl.value.trim();
+    sendButton.addEventListener("click", async () => {
+      const prompt = promptInput.value.trim();
       if (!prompt) {
-        statusEl.innerHTML = '<span class="error">Bitte gib zuerst einen Prompt ein.</span>';
+        statusLine.textContent = "Bitte gib zuerst einen Prompt ein.";
         return;
       }
 
-      statusEl.textContent = "Sende Anfrage an Genie …";
-      answerBox.textContent = "Warte auf Antwort …";
+      const model = modelSelect.value;
+      const temperature = Number(tempRange.value);
+
+      activeModelLabel.textContent = model;
+      statusLine.textContent = "Sende Anfrage an Genie …";
+      answerBox.textContent = "";
+      sendButton.disabled = true;
+      sendButton.classList.add("is-busy");
 
       try {
         const res = await fetch(API_URL, {
           method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            prompt,
-            model: modelEl.value,
-            temperature: Number(tempEl.value),
-          }),
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ prompt, model, temperature })
         });
 
-        let data;
+        const rawText = await res.text();
+        let data = null;
         try {
-          data = await res.json();
+          data = JSON.parse(rawText);
         } catch (e) {
-          const text = await res.text();
-          data = text;
+          // falls keine gültige JSON, zeigen wir den Rohtext
         }
 
-        console.log("Genie raw response:", data);
-
-        // Antwort-Text extrahieren
-        let replyText = "";
-
-        if (typeof data === "string") {
-          try {
-            data = JSON.parse(data);
-          } catch {
-            // bleibt String
-          }
+        if (!res.ok) {
+          statusLine.textContent = `HTTP-Fehler ${res.status} – ${res.statusText}`;
+          answerBox.textContent = rawText || "Keine Detailinformationen verfügbar.";
+          return;
         }
 
-        if (data && typeof data === "object") {
-          // 1) Dein Router-Format: { ok: true, model: "...", response: "..." }
-          if (data.response) {
-            replyText = data.response;
-          }
-          // 2) OpenAI-Style: { choices: [ { message: { content: "..." } } ] }
-          else if (data.choices && data.choices[0]?.message?.content) {
-            replyText = data.choices[0].message.content;
-          }
-          // 3) message.content[] (z.B. Werkzeuge)
-          else if (data.message && Array.isArray(data.message.content)) {
-            const textPart = data.message.content.find(
-              (p) => p.type === "output_text" || p.type === "text"
-            );
-            if (textPart) {
-              replyText = textPart.text || textPart.content || "";
-            }
-          }
-          // 4) Fehlerstruktur
-          else if (data.ok === false && data.error) {
-            replyText = data.error.message || JSON.stringify(data.error, null, 2);
-          }
-        }
+        const reply =
+          data &&
+          (data.reply ||
+           data.response ||
+           data.message ||
+           data.content ||
+           data.output);
 
-        // Fallback: alles anzeigen, falls nicht eindeutig
-        if (!replyText) {
-          if (typeof data === "string") {
-            replyText = data;
-          } else {
-            replyText = JSON.stringify(data, null, 2);
-          }
+        if (reply) {
+          answerBox.textContent = reply;
+          statusLine.textContent = "Antwort erfolgreich von Genie erhalten.";
+        } else if (data) {
+          answerBox.textContent = JSON.stringify(data, null, 2);
+          statusLine.textContent = "Antwort erhalten, aber kein Klartextfeld gefunden.";
+        } else {
+          answerBox.textContent = rawText || "Leere Antwort.";
+          statusLine.textContent = "Antwort erhalten, Format unbekannt.";
         }
-
-        // Ausgabe
-        answerBox.innerHTML = replyText.replace(/\n/g, "<br>");
-        statusEl.innerHTML =
-          'Antwort erfolgreich von Genie erhalten. Aktives Modell: <strong>' +
-          modelEl.value +
-          "</strong>.";
       } catch (err) {
-        console.error(err);
-        statusEl.innerHTML =
-          '<span class="error">Fehler: Die Anfrage konnte nicht gesendet werden.</span>';
-        answerBox.textContent = err.message || String(err);
-      }
-    }
-
-    // Initialisieren
-    document.addEventListener("DOMContentLoaded", () => {
-      const tempRange = document.getElementById("tempRange");
-      const modelSelect = document.getElementById("modelSelect");
-
-      if (tempRange) {
-        tempRange.addEventListener("input", updateTempLabel);
-        updateTempLabel();
-      }
-
-      if (modelSelect) {
-        modelSelect.addEventListener("change", updateActiveModelLabel);
-        updateActiveModelLabel();
-      }
-
-      // Service Worker für PWA registrieren (optional, falls sw.js vorhanden)
-      if ("serviceWorker" in navigator) {
-        navigator.serviceWorker
-          .register("sw.js")
-          .catch((err) => console.warn("SW Registrierung fehlgeschlagen:", err));
+        statusLine.textContent = "Fehler beim Senden der Anfrage.";
+        answerBox.textContent = String(err);
+      } finally {
+        sendButton.disabled = false;
+        sendButton.classList.remove("is-busy");
       }
     });
   </script>
