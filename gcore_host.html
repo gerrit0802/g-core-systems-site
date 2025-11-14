@@ -875,77 +875,111 @@
     });
   }
     <script>
-  // ... dein bisheriger JS-Code bleibt unverändert darüber stehen ...
+  // Basis-URL deines Routers
+  const API_URL = "https://api.g-core-systems.com/genie";
 
-  // Initialisierung für den Senden-Button
-  function wireGCoreHost() {
-    const sendButton   = document.getElementById("sendButton");
-    const promptInput  = document.getElementById("promptInput");
-    const answerBox    = document.getElementById("answerBox");
-    const statusBox    = document.getElementById("statusBox");
-    const modelSelect  = document.getElementById("modelSelect");
-    const tempSlider   = document.getElementById("tempSlider");
+  async function sendPromptToGenie() {
+    const promptInput = document.getElementById("promptInput");
+    const answerBox   = document.getElementById("answerBox");
+    const statusBox   = document.getElementById("statusBox");
+    const modelSelect = document.getElementById("modelSelect");
+    const tempSlider  = document.getElementById("tempSlider");
+
+    const prompt = (promptInput?.value || "").trim();
+    const model  = modelSelect?.value || "gpt-4.1-mini";
+    const temp   = tempSlider ? Number(tempSlider.value) : 0.7;
+
+    if (!prompt) {
+      if (statusBox) statusBox.textContent = "Bitte gib zuerst einen Prompt ein.";
+      return;
+    }
+
+    if (statusBox) statusBox.textContent = "Sende Anfrage an Genie...";
+    if (answerBox) answerBox.textContent = "";
+
+    try {
+      const res = await fetch(API_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          prompt,
+          model,
+          temperature: temp
+        })
+      });
+
+      if (!res.ok) {
+        const text = await res.text();
+        console.error("G-CORE HOST: HTTP-Fehler", res.status, res.statusText, text);
+
+        if (statusBox) {
+          statusBox.textContent = `Fehler vom Router: ${res.status} ${res.statusText}`;
+        }
+        if (answerBox) {
+          answerBox.innerHTML =
+            "Die API hat mit einem Fehler geantwortet:<br><br><code>" +
+            text.replace(/</g, "&lt;") +
+            "</code>";
+        }
+        return;
+      }
+
+      const data = await res.json();
+
+      // Versuche verschiedene Strukturen, je nach Router-Antwort
+      const reply =
+        data?.reply ||
+        data?.data?.reply ||
+        data?.response ||
+        "(Keine Antwort erhalten)";
+
+      if (answerBox) answerBox.textContent = reply;
+      if (statusBox) statusBox.textContent = "Antwort erfolgreich von Genie erhalten.";
+    } catch (err) {
+      console.error("G-CORE HOST: Fetch-Fehler", err);
+      if (statusBox) {
+        statusBox.textContent =
+          "Fehler beim Senden der Anfrage. Details in der Browser-Konsole.";
+      }
+    }
+  }
+
+  function initGCoreHostUI() {
+    const sendButton = document.getElementById("sendButton");
 
     if (!sendButton) {
       console.error("G-CORE HOST: sendButton nicht gefunden.");
       return;
     }
 
-    sendButton.addEventListener("click", async () => {
-      const prompt = (promptInput?.value || "").trim();
-      const model  = modelSelect?.value || "gpt-4.1-mini";
-      const temp   = tempSlider ? Number(tempSlider.value) : 0.7;
-      const API_URL = "https://api.g-core-systems.com/genie";
-
-      if (!prompt) {
-        if (statusBox) statusBox.textContent = "Bitte gib zuerst einen Prompt ein.";
-        return;
-      }
-
-      if (statusBox) statusBox.textContent = "Sende Anfrage an Genie...";
-      if (answerBox) answerBox.textContent = "";
-
-      try {
-        const res = await fetch(API_URL, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ prompt, model, temperature: temp })
-        });
-
-        if (!res.ok) {
-          const text = await res.text();
-          if (statusBox) statusBox.textContent =
-            `Fehler vom Router: ${res.status} ${res.statusText}`;
-          if (answerBox) {
-            answerBox.innerHTML =
-              "Die API hat mit einem Fehler geantwortet:<br><br><code>" +
-              text.replace(/</g, "&lt;") +
-              "</code>";
-          }
-          return;
-        }
-
-        const data  = await res.json();
-        const reply = data?.reply || data?.data?.reply || "(Keine Antwort erhalten)";
-        if (answerBox) answerBox.textContent = reply;
-        if (statusBox) statusBox.textContent = "Antwort erfolgreich von Genie erhalten.";
-      } catch (err) {
-        console.error("G-CORE HOST: Fetch-Fehler", err);
-        if (statusBox) statusBox.textContent =
-          "Fehler beim Senden der Anfrage. Details in der Konsole.";
-      }
+    // Klick auf Senden-Button
+    sendButton.addEventListener("click", (event) => {
+      event.preventDefault();
+      sendPromptToGenie();
     });
+
+    // Enter im Promptfeld optional als Senden
+    const promptInput = document.getElementById("promptInput");
+    if (promptInput) {
+      promptInput.addEventListener("keydown", (event) => {
+        if (event.key === "Enter" && (event.ctrlKey || event.metaKey)) {
+          event.preventDefault();
+          sendPromptToGenie();
+        }
+      });
+    }
+
+    console.log("G-CORE HOST: UI initialisiert.");
   }
 
-  // Ausführen, sobald das DOM steht
+  // Initialisierung, sobald das DOM geladen ist
   if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", wireGCoreHost);
+    document.addEventListener("DOMContentLoaded", initGCoreHostUI);
   } else {
-    wireGCoreHost();
+    initGCoreHostUI();
   }
 </script>
 
-</script>
 
   </script>
 </body>
