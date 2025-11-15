@@ -2,7 +2,7 @@
   "name": "G-CORE LAUNCHPAD",
   "short_name": "G-Core",
   "description": "Zentrale KI Oberfläche für alle G-Core Programme.",
-  "id": "/genie-host.html",
+  "id": "/gcore_host.html",
   "start_url": "/genie-host.html",
   "scope": "/",
   "display": "standalone",
