@@ -2,10 +2,10 @@
 <html lang="de">
 <head>
   <meta charset="UTF-8" />
-  <title>G-CORE GENIE · G-Core Systems App-Hub</title>
+  <title>G-CORE LAUNCHPAD · G-Core Systems</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-  <!-- Manifest-Verknüpfung (du hast das bereits eingerichtet) -->
+  <!-- Manifest für diese App-Instanz -->
   <link rel="manifest" href="/manifest_genie.webmanifest" />
 
   <style>
@@ -126,8 +126,8 @@
       width: 9px;
       height: 9px;
       border-radius: 50%;
-      background: radial-gradient(circle, #5ffb85 0, #1fbf54 40%, #077933 100%);
-      box-shadow: 0 0 8px rgba(95, 251, 133, 0.7);
+      background: radial-gradient(circle, #46c46a 0, #1f8a43 45%, #0b5a2a 100%);
+      box-shadow: 0 0 5px rgba(70, 196, 106, 0.7);
       margin-left: 4px;
     }
 
@@ -191,15 +191,15 @@
       max-width: 260px;
     }
 
-    /* Dashboard / Kachel-Grid */
+    /* Dashboard / Kacheln */
 
     .tile-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
       gap: 10px;
       margin-top: 4px;
-      overflow-y: auto;
-      padding-right: 4px;
+      /* kein eigener Scrollbalken */
+      overflow: visible;
     }
 
     .app-tile {
@@ -297,33 +297,13 @@
         radial-gradient(circle at top, #15151b 0, #09090d 45%, #050507 100%);
       box-shadow:
         0 0 12px rgba(0, 0, 0, 0.8);
+      opacity: 0.75;
     }
 
     .app-tile.locked:hover {
       transform: none;
       box-shadow:
         0 0 12px rgba(0, 0, 0, 0.8);
-    }
-
-    .lock-overlay {
-      position: absolute;
-      inset: 0;
-      border-radius: 18px;
-      background: radial-gradient(circle at center, rgba(0, 0, 0, 0.35) 0, rgba(0, 0, 0, 0.82) 68%);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: var(--text-muted);
-      font-size: 11px;
-      text-align: center;
-      padding: 6px;
-      pointer-events: none;
-    }
-
-    .lock-overlay span {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
     }
 
     .dashboard-info {
@@ -445,19 +425,20 @@
       appearance: none;
       height: 6px;
       border-radius: 999px;
-      background: linear-gradient(90deg, rgba(217, 177, 95, 0.95), rgba(217, 177, 95, 0.25));
+      background: linear-gradient(90deg, rgba(217, 177, 95, 0.8), rgba(217, 177, 95, 0.22));
       outline: none;
     }
 
+    /* Temperatur-Punkt deutlich dunkler / weniger Glow */
     input[type="range"]::-webkit-slider-thumb {
       appearance: none;
-      width: 15px;
-      height: 15px;
+      width: 13px;
+      height: 13px;
       border-radius: 50%;
-      background: radial-gradient(circle, #fff8d0 0, #f4cf7a 45%, #c48a32 100%);
+      background: radial-gradient(circle, #f1d38a 0, #c99a3f 50%, #8b6323 100%);
       box-shadow:
-        0 0 12px rgba(255, 248, 208, 0.8),
-        0 0 20px rgba(217, 177, 95, 0.9);
+        0 0 5px rgba(217, 177, 95, 0.6),
+        0 0 10px rgba(0, 0, 0, 0.9);
       cursor: pointer;
     }
 
@@ -613,9 +594,6 @@
         max-height: none;
         height: auto;
       }
-      .tile-grid {
-        max-height: 220px;
-      }
       .chat-log {
         max-height: 260px;
       }
@@ -628,10 +606,10 @@
     <header class="app-header">
       <div class="app-title-block">
         <div class="app-badge">G-Core Systems · KI App-Hub</div>
-        <div class="app-title">G-CORE GENIE</div>
+        <div class="app-title">G-CORE LAUNCHPAD</div>
         <div class="app-subtitle">
-          Zentrale G-Core App mit lizenzierbaren Programmen. Aktuell ist nur <strong>RESUMÉ-MASTER</strong> frei nutzbar
-          (mit E-Mail-Anbindung für den Export).
+          Zentrale G-Core App für deine KI-Programme. Im Hintergrund arbeitet die Genie-Engine –
+          aktuell ist <strong>RESUMÉ-MASTER</strong> freigeschaltet, <strong>SOCIAL-MAGIC</strong> folgt in Kürze.
         </div>
       </div>
 
@@ -653,7 +631,7 @@
         <div class="panel-header">
           <div class="panel-title">Programme</div>
           <div class="panel-sub">
-            Wähle ein Programm. Nur RESUMÉ-MASTER ist aktuell freigeschaltet; alle anderen sind Platzhalter für kommende Module.
+            Wähle ein Programm. Nur RESUMÉ-MASTER ist aktuell freigeschaltet, SOCIAL-MAGIC ist bereits als nächstes Modul sichtbar.
           </div>
         </div>
 
@@ -673,146 +651,39 @@
             </div>
           </article>
 
-          <!-- Platzhalter / Coming Soon – gesperrt -->
-          <article class="app-tile locked" data-program="music-forge">
+          <!-- Social-Magic: sichtbar, aber gesperrt -->
+          <article class="app-tile locked" data-program="social-magic">
             <div class="app-tile-header">
-              <div class="app-tile-title">MUSIC-FORGE</div>
-              <span class="badge">Coming Soon</span>
+              <div class="app-tile-title">SOCIAL-MAGIC</div>
+              <span class="badge">🔒 Coming Soon</span>
             </div>
             <div class="app-tile-desc">
-              Songwriting & Hook-Generator für Artists und Producer. Voll integriert in G-Core Systems.
+              Intelligente Content-Erstellung, Serienformate und Ideen für Social Media. Wird bald im Launchpad freigeschaltet.
             </div>
             <div class="app-tile-footer">
-              <span>🎵 Songs</span>
+              <span>📣 Social Media</span>
               <span>🔒 Gesperrt</span>
-            </div>
-            <div class="lock-overlay">
-              <span>🔒 Demnächst verfügbar</span>
             </div>
           </article>
 
-          <article class="app-tile locked" data-program="story-forge">
+          <!-- Kreativer Hintergrund: kein konkretes Programm, nur Teaser -->
+          <article class="app-tile locked" data-program="coming-soon">
             <div class="app-tile-header">
-              <div class="app-tile-title">STORY-FORGE</div>
+              <div class="app-tile-title">Weitere Module</div>
               <span class="badge">Coming Soon</span>
             </div>
             <div class="app-tile-desc">
-              Plot-Entwicklung, Charaktere und Weltenbau für Romane, Games und RPG-Kampagnen.
+              Hier erscheinen nach und nach weitere G-Core Programme. Aktuell dienen diese Kacheln nur als Vorschau auf das Ökosystem.
             </div>
             <div class="app-tile-footer">
-              <span>📚 Stories</span>
-              <span>🔒 Gesperrt</span>
-            </div>
-            <div class="lock-overlay">
-              <span>🔒 Noch nicht freigeschaltet</span>
-            </div>
-          </article>
-
-          <article class="app-tile locked" data-program="home-masterplan">
-            <div class="app-tile-header">
-              <div class="app-tile-title">HOME-MASTERPLAN</div>
-              <span class="badge">Coming Soon</span>
-            </div>
-            <div class="app-tile-desc">
-              Umbau- und Renovierungsplanung mit Modulen für Budget, Materialien und Zeitplan.
-            </div>
-            <div class="app-tile-footer">
-              <span>🏠 Zuhause</span>
-              <span>🔒 Gesperrt</span>
-            </div>
-            <div class="lock-overlay">
-              <span>🔒 Modul in Vorbereitung</span>
-            </div>
-          </article>
-
-          <article class="app-tile locked" data-program="youth-report">
-            <div class="app-tile-header">
-              <div class="app-tile-title">YOUTH-REPORT</div>
-              <span class="badge">Coming Soon</span>
-            </div>
-            <div class="app-tile-desc">
-              Berichte, Einschätzungen und Entwicklungsbögen für pädagogische Kontexte.
-            </div>
-            <div class="app-tile-footer">
-              <span>🧩 Pädagogik</span>
-              <span>🔒 Gesperrt</span>
-            </div>
-            <div class="lock-overlay">
-              <span>🔒 G-Core Fachtool (intern)</span>
-            </div>
-          </article>
-
-          <article class="app-tile locked" data-program="care-flow">
-            <div class="app-tile-header">
-              <div class="app-tile-title">CARE-FLOW</div>
-              <span class="badge">Coming Soon</span>
-            </div>
-            <div class="app-tile-desc">
-              Strukturierte Hilfeplanung und Dokumentation im sozialen Bereich.
-            </div>
-            <div class="app-tile-footer">
-              <span>🤝 Soziale Arbeit</span>
-              <span>🔒 Gesperrt</span>
-            </div>
-            <div class="lock-overlay">
-              <span>🔒 Noch in Entwicklung</span>
-            </div>
-          </article>
-
-          <article class="app-tile locked" data-program="abw-doc">
-            <div class="app-tile-header">
-              <div class="app-tile-title">ABW-DOC</div>
-              <span class="badge">Coming Soon</span>
-            </div>
-            <div class="app-tile-desc">
-              Dokumentation und Berichte für ambulant betreutes Wohnen nach LWL-Vorgaben.
-            </div>
-            <div class="app-tile-footer">
-              <span>📑 Fachdokumente</span>
-              <span>🔒 Gesperrt</span>
-            </div>
-            <div class="lock-overlay">
-              <span>🔒 Fachmodul in Planung</span>
-            </div>
-          </article>
-
-          <article class="app-tile locked" data-program="skg-seelenkartographie">
-            <div class="app-tile-header">
-              <div class="app-tile-title">SKG · SEELENKARTOGRAPHIE</div>
-              <span class="badge">Coming Soon</span>
-            </div>
-            <div class="app-tile-desc">
-              Spirituelle Analysen, Seelenprofile und Ultra-Reports für SeelenKartographie.
-            </div>
-            <div class="app-tile-footer">
-              <span>🌌 SKG</span>
-              <span>🔒 Gesperrt</span>
-            </div>
-            <div class="lock-overlay">
-              <span>🔒 Premium-Modul · Coming Soon</span>
-            </div>
-          </article>
-
-          <article class="app-tile locked" data-program="business-blueprint">
-            <div class="app-tile-header">
-              <div class="app-tile-title">BUSINESS-BLUEPRINT</div>
-              <span class="badge">Coming Soon</span>
-            </div>
-            <div class="app-tile-desc">
-              Strategien, Positionierung und Produktarchitektur für Solo-Selbstständige & Creators.
-            </div>
-            <div class="app-tile-footer">
-              <span>📊 Business</span>
-              <span>🔒 Gesperrt</span>
-            </div>
-            <div class="lock-overlay">
-              <span>🔒 In Konzeption</span>
+              <span>✨ Ecosystem</span>
+              <span>🔒 Noch verborgen</span>
             </div>
           </article>
         </div>
 
         <div class="dashboard-info" id="dashboardInfo">
-          Aktives Programm: <strong>RESUMÉ-MASTER</strong> · Nur dieses Programm ist aktuell freigeschaltet.
+          Aktives Programm: <strong>RESUMÉ-MASTER</strong> · Dieses Programm ist frei nutzbar. SOCIAL-MAGIC ist bereits sichtbar, aber noch gesperrt.
         </div>
 
         <div class="input-panel">
@@ -863,7 +734,7 @@
         <div class="panel-header">
           <div class="panel-title">Genie Chat</div>
           <div class="panel-sub">
-            Antworten von Genie, angepasst an das aktuell gewählte Programm.
+            Antworten von Genie, angepasst an das aktuell gewählte Programm im Launchpad.
           </div>
         </div>
 
@@ -923,7 +794,7 @@
         statusModel.textContent = "Aktives Modell: " + modelSelect.value;
       });
 
-      // Programm-Kacheln steuern
+      // Programm-Kacheln
       if (tileGrid) {
         tileGrid.addEventListener("click", (event) => {
           const tile = event.target.closest(".app-tile");
@@ -935,20 +806,19 @@
           if (locked) {
             const titleEl = tile.querySelector(".app-tile-title");
             const name = titleEl ? titleEl.textContent.trim() : "Dieses Programm";
-            lockedHint.textContent = name + " ist noch nicht freigeschaltet. Es dient aktuell nur als Platzhalter im Dashboard.";
+            lockedHint.textContent = name + " ist noch nicht freigeschaltet. Es dient aktuell nur als Vorschau im Launchpad.";
             setTimeout(() => {
               if (lockedHint.textContent.includes(name)) lockedHint.textContent = "";
             }, 4000);
             return;
           }
 
-          // Aktives Programm setzen (nur RESUMÉ-MASTER)
           document.querySelectorAll(".app-tile").forEach((el) => el.classList.remove("active"));
           tile.classList.add("active");
           activeProgram = program;
 
           dashboardInfo.innerHTML =
-            'Aktives Programm: <strong>RESUMÉ-MASTER</strong> · Dieses Programm ist frei nutzbar. Alle anderen Kacheln sind aktuell noch gesperrt.';
+            'Aktives Programm: <strong>RESUMÉ-MASTER</strong> · Dieses Programm ist frei nutzbar. SOCIAL-MAGIC ist bereits sichtbar, aber noch gesperrt.';
           activeProgramLabel.innerHTML =
             'Du nutzt aktuell <strong>RESUMÉ-MASTER</strong>. Formuliere hier deine Bewerbung oder deine Frage.';
         });
@@ -981,7 +851,6 @@
       }
 
       function buildProgramContext(program) {
-        // Nur RESUMÉ-MASTER ist aktiv. Weitere Programme können später ergänzt werden.
         if (program === "resume-master") {
           return (
             "Du bist RESUMÉ-MASTER, ein spezialisiertes Bewerbungs- und Lebenslauf-Programm innerhalb von G-Core Systems. " +
@@ -1060,7 +929,7 @@
         }
       });
 
-      // Service Worker Registrierung (minimal, du hast die Datei bereits)
+      // Service Worker Registrierung
       if ("serviceWorker" in navigator) {
         window.addEventListener("load", function () {
           navigator.serviceWorker
