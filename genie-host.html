@@ -934,5 +934,37 @@
       }
     })();
   </script>
+  <script>
+// PWA Install Handling
+let deferredPrompt = null;
+
+window.addEventListener("beforeinstallprompt", (e) => {
+  e.preventDefault();
+  deferredPrompt = e;
+  const banner = document.getElementById("installBanner");
+  banner.style.display = "block";
+});
+
+document.getElementById("installBtn").addEventListener("click", async () => {
+  if (!deferredPrompt) return;
+
+  // UI verbergen
+  document.getElementById("installBanner").style.display = "none";
+
+  // Install-Dialog starten
+  deferredPrompt.prompt();
+  const choice = await deferredPrompt.userChoice;
+
+  console.log("Installationsentscheidung:", choice);
+
+  deferredPrompt = null;
+});
+
+// Status-Anzeige
+window.addEventListener("appinstalled", () => {
+  console.log("G-Core App wurde installiert.");
+});
+</script>
+
 </body>
 </html>
