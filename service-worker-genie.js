@@ -1,105 +1,98 @@
-// service-worker-genie.js – stabile Cache-Version für G-Core Genie
+// service-worker-genie.js
+// G-CORE LAUNCHPAD · Shell-Caching ohne API-Störung
 
-const CACHE_NAME = "gcore-genie-cache-v2";
+const CACHE_NAME = "gcore-launchpad-v1";
 
-// ⚠️ WICHTIG: Nur Dateien eintragen, von denen du SICHER weißt, dass sie existieren.
-const STATIC_ASSETS = [
-  "/genie-host.html",                 // deine Hauptseite
-  "/manifest_genie.webmanifest",      // dein Manifest
+// Alles, was zur Shell gehört und offline verfügbar sein soll.
+// Pfade ggf. anpassen, falls dein Repo anders strukturiert ist.
+const SHELL_ASSETS = [
+  "/",
+  "/genie-host.html",
+  "/manifest_genie.webmanifest",
   "/assets_icons/genie-softglow-192.png",
-  "/assets_icons/genie-softglow-512.png"
+  "/assets_icons/genie-softglow-512.png",
+  "/assets_icons/gcore_launchpad_maskable_192.png"
 ];
 
-// INSTALL – Basis-Assets cachen (ohne Absturz bei Fehlpfad)
+// INSTALL: Shell-Dateien cachen
 self.addEventListener("install", (event) => {
-  console.log("[Genie-SW] Install v2");
-
   event.waitUntil(
-    (async () => {
-      const cache = await caches.open(CACHE_NAME);
-      try {
-        await cache.addAll(STATIC_ASSETS);
-        console.log("[Genie-SW] Static assets gecacht");
-      } catch (err) {
-        // Wenn hier ein Pfad falsch ist, stürzt der SW NICHT ab.
-        console.warn("[Genie-SW] Fehler beim Cachen, SW bleibt trotzdem aktiv:", err);
-      }
-      self.skipWaiting();
-    })()
+    caches.open(CACHE_NAME).then((cache) => {
+      return cache.addAll(SHELL_ASSETS).catch((err) => {
+        console.warn("[SW] Fehler beim Vorab-Cachen:", err);
+      });
+    })
   );
+  self.skipWaiting();
 });
 
-// ACTIVATE – alte Caches aufräumen
+// ACTIVATE: Alte Caches aufräumen
 self.addEventListener("activate", (event) => {
-  console.log("[Genie-SW] Activate v2");
   event.waitUntil(
-    (async () => {
-      const keys = await caches.keys();
-      await Promise.all(
+    caches.keys().then((keys) =>
+      Promise.all(
         keys.map((key) => {
-          if (key !== CACHE_NAME) {
-            console.log("[Genie-SW] Lösche alten Cache:", key);
+          if (key.startsWith("gcore-launchpad-") && key !== CACHE_NAME) {
             return caches.delete(key);
           }
+          return null;
         })
-      );
-      await self.clients.claim();
-    })()
+      )
+    )
   );
+  self.clients.claim();
 });
 
-// FETCH – Routing-Strategie:
-// - HTML/Navigationsanfragen: network-first mit Fallback
-// - andere Assets (Icons etc.): cache-first mit Netzwerk-Fallback
+// FETCH: 
+// - Navigationsanfragen -> Shell aus Cache, Fallback Network
+// - Statische Assets -> Cache first, sonst Network
+// - API-Calls & Fremd-Domains -> NICHT anfassen (direkt durchlassen)
 self.addEventListener("fetch", (event) => {
   const req = event.request;
-
-  // Nur GET-Requests anfassen
-  if (req.method !== "GET") return;
-
   const url = new URL(req.url);
 
-  // API-Calls zum Backend NICHT cachen
-  if (url.origin === self.location.origin && url.pathname.startsWith("/genie")) {
-    return; // Router-Anfragen direkt durchlassen
+  // 1) Nur GET behandeln
+  if (req.method !== "GET") {
+    return;
   }
 
-  // Navigationsanfragen (Seitenaufrufe)
+  // 2) Fremde Domains (z.B. https://api.g-core-systems.com) nicht anfassen
+  if (url.origin !== self.location.origin) {
+    return;
+  }
+
+  // 3) Navigationsanfragen (App öffnen / reload)
   if (req.mode === "navigate") {
     event.respondWith(
-      (async () => {
-        try {
-          const networkRes = await fetch(req);
-          const cache = await caches.open(CACHE_NAME);
-          cache.put(req, networkRes.clone());
-          return networkRes;
-        } catch (err) {
-          // Offline-Fallback
-          const cached = await caches.match("/genie-host.html");
-          if (cached) return cached;
-          // Wenn selbst das nicht da ist, einfach normalen Fehler werfen
-          throw err;
-        }
-      })()
+      caches.match("/genie-host.html").then((cached) => {
+        if (cached) return cached;
+        return fetch(req).catch(() => {
+          // Fallback: wenn offline und nichts im Cache
+          return caches.match("/genie-host.html");
+        });
+      })
     );
     return;
   }
 
-  // Alle anderen GET-Requests: cache-first
-  event.respondWith(
-    (async () => {
-      const cached = await caches.match(req);
-      if (cached) return cached;
+  // 4) Sonstige Shell-Assets: Cache first
+  if (SHELL_ASSETS.includes(url.pathname)) {
+    event.respondWith(
+      caches.match(req).then((cached) => {
+        if (cached) return cached;
+        return fetch(req)
+          .then((res) => {
+            // Ergebnis für die Zukunft cachen
+            const resClone = res.clone();
+            caches.open(CACHE_NAME).then((cache) => {
+              cache.put(req, resClone);
+            });
+            return res;
+          })
+          .catch(() => cached);
+      })
+    );
+  }
 
-      try {
-        const networkRes = await fetch(req);
-        const cache = await caches.open(CACHE_NAME);
-        cache.put(req, networkRes.clone());
-        return networkRes;
-      } catch (err) {
-        // Wenn Netzwerk weg und nicht im Cache: Pech, dann Fehler
-        throw err;
-      }
-    })()
-  );
+  // Alles andere läuft einfach normal durch (kein respondWith)
 });
