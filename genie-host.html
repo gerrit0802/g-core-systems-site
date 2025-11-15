@@ -2,18 +2,11 @@
 <html lang="de">
 <head>
   <meta charset="UTF-8" />
-  <title>G-CORE MOBILE HOST – Genie</title>
+  <title>G-CORE GENIE · G-Core Systems App-Hub</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="G-CORE MOBILE HOST – dein persönlicher KI-Assistent Genie von G-Core Systems." />
-  <meta name="theme-color" content="#0e0e0e" />
 
+  <!-- Manifest-Verknüpfung (du hast das bereits eingerichtet) -->
   <link rel="manifest" href="/manifest_genie.webmanifest" />
-
-  <!-- Softglow-Icons aus assets_icons -->
-  <link rel="icon" type="image/png" sizes="32x32" href="assets_icons/genie-softglow-32.png" />
-  <link rel="icon" type="image/png" sizes="64x64" href="assets_icons/genie-softglow-64.png" />
-  <link rel="apple-touch-icon" sizes="192x192" href="assets_icons/genie-softglow-192.png" />
-  <link rel="apple-touch-icon" sizes="512x512" href="assets_icons/genie-softglow-512.png" />
 
   <style>
     :root {
@@ -36,7 +29,7 @@
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       color: var(--text-light);
       background:
-        radial-gradient(circle at top, #232323 0, var(--bg-dark) 45%, var(--bg-darker) 100%);
+        radial-gradient(circle at top, #1a1a1f 0, var(--bg-dark) 45%, var(--bg-darker) 100%);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -45,26 +38,30 @@
 
     .app-shell {
       width: 100%;
-      max-width: 1040px;
-      height: 100%;
-      max-height: 780px;
+      max-width: 1200px;
+      max-height: 820px;
       background:
-        radial-gradient(circle at top, #1f1f1f 0, #101010 55%, #050505 100%);
+        radial-gradient(circle at top, #181820 0, #0b0b10 55%, #050505 100%);
       border-radius: 32px;
-      border: 1px solid rgba(217, 177, 95, 0.35);
+      border: 1px solid rgba(217, 177, 95, 0.3);
       box-shadow:
-        0 0 60px rgba(0, 0, 0, 0.9),
-        0 0 40px rgba(217, 177, 95, 0.25);
-      padding: 22px 20px;
+        0 0 60px rgba(0, 0, 0, 0.85),
+        0 0 30px rgba(217, 177, 95, 0.22);
+      padding: 22px 22px 20px;
       display: flex;
       flex-direction: column;
       gap: 16px;
       overflow: hidden;
     }
 
-    /* HEADER */
     .app-header {
-      text-align: center;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .app-title-block {
       display: flex;
       flex-direction: column;
       gap: 6px;
@@ -72,14 +69,14 @@
 
     .app-badge {
       font-size: 11px;
-      letter-spacing: 0.22em;
+      letter-spacing: 0.18em;
       text-transform: uppercase;
       color: var(--gold);
     }
 
     .app-title {
-      font-size: 24px;
-      letter-spacing: 0.22em;
+      font-size: 22px;
+      letter-spacing: 0.18em;
       text-transform: uppercase;
       color: var(--text-light);
     }
@@ -87,42 +84,42 @@
     .app-subtitle {
       font-size: 13px;
       color: var(--text-muted);
-      max-width: 540px;
-      margin: 0 auto;
-      line-height: 1.5;
+      max-width: 520px;
     }
 
-    .router-pill-row {
-      margin-top: 6px;
+    .app-meta {
       display: flex;
-      justify-content: center;
-    }
-
-    .router-pill {
-      padding: 4px 12px;
-      border-radius: 999px;
-      background: linear-gradient(135deg, #151515, #060606);
-      border: 1px solid rgba(217, 177, 95, 0.5);
-      display: inline-flex;
-      align-items: center;
+      flex-direction: column;
+      align-items: flex-end;
       gap: 8px;
       font-size: 11px;
       color: var(--text-muted);
-      box-shadow: 0 0 16px rgba(217, 177, 95, 0.25);
     }
 
-    .router-label {
+    .endpoint-pill {
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: rgba(5, 5, 5, 0.9);
+      border: 1px solid rgba(217, 177, 95, 0.55);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      max-width: 320px;
+    }
+
+    .endpoint-pill .label {
       font-size: 10px;
-      letter-spacing: 0.16em;
+      letter-spacing: 0.18em;
       text-transform: uppercase;
       color: var(--gold);
+      white-space: nowrap;
     }
 
-    .router-value {
+    .endpoint-pill .value {
+      font-size: 11px;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
-      max-width: 260px;
     }
 
     .status-dot {
@@ -130,29 +127,47 @@
       height: 9px;
       border-radius: 50%;
       background: radial-gradient(circle, #5ffb85 0, #1fbf54 40%, #077933 100%);
-      box-shadow: 0 0 10px rgba(95, 251, 133, 0.9);
+      box-shadow: 0 0 8px rgba(95, 251, 133, 0.7);
+      margin-left: 4px;
     }
 
-    /* MAIN LAYOUT */
+    .install-btn {
+      padding: 7px 16px;
+      border-radius: 999px;
+      border: none;
+      cursor: pointer;
+      background: radial-gradient(circle at top, #ffe3a0 0, #f0c56a 40%, #c58a2e 100%);
+      color: #20160c;
+      font-weight: 600;
+      font-size: 11px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      box-shadow:
+        0 0 18px rgba(255, 227, 160, 0.6),
+        0 10px 24px rgba(0, 0, 0, 0.85);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
     .app-main {
       flex: 1;
-      display: grid;
-      grid-template-columns: minmax(0, 1.05fr) minmax(0, 1.45fr);
-      gap: 16px;
       min-height: 0;
+      display: grid;
+      grid-template-columns: minmax(0, 1.15fr) minmax(0, 1.5fr);
+      gap: 16px;
     }
 
     .panel {
       border-radius: 24px;
       background:
-        radial-gradient(circle at top, #1b1b1b 0, #101010 45%, #050505 100%);
-      border: 1px solid rgba(217, 177, 95, 0.25);
+        radial-gradient(circle at top, #191922 0, #0a0a0f 40%, #050505 100%);
+      border: 1px solid rgba(217, 177, 95, 0.22);
       padding: 16px 18px;
       display: flex;
       flex-direction: column;
       gap: 12px;
       min-height: 0;
-      box-shadow: 0 0 18px rgba(0, 0, 0, 0.6);
     }
 
     .panel-header {
@@ -160,6 +175,7 @@
       justify-content: space-between;
       align-items: baseline;
       gap: 8px;
+      margin-bottom: 2px;
     }
 
     .panel-title {
@@ -172,164 +188,380 @@
     .panel-sub {
       font-size: 11px;
       color: var(--text-muted);
+      max-width: 260px;
     }
 
-    .input-stack {
+    /* Dashboard / Kachel-Grid */
+
+    .tile-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 10px;
+      margin-top: 4px;
+      overflow-y: auto;
+      padding-right: 4px;
+    }
+
+    .app-tile {
+      position: relative;
+      border-radius: 18px;
+      padding: 10px 11px;
+      background:
+        radial-gradient(circle at top, #20202a 0, #101018 45%, #07070b 100%);
+      border: 1px solid rgba(217, 177, 95, 0.35);
+      box-shadow:
+        0 0 18px rgba(0, 0, 0, 0.7),
+        0 0 14px rgba(217, 177, 95, 0.18);
       display: flex;
       flex-direction: column;
-      gap: 12px;
-      flex: 1;
-      min-height: 0;
+      gap: 4px;
+      cursor: pointer;
+      transition: transform 0.12s ease, box-shadow 0.12s ease, border-color 0.12s ease, background 0.12s ease;
+    }
+
+    .app-tile:hover {
+      transform: translateY(-1px);
+      box-shadow:
+        0 0 22px rgba(0, 0, 0, 0.9),
+        0 0 18px rgba(217, 177, 95, 0.35);
+    }
+
+    .app-tile.active {
+      border-color: rgba(255, 230, 160, 0.9);
+      box-shadow:
+        0 0 24px rgba(0, 0, 0, 1),
+        0 0 22px rgba(255, 230, 160, 0.55);
+      background:
+        radial-gradient(circle at top, #262636 0, #111120 45%, #07070b 100%);
+    }
+
+    .app-tile-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 6px;
+    }
+
+    .app-tile-title {
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-light);
+    }
+
+    .badge {
+      font-size: 10px;
+      padding: 3px 8px;
+      border-radius: 999px;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      border: 1px solid rgba(217, 177, 95, 0.5);
+      color: var(--gold);
+      background: rgba(12, 10, 5, 0.9);
+      white-space: nowrap;
+    }
+
+    .badge.free {
+      background: radial-gradient(circle at top, #ffe7b0 0, #f3c970 50%, #b9802b 100%);
+      color: #20160c;
+      border-color: transparent;
+    }
+
+    .app-tile-desc {
+      font-size: 11px;
+      color: var(--text-muted);
+      line-height: 1.4;
+      margin-top: 4px;
+    }
+
+    .app-tile-footer {
+      margin-top: 4px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 10px;
+      color: var(--text-muted);
+    }
+
+    .app-tile-footer span {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .app-tile.locked {
+      cursor: default;
+      border-color: rgba(130, 130, 130, 0.5);
+      background:
+        radial-gradient(circle at top, #15151b 0, #09090d 45%, #050507 100%);
+      box-shadow:
+        0 0 12px rgba(0, 0, 0, 0.8);
+    }
+
+    .app-tile.locked:hover {
+      transform: none;
+      box-shadow:
+        0 0 12px rgba(0, 0, 0, 0.8);
+    }
+
+    .lock-overlay {
+      position: absolute;
+      inset: 0;
+      border-radius: 18px;
+      background: radial-gradient(circle at center, rgba(0, 0, 0, 0.35) 0, rgba(0, 0, 0, 0.82) 68%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-muted);
+      font-size: 11px;
+      text-align: center;
+      padding: 6px;
+      pointer-events: none;
+    }
+
+    .lock-overlay span {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .dashboard-info {
+      margin-top: 6px;
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    .dashboard-info strong {
+      color: var(--gold);
+    }
+
+    /* Prompt / Steuerung */
+
+    .input-panel {
+      margin-top: 8px;
+      border-radius: 18px;
+      padding: 10px 12px;
+      background:
+        radial-gradient(circle at top, #171720 0, #0a0a0f 45%, #050505 100%);
+      border: 1px solid rgba(217, 177, 95, 0.22);
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
     }
 
     .field-label {
       font-size: 11px;
-      letter-spacing: 0.18em;
+      letter-spacing: 0.16em;
       text-transform: uppercase;
       color: var(--text-muted);
     }
 
+    .active-program-label {
+      font-size: 11px;
+      color: var(--gold);
+    }
+
     .prompt-area {
-      flex: 1;
-      min-height: 0;
       position: relative;
+      min-height: 120px;
     }
 
     .prompt-input {
       width: 100%;
       height: 100%;
-      min-height: 140px;
+      min-height: 120px;
       resize: vertical;
       background:
-        radial-gradient(circle at top left, #222 0, #141414 40%, #070707 100%);
-      border-radius: 18px;
-      border: 1px solid rgba(217, 177, 95, 0.4);
-      padding: 14px 16px;
+        radial-gradient(circle at top left, #20202a 0, #12121a 45%, #090910 100%);
+      border-radius: 16px;
+      border: 1px solid rgba(217, 177, 95, 0.25);
+      padding: 12px 14px;
       color: var(--text-light);
-      font-size: 15px;
+      font-size: 14px;
       line-height: 1.5;
       outline: none;
-      box-shadow:
-        inset 0 0 22px rgba(0, 0, 0, 0.9),
-        0 0 24px rgba(217, 177, 95, 0.12);
+      box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.75);
     }
 
     .prompt-input::placeholder {
-      color: rgba(187, 187, 187, 0.7);
+      color: rgba(200, 200, 200, 0.6);
     }
 
     .prompt-hint {
       position: absolute;
-      bottom: 10px;
-      right: 14px;
+      right: 10px;
+      bottom: 8px;
       font-size: 11px;
-      color: rgba(187, 187, 187, 0.8);
+      color: rgba(200, 200, 200, 0.7);
     }
 
-    .hint-text {
-      font-size: 11px;
+    .controls-row {
+      display: grid;
+      grid-template-columns: minmax(0, 1.1fr) minmax(0, 1.1fr);
+      gap: 8px;
+      align-items: center;
+    }
+
+    .select-shell,
+    .slider-shell {
+      background:
+        radial-gradient(circle at top, #181820 0, #0b0b10 45%, #060608 100%);
+      border-radius: 14px;
+      border: 1px solid rgba(217, 177, 95, 0.24);
+      padding: 8px 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .select-shell span,
+    .slider-shell span {
+      font-size: 10px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
       color: var(--text-muted);
-      line-height: 1.5;
+    }
+
+    select {
+      width: 100%;
+      background: #050505;
+      color: var(--text-light);
+      border-radius: 10px;
+      border: 1px solid rgba(217, 177, 95, 0.4);
+      padding: 5px 8px;
+      font-size: 13px;
+      outline: none;
+    }
+
+    .temp-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    input[type="range"] {
+      flex: 1;
+      appearance: none;
+      height: 6px;
+      border-radius: 999px;
+      background: linear-gradient(90deg, rgba(217, 177, 95, 0.95), rgba(217, 177, 95, 0.25));
+      outline: none;
+    }
+
+    input[type="range"]::-webkit-slider-thumb {
+      appearance: none;
+      width: 15px;
+      height: 15px;
+      border-radius: 50%;
+      background: radial-gradient(circle, #fff8d0 0, #f4cf7a 45%, #c48a32 100%);
+      box-shadow:
+        0 0 12px rgba(255, 248, 208, 0.8),
+        0 0 20px rgba(217, 177, 95, 0.9);
+      cursor: pointer;
+    }
+
+    .temp-value {
+      font-size: 11px;
+      color: var(--gold);
+      min-width: 54px;
+      text-align: right;
     }
 
     .send-row {
-      margin-top: 4px;
       display: flex;
       justify-content: flex-end;
+      margin-top: 4px;
     }
 
     .send-btn {
-      position: relative;
-      padding: 10px 28px;
+      padding: 9px 24px;
       border-radius: 999px;
       border: none;
       cursor: pointer;
-      background: radial-gradient(circle at top, #ffe3a0 0, #f0c56a 40%, #c58a2e 100%);
-      color: #20160c;
+      background:
+        radial-gradient(circle at top, #ffe3a0 0, #f0c56a 40%, #c58a2e 100%);
+      color: #201910;
       font-weight: 600;
-      font-size: 13px;
+      font-size: 12px;
       letter-spacing: 0.18em;
       text-transform: uppercase;
-      box-shadow:
-        0 0 22px rgba(255, 227, 160, 0.6),
-        0 14px 28px rgba(0, 0, 0, 0.85);
       display: inline-flex;
       align-items: center;
-      gap: 10px;
+      gap: 8px;
+      box-shadow:
+        0 0 18px rgba(240, 197, 106, 0.6),
+        0 12px 26px rgba(0, 0, 0, 0.85);
     }
 
     .send-btn span.icon {
-      font-size: 15px;
+      font-size: 14px;
       transform: translateY(1px);
     }
 
     .send-btn:disabled {
       opacity: 0.55;
       cursor: default;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.9);
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
     }
 
-    /* CHAT */
-    .answer-panel {
-      flex: 1;
-      min-height: 0;
+    /* Chat-Bereich */
+
+    .chat-panel {
       display: flex;
       flex-direction: column;
       gap: 10px;
+      min-height: 0;
     }
 
     .chat-log {
       flex: 1;
       min-height: 0;
       background:
-        radial-gradient(circle at top left, #232323 0, #151515 40%, #080808 100%);
+        radial-gradient(circle at top left, #21212c 0, #13131c 45%, #090910 100%);
       border-radius: 18px;
       border: 1px solid rgba(217, 177, 95, 0.25);
-      padding: 14px 16px;
+      padding: 12px 14px;
       overflow-y: auto;
       font-size: 13px;
-      line-height: 1.6;
-      box-shadow:
-        inset 0 0 20px rgba(0, 0, 0, 0.8),
-        0 0 22px rgba(217, 177, 95, 0.18);
+      line-height: 1.55;
     }
 
     .chat-placeholder {
-      color: rgba(187, 187, 187, 0.8);
       font-size: 13px;
+      color: rgba(200, 200, 200, 0.7);
     }
 
     .chat-row {
       display: flex;
       flex-direction: column;
-      gap: 4px;
-      margin-bottom: 12px;
+      gap: 3px;
+      margin-bottom: 10px;
     }
 
     .chat-label {
       font-size: 10px;
-      letter-spacing: 0.16em;
+      letter-spacing: 0.18em;
       text-transform: uppercase;
-      color: rgba(200, 200, 200, 0.75);
+      color: rgba(200, 200, 200, 0.7);
     }
 
     .chat-bubble {
-      background: rgba(10, 10, 10, 0.95);
-      border-radius: 14px;
-      border: 1px solid rgba(217, 177, 95, 0.3);
-      padding: 9px 11px;
+      border-radius: 12px;
+      padding: 8px 10px;
+      background: rgba(5, 5, 6, 0.9);
+      border: 1px solid rgba(217, 177, 95, 0.22);
       white-space: pre-wrap;
     }
 
     .chat-row.user .chat-bubble {
-      background: radial-gradient(circle at top, #2b2417 0, #181007 45%, #090402 100%);
-      border-color: rgba(217, 177, 95, 0.7);
+      background: rgba(15, 11, 7, 0.95);
+      border-color: rgba(217, 177, 95, 0.5);
     }
 
     .chat-row.error .chat-bubble {
       border-color: #ff6b6b;
-      color: #ffe0e0;
-      background: radial-gradient(circle at top, #3a1010 0, #200808 45%, #100303 100%);
+      color: #ffdede;
     }
 
     .status-line {
@@ -338,7 +570,6 @@
       display: flex;
       justify-content: space-between;
       gap: 10px;
-      flex-wrap: wrap;
       margin-top: 2px;
     }
 
@@ -348,38 +579,45 @@
       text-overflow: ellipsis;
     }
 
-    .status-hint {
-      opacity: 0.9;
+    .status-model {
+      color: var(--gold);
+      white-space: nowrap;
     }
 
-    @media (max-width: 900px) {
+    .locked-hint {
+      font-size: 11px;
+      color: var(--text-muted);
+      min-height: 14px;
+    }
+
+    @media (max-width: 980px) {
       .app-shell {
-        padding: 18px 14px;
+        padding: 18px 16px;
         border-radius: 26px;
       }
       .app-main {
         grid-template-columns: 1fr;
         grid-auto-rows: minmax(0, 1fr);
       }
-      .panel {
-        min-height: 260px;
+      .app-header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .app-meta {
+        align-items: flex-start;
       }
     }
 
-    @media (max-width: 540px) {
-      .app-title {
-        font-size: 20px;
-        letter-spacing: 0.2em;
+    @media (max-width: 640px) {
+      .app-shell {
+        max-height: none;
+        height: auto;
       }
-      .app-subtitle {
-        font-size: 12px;
+      .tile-grid {
+        max-height: 220px;
       }
-      .router-value {
-        max-width: 180px;
-      }
-      .prompt-input {
-        min-height: 130px;
-        font-size: 14px;
+      .chat-log {
+        max-height: 260px;
       }
     }
   </style>
@@ -388,43 +626,225 @@
 <body>
   <main class="app-shell">
     <header class="app-header">
-      <div class="app-badge">G-CORE SYSTEMS · MOBILE CLIENT</div>
-      <h1 class="app-title">GENIE HOST</h1>
-      <p class="app-subtitle">
-        Genie ist dein persönlicher KI-Assistent. Formuliere deine Frage, Aufgabe oder Idee –
-        Genie hilft dir beim Schreiben von Texten, E-Mails, Antworten, Konzepten und vielem mehr.
-      </p>
-      <div class="router-pill-row">
-        <div class="router-pill">
-          <span class="router-label">Router</span>
-          <span class="router-value">https://api.g-core-systems.com/genie</span>
+      <div class="app-title-block">
+        <div class="app-badge">G-Core Systems · KI App-Hub</div>
+        <div class="app-title">G-CORE GENIE</div>
+        <div class="app-subtitle">
+          Zentrale G-Core App mit lizenzierbaren Programmen. Aktuell ist nur <strong>RESUMÉ-MASTER</strong> frei nutzbar
+          (mit E-Mail-Anbindung für den Export).
+        </div>
+      </div>
+
+      <div class="app-meta">
+        <div class="endpoint-pill">
+          <span class="label">Endpoint</span>
+          <span class="value">https://api.g-core-systems.com/genie</span>
           <span class="status-dot" title="Router aktiv"></span>
         </div>
+        <button id="installBtn" class="install-btn" style="display: none;">
+          📲 Auf Startbildschirm installieren
+        </button>
       </div>
     </header>
 
     <section class="app-main">
-      <!-- LINKES PANEL: EINGABE -->
+      <!-- LINKES PANEL: DASHBOARD + PROMPT -->
       <section class="panel">
         <div class="panel-header">
-          <div class="panel-title">Eingabe</div>
-          <div class="panel-sub">Beschreibe, wobei Genie dir helfen soll.</div>
+          <div class="panel-title">Programme</div>
+          <div class="panel-sub">
+            Wähle ein Programm. Nur RESUMÉ-MASTER ist aktuell freigeschaltet; alle anderen sind Platzhalter für kommende Module.
+          </div>
         </div>
 
-        <div class="input-stack">
-          <div class="field-label">Deine Nachricht an Genie</div>
+        <div class="tile-grid" id="tileGrid">
+          <!-- Freies Programm -->
+          <article class="app-tile active" data-program="resume-master">
+            <div class="app-tile-header">
+              <div class="app-tile-title">RESUMÉ-MASTER</div>
+              <span class="badge free">Free</span>
+            </div>
+            <div class="app-tile-desc">
+              Professionelle Unterstützung für Lebenslauf, Anschreiben und Bewerbungs-E-Mails. Export per E-Mail möglich.
+            </div>
+            <div class="app-tile-footer">
+              <span>📄 Bewerbungen</span>
+              <span>🔗 E-Mail-Export</span>
+            </div>
+          </article>
+
+          <!-- Platzhalter / Coming Soon – gesperrt -->
+          <article class="app-tile locked" data-program="music-forge">
+            <div class="app-tile-header">
+              <div class="app-tile-title">MUSIC-FORGE</div>
+              <span class="badge">Coming Soon</span>
+            </div>
+            <div class="app-tile-desc">
+              Songwriting & Hook-Generator für Artists und Producer. Voll integriert in G-Core Systems.
+            </div>
+            <div class="app-tile-footer">
+              <span>🎵 Songs</span>
+              <span>🔒 Gesperrt</span>
+            </div>
+            <div class="lock-overlay">
+              <span>🔒 Demnächst verfügbar</span>
+            </div>
+          </article>
+
+          <article class="app-tile locked" data-program="story-forge">
+            <div class="app-tile-header">
+              <div class="app-tile-title">STORY-FORGE</div>
+              <span class="badge">Coming Soon</span>
+            </div>
+            <div class="app-tile-desc">
+              Plot-Entwicklung, Charaktere und Weltenbau für Romane, Games und RPG-Kampagnen.
+            </div>
+            <div class="app-tile-footer">
+              <span>📚 Stories</span>
+              <span>🔒 Gesperrt</span>
+            </div>
+            <div class="lock-overlay">
+              <span>🔒 Noch nicht freigeschaltet</span>
+            </div>
+          </article>
+
+          <article class="app-tile locked" data-program="home-masterplan">
+            <div class="app-tile-header">
+              <div class="app-tile-title">HOME-MASTERPLAN</div>
+              <span class="badge">Coming Soon</span>
+            </div>
+            <div class="app-tile-desc">
+              Umbau- und Renovierungsplanung mit Modulen für Budget, Materialien und Zeitplan.
+            </div>
+            <div class="app-tile-footer">
+              <span>🏠 Zuhause</span>
+              <span>🔒 Gesperrt</span>
+            </div>
+            <div class="lock-overlay">
+              <span>🔒 Modul in Vorbereitung</span>
+            </div>
+          </article>
+
+          <article class="app-tile locked" data-program="youth-report">
+            <div class="app-tile-header">
+              <div class="app-tile-title">YOUTH-REPORT</div>
+              <span class="badge">Coming Soon</span>
+            </div>
+            <div class="app-tile-desc">
+              Berichte, Einschätzungen und Entwicklungsbögen für pädagogische Kontexte.
+            </div>
+            <div class="app-tile-footer">
+              <span>🧩 Pädagogik</span>
+              <span>🔒 Gesperrt</span>
+            </div>
+            <div class="lock-overlay">
+              <span>🔒 G-Core Fachtool (intern)</span>
+            </div>
+          </article>
+
+          <article class="app-tile locked" data-program="care-flow">
+            <div class="app-tile-header">
+              <div class="app-tile-title">CARE-FLOW</div>
+              <span class="badge">Coming Soon</span>
+            </div>
+            <div class="app-tile-desc">
+              Strukturierte Hilfeplanung und Dokumentation im sozialen Bereich.
+            </div>
+            <div class="app-tile-footer">
+              <span>🤝 Soziale Arbeit</span>
+              <span>🔒 Gesperrt</span>
+            </div>
+            <div class="lock-overlay">
+              <span>🔒 Noch in Entwicklung</span>
+            </div>
+          </article>
+
+          <article class="app-tile locked" data-program="abw-doc">
+            <div class="app-tile-header">
+              <div class="app-tile-title">ABW-DOC</div>
+              <span class="badge">Coming Soon</span>
+            </div>
+            <div class="app-tile-desc">
+              Dokumentation und Berichte für ambulant betreutes Wohnen nach LWL-Vorgaben.
+            </div>
+            <div class="app-tile-footer">
+              <span>📑 Fachdokumente</span>
+              <span>🔒 Gesperrt</span>
+            </div>
+            <div class="lock-overlay">
+              <span>🔒 Fachmodul in Planung</span>
+            </div>
+          </article>
+
+          <article class="app-tile locked" data-program="skg-seelenkartographie">
+            <div class="app-tile-header">
+              <div class="app-tile-title">SKG · SEELENKARTOGRAPHIE</div>
+              <span class="badge">Coming Soon</span>
+            </div>
+            <div class="app-tile-desc">
+              Spirituelle Analysen, Seelenprofile und Ultra-Reports für SeelenKartographie.
+            </div>
+            <div class="app-tile-footer">
+              <span>🌌 SKG</span>
+              <span>🔒 Gesperrt</span>
+            </div>
+            <div class="lock-overlay">
+              <span>🔒 Premium-Modul · Coming Soon</span>
+            </div>
+          </article>
+
+          <article class="app-tile locked" data-program="business-blueprint">
+            <div class="app-tile-header">
+              <div class="app-tile-title">BUSINESS-BLUEPRINT</div>
+              <span class="badge">Coming Soon</span>
+            </div>
+            <div class="app-tile-desc">
+              Strategien, Positionierung und Produktarchitektur für Solo-Selbstständige & Creators.
+            </div>
+            <div class="app-tile-footer">
+              <span>📊 Business</span>
+              <span>🔒 Gesperrt</span>
+            </div>
+            <div class="lock-overlay">
+              <span>🔒 In Konzeption</span>
+            </div>
+          </article>
+        </div>
+
+        <div class="dashboard-info" id="dashboardInfo">
+          Aktives Programm: <strong>RESUMÉ-MASTER</strong> · Nur dieses Programm ist aktuell freigeschaltet.
+        </div>
+
+        <div class="input-panel">
+          <div class="field-label">Eingabe</div>
+          <div class="active-program-label" id="activeProgramLabel">
+            Du nutzt aktuell <strong>RESUMÉ-MASTER</strong>. Formuliere hier deine Bewerbung oder deine Frage.
+          </div>
           <div class="prompt-area">
             <textarea
               id="promptInput"
               class="prompt-input"
-              placeholder="Beispiel: „Formuliere eine freundliche E-Mail an meinen Vermieter und bitte um eine Ratenzahlung für die nächste Miete.“"
+              placeholder="Beschreibe, was RESUMÉ-MASTER für dich tun soll, z. B.: &quot;Überarbeite meinen Lebenslauf für eine Stelle als Sozialarbeiter…&quot;"
             ></textarea>
             <div class="prompt-hint">Enter = Senden · Shift+Enter = Zeilenumbruch</div>
           </div>
 
-          <div class="hint-text">
-            Tipp: Erwähne wichtige Details gleich mit (Person, Anlass, gewünschter Stil).
-            Du kannst danach jederzeit um Änderungen, Kürzungen oder einen anderen Ton bitten.
+          <div class="controls-row">
+            <div class="select-shell">
+              <span>Modell</span>
+              <select id="modelSelect">
+                <option value="gpt-4.1-mini">gpt-4.1-mini</option>
+                <option value="gpt-4.1">gpt-4.1</option>
+                <option value="gpt-4.1-nano">gpt-4.1-nano</option>
+              </select>
+            </div>
+            <div class="slider-shell">
+              <span>Temperatur</span>
+              <div class="temp-row">
+                <input id="tempRange" type="range" min="0" max="1" step="0.05" value="0.7" />
+                <div id="tempValue" class="temp-value">0,70</div>
+              </div>
+            </div>
           </div>
 
           <div class="send-row">
@@ -433,29 +853,33 @@
               <span>Senden</span>
             </button>
           </div>
+
+          <div class="locked-hint" id="lockedHint"></div>
         </div>
       </section>
 
-      <!-- RECHTES PANEL: GENIE-ANTWORT / CHATVERLAUF -->
-      <section class="panel answer-panel">
+      <!-- RECHTES PANEL: CHAT -->
+      <section class="panel chat-panel">
         <div class="panel-header">
-          <div class="panel-title">Genie Antwort</div>
-          <div class="panel-sub">Verlauf deiner Unterhaltung mit Genie.</div>
+          <div class="panel-title">Genie Chat</div>
+          <div class="panel-sub">
+            Antworten von Genie, angepasst an das aktuell gewählte Programm.
+          </div>
         </div>
 
         <div id="chatLog" class="chat-log">
           <div class="chat-placeholder">
-            Noch keine Unterhaltung gestartet. Schreibe links deine erste Nachricht und drücke Enter
-            oder klicke auf „Senden“.
+            Noch keine Unterhaltung gestartet. Wähle ein Programm (aktuell nur RESUMÉ-MASTER freigeschaltet), schreibe links
+            deine Aufgabe und drücke <strong>Senden</strong>.
           </div>
         </div>
 
         <div class="status-line">
           <div id="statusText" class="status-main">
-            Bereit. Genie wartet auf deine erste Nachricht.
+            Bereit. Router ist aktiv.
           </div>
-          <div class="status-hint">
-            Hinweis: Inhalte werden nur zur Beantwortung deiner Anfrage genutzt.
+          <div id="statusModel" class="status-model">
+            Aktives Modell: gpt-4.1-mini
           </div>
         </div>
       </section>
@@ -465,13 +889,70 @@
   <script>
     (function () {
       const API_URL = "https://api.g-core-systems.com/genie";
-      const MODEL = "gpt-4.1-mini";
-      const TEMPERATURE = 0.7;
+
+      const tileGrid = document.getElementById("tileGrid");
+      const dashboardInfo = document.getElementById("dashboardInfo");
+      const activeProgramLabel = document.getElementById("activeProgramLabel");
+      const lockedHint = document.getElementById("lockedHint");
 
       const promptInput = document.getElementById("promptInput");
       const sendBtn = document.getElementById("sendBtn");
+      const modelSelect = document.getElementById("modelSelect");
+      const tempRange = document.getElementById("tempRange");
+      const tempValue = document.getElementById("tempValue");
       const chatLog = document.getElementById("chatLog");
       const statusText = document.getElementById("statusText");
+      const statusModel = document.getElementById("statusModel");
+
+      const installBtn = document.getElementById("installBtn");
+      let deferredPrompt = null;
+
+      let activeProgram = "resume-master";
+
+      function formatTemp(val) {
+        return Number(val).toFixed(2).replace(".", ",");
+      }
+
+      tempValue.textContent = formatTemp(tempRange.value);
+
+      tempRange.addEventListener("input", () => {
+        tempValue.textContent = formatTemp(tempRange.value);
+      });
+
+      modelSelect.addEventListener("change", () => {
+        statusModel.textContent = "Aktives Modell: " + modelSelect.value;
+      });
+
+      // Programm-Kacheln steuern
+      if (tileGrid) {
+        tileGrid.addEventListener("click", (event) => {
+          const tile = event.target.closest(".app-tile");
+          if (!tile) return;
+
+          const program = tile.getAttribute("data-program");
+          const locked = tile.classList.contains("locked");
+
+          if (locked) {
+            const titleEl = tile.querySelector(".app-tile-title");
+            const name = titleEl ? titleEl.textContent.trim() : "Dieses Programm";
+            lockedHint.textContent = name + " ist noch nicht freigeschaltet. Es dient aktuell nur als Platzhalter im Dashboard.";
+            setTimeout(() => {
+              if (lockedHint.textContent.includes(name)) lockedHint.textContent = "";
+            }, 4000);
+            return;
+          }
+
+          // Aktives Programm setzen (nur RESUMÉ-MASTER)
+          document.querySelectorAll(".app-tile").forEach((el) => el.classList.remove("active"));
+          tile.classList.add("active");
+          activeProgram = program;
+
+          dashboardInfo.innerHTML =
+            'Aktives Programm: <strong>RESUMÉ-MASTER</strong> · Dieses Programm ist frei nutzbar. Alle anderen Kacheln sind aktuell noch gesperrt.';
+          activeProgramLabel.innerHTML =
+            'Du nutzt aktuell <strong>RESUMÉ-MASTER</strong>. Formuliere hier deine Bewerbung oder deine Frage.';
+        });
+      }
 
       function appendMessage(role, text) {
         const placeholder = chatLog.querySelector(".chat-placeholder");
@@ -499,28 +980,41 @@
         chatLog.scrollTop = chatLog.scrollHeight;
       }
 
+      function buildProgramContext(program) {
+        // Nur RESUMÉ-MASTER ist aktiv. Weitere Programme können später ergänzt werden.
+        if (program === "resume-master") {
+          return (
+            "Du bist RESUMÉ-MASTER, ein spezialisiertes Bewerbungs- und Lebenslauf-Programm innerhalb von G-Core Systems. " +
+            "Du hilfst beim Optimieren von Lebensläufen, Anschreiben und Bewerbungs-E-Mails in klarem, professionellem Deutsch. " +
+            "Achte auf gute Struktur, passende Tonalität und praktische Formulierungen. Antworte immer konkret und praxisnah.\n\n"
+          );
+        }
+        return "";
+      }
+
       async function sendPrompt() {
-        const prompt = promptInput.value.trim();
-        if (!prompt) return;
+        const raw = promptInput.value.trim();
+        if (!raw) return;
 
-        appendMessage("user", prompt);
+        const model = modelSelect.value;
+        const temperature = Number(tempRange.value);
+
+        const context = buildProgramContext(activeProgram);
+        const promptText = context + raw;
+
+        appendMessage("user", raw);
         promptInput.value = "";
-        promptInput.focus();
-
-        statusText.textContent = "Genie denkt über deine Anfrage nach …";
-
+        statusText.textContent = "Sende Anfrage an deinen G-Core Router …";
         sendBtn.disabled = true;
 
         try {
           const res = await fetch(API_URL, {
             method: "POST",
-            headers: {
-              "Content-Type": "application/json"
-            },
+            headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
-              prompt: prompt,
-              model: MODEL,
-              temperature: TEMPERATURE
+              prompt: promptText,
+              model: model,
+              temperature: temperature
             })
           });
 
@@ -528,14 +1022,9 @@
             const txt = await res.text();
             appendMessage(
               "error",
-              "HTTP-Fehler " +
-                res.status +
-                ": " +
-                res.statusText +
-                "\n\nAntwort des Routers:\n" +
-                txt
+              "HTTP-Fehler " + res.status + ": " + res.statusText + "\n\nAntwort des Routers:\n" + txt
             );
-            statusText.textContent = "Es ist ein Verbindungsfehler aufgetreten.";
+            statusText.textContent = "Die API hat mit einem Fehler geantwortet.";
             return;
           }
 
@@ -545,43 +1034,61 @@
             JSON.stringify(data, null, 2);
 
           appendMessage("genie", reply);
-          statusText.textContent = "Antwort von Genie erhalten. Du kannst weiter nachfragen oder verfeinern.";
+          statusText.textContent = "Antwort erfolgreich von Genie erhalten.";
         } catch (err) {
           appendMessage(
             "error",
-            "Fetch-Fehler: " +
-              (err && err.message ? err.message : String(err))
+            "Fetch-Fehler: " + (err && err.message ? err.message : String(err))
           );
-          statusText.textContent = "Der Browser konnte die Anfrage nicht erfolgreich abschließen.";
+          statusText.textContent =
+            "Der Browser konnte die Anfrage nicht erfolgreich abschließen.";
         } finally {
           sendBtn.disabled = false;
+          promptInput.focus();
         }
       }
 
-      sendBtn.addEventListener("click", function (e) {
+      sendBtn.addEventListener("click", (e) => {
         e.preventDefault();
         sendPrompt();
       });
 
-      promptInput.addEventListener("keydown", function (e) {
+      promptInput.addEventListener("keydown", (e) => {
         if (e.key === "Enter" && !e.shiftKey) {
           e.preventDefault();
           sendPrompt();
         }
       });
+
+      // Service Worker Registrierung (minimal, du hast die Datei bereits)
+      if ("serviceWorker" in navigator) {
+        window.addEventListener("load", function () {
+          navigator.serviceWorker
+            .register("/service-worker-genie.js")
+            .catch((err) => console.log("Genie SW Fehler:", err));
+        });
+      }
+
+      // PWA Install-Button
+      window.addEventListener("beforeinstallprompt", (event) => {
+        event.preventDefault();
+        deferredPrompt = event;
+        if (installBtn) {
+          installBtn.style.display = "inline-flex";
+        }
+      });
+
+      if (installBtn) {
+        installBtn.addEventListener("click", async () => {
+          if (!deferredPrompt) return;
+          deferredPrompt.prompt();
+          const { outcome } = await deferredPrompt.userChoice;
+          console.log("PWA-Installation:", outcome);
+          deferredPrompt = null;
+          installBtn.style.display = "none";
+        });
+      }
     })();
   </script>
-  <script>
-  if ("serviceWorker" in navigator) {
-    window.addEventListener("load", function () {
-      navigator.serviceWorker
-        .register("/service-worker-genie.js")
-        .then(() => console.log("Genie SW registriert"))
-        .catch((err) => console.log("Genie SW Fehler:", err));
-    });
-  }
-</script>
-
-
 </body>
 </html>
