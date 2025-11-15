@@ -5,7 +5,7 @@
   <title>G-CORE LAUNCHPAD · G-Core Systems</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-  <!-- Manifest für diese App-Instanz -->
+  <!-- Manifest dieser App (kann dein vorhandenes manifest_genie.webmanifest sein) -->
   <link rel="manifest" href="/manifest_genie.webmanifest" />
 
   <style>
@@ -29,7 +29,7 @@
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       color: var(--text-light);
       background:
-        radial-gradient(circle at top, #1a1a1f 0, var(--bg-dark) 45%, var(--bg-darker) 100%);
+        radial-gradient(circle at top, #1a1a20 0, var(--bg-dark) 45%, var(--bg-darker) 100%);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -41,11 +41,11 @@
       max-width: 1200px;
       max-height: 820px;
       background:
-        radial-gradient(circle at top, #181820 0, #0b0b10 55%, #050505 100%);
+        radial-gradient(circle at top, #191922 0, #0b0b10 55%, #050505 100%);
       border-radius: 32px;
       border: 1px solid rgba(217, 177, 95, 0.3);
       box-shadow:
-        0 0 60px rgba(0, 0, 0, 0.85),
+        0 0 60px rgba(0, 0, 0, 0.9),
         0 0 30px rgba(217, 177, 95, 0.22);
       padding: 22px 22px 20px;
       display: flex;
@@ -131,25 +131,6 @@
       margin-left: 4px;
     }
 
-    .install-btn {
-      padding: 7px 16px;
-      border-radius: 999px;
-      border: none;
-      cursor: pointer;
-      background: radial-gradient(circle at top, #ffe3a0 0, #f0c56a 40%, #c58a2e 100%);
-      color: #20160c;
-      font-weight: 600;
-      font-size: 11px;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-      box-shadow:
-        0 0 18px rgba(255, 227, 160, 0.6),
-        0 10px 24px rgba(0, 0, 0, 0.85);
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-    }
-
     .app-main {
       flex: 1;
       min-height: 0;
@@ -172,7 +153,7 @@
 
     .panel-header {
       display: flex;
-      justify-content: space-between;
+      justify-content:space-between;
       align-items: baseline;
       gap: 8px;
       margin-bottom: 2px;
@@ -191,15 +172,14 @@
       max-width: 260px;
     }
 
-    /* Dashboard / Kacheln */
+    /* PROGRAMM-KACHELN */
 
     .tile-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
       gap: 10px;
       margin-top: 4px;
-      /* kein eigener Scrollbalken */
-      overflow: visible;
+      overflow: visible; /* KEIN Scrollbalken */
     }
 
     .app-tile {
@@ -207,7 +187,7 @@
       border-radius: 18px;
       padding: 10px 11px;
       background:
-        radial-gradient(circle at top, #20202a 0, #101018 45%, #07070b 100%);
+        radial-gradient(circle at top, #20202a 0, #11111a 45%, #07070b 100%);
       border: 1px solid rgba(217, 177, 95, 0.35);
       box-shadow:
         0 0 18px rgba(0, 0, 0, 0.7),
@@ -316,7 +296,7 @@
       color: var(--gold);
     }
 
-    /* Prompt / Steuerung */
+    /* PROMPT / STEUERUNG */
 
     .input-panel {
       margin-top: 8px;
@@ -429,7 +409,7 @@
       outline: none;
     }
 
-    /* Temperatur-Punkt deutlich dunkler / weniger Glow */
+    /* Temperaturpunkt dunkler, weniger Glow */
     input[type="range"]::-webkit-slider-thumb {
       appearance: none;
       width: 13px;
@@ -437,8 +417,8 @@
       border-radius: 50%;
       background: radial-gradient(circle, #f1d38a 0, #c99a3f 50%, #8b6323 100%);
       box-shadow:
-        0 0 5px rgba(217, 177, 95, 0.6),
-        0 0 10px rgba(0, 0, 0, 0.9);
+        0 0 5px rgba(217, 177, 95, 0.5),
+        0 0 8px rgba(0, 0, 0, 0.9);
       cursor: pointer;
     }
 
@@ -486,7 +466,13 @@
       box-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
     }
 
-    /* Chat-Bereich */
+    .locked-hint {
+      font-size: 11px;
+      color: var(--text-muted);
+      min-height: 14px;
+    }
+
+    /* CHAT-PANEL */
 
     .chat-panel {
       display: flex;
@@ -565,12 +551,6 @@
       white-space: nowrap;
     }
 
-    .locked-hint {
-      font-size: 11px;
-      color: var(--text-muted);
-      min-height: 14px;
-    }
-
     @media (max-width: 980px) {
       .app-shell {
         padding: 18px 16px;
@@ -619,31 +599,28 @@
           <span class="value">https://api.g-core-systems.com/genie</span>
           <span class="status-dot" title="Router aktiv"></span>
         </div>
-        <button id="installBtn" class="install-btn" style="display: none;">
-          📲 Auf Startbildschirm installieren
-        </button>
       </div>
     </header>
 
     <section class="app-main">
-      <!-- LINKES PANEL: DASHBOARD + PROMPT -->
+      <!-- LINKES PANEL: PROGRAMME + PROMPT -->
       <section class="panel">
         <div class="panel-header">
           <div class="panel-title">Programme</div>
           <div class="panel-sub">
-            Wähle ein Programm. Nur RESUMÉ-MASTER ist aktuell freigeschaltet, SOCIAL-MAGIC ist bereits als nächstes Modul sichtbar.
+            Nur RESUMÉ-MASTER ist aktuell nutzbar. SOCIAL-MAGIC ist bereits als nächste Erweiterung sichtbar.
           </div>
         </div>
 
         <div class="tile-grid" id="tileGrid">
-          <!-- Freies Programm -->
+          <!-- RESUMÉ-MASTER (frei) -->
           <article class="app-tile active" data-program="resume-master">
             <div class="app-tile-header">
               <div class="app-tile-title">RESUMÉ-MASTER</div>
               <span class="badge free">Free</span>
             </div>
             <div class="app-tile-desc">
-              Professionelle Unterstützung für Lebenslauf, Anschreiben und Bewerbungs-E-Mails. Export per E-Mail möglich.
+              Unterstützung für Lebenslauf, Anschreiben und Bewerbungs-E-Mails. Klar, strukturiert und praxisnah.
             </div>
             <div class="app-tile-footer">
               <span>📄 Bewerbungen</span>
@@ -651,14 +628,14 @@
             </div>
           </article>
 
-          <!-- Social-Magic: sichtbar, aber gesperrt -->
+          <!-- SOCIAL-MAGIC (nur Vorschau, gesperrt) -->
           <article class="app-tile locked" data-program="social-magic">
             <div class="app-tile-header">
               <div class="app-tile-title">SOCIAL-MAGIC</div>
               <span class="badge">🔒 Coming Soon</span>
             </div>
             <div class="app-tile-desc">
-              Intelligente Content-Erstellung, Serienformate und Ideen für Social Media. Wird bald im Launchpad freigeschaltet.
+              Intelligente Ideen, Serienformate und Texte für Social Media. Wird später im Launchpad freigeschaltet.
             </div>
             <div class="app-tile-footer">
               <span>📣 Social Media</span>
@@ -666,14 +643,14 @@
             </div>
           </article>
 
-          <!-- Kreativer Hintergrund: kein konkretes Programm, nur Teaser -->
-          <article class="app-tile locked" data-program="coming-soon">
+          <!-- Generischer Teaser, keine echten Programme sichtbar -->
+          <article class="app-tile locked" data-program="preview-only">
             <div class="app-tile-header">
               <div class="app-tile-title">Weitere Module</div>
               <span class="badge">Coming Soon</span>
             </div>
             <div class="app-tile-desc">
-              Hier erscheinen nach und nach weitere G-Core Programme. Aktuell dienen diese Kacheln nur als Vorschau auf das Ökosystem.
+              Hier erscheinen zukünftig weitere G-Core Programme. Aktuell sind diese Kacheln nur ein Ausblick auf das Ökosystem.
             </div>
             <div class="app-tile-footer">
               <span>✨ Ecosystem</span>
@@ -683,7 +660,7 @@
         </div>
 
         <div class="dashboard-info" id="dashboardInfo">
-          Aktives Programm: <strong>RESUMÉ-MASTER</strong> · Dieses Programm ist frei nutzbar. SOCIAL-MAGIC ist bereits sichtbar, aber noch gesperrt.
+          Aktives Programm: <strong>RESUMÉ-MASTER</strong> · Dieses Programm ist frei nutzbar. SOCIAL-MAGIC ist sichtbar, aber noch gesperrt.
         </div>
 
         <div class="input-panel">
@@ -691,6 +668,7 @@
           <div class="active-program-label" id="activeProgramLabel">
             Du nutzt aktuell <strong>RESUMÉ-MASTER</strong>. Formuliere hier deine Bewerbung oder deine Frage.
           </div>
+
           <div class="prompt-area">
             <textarea
               id="promptInput"
@@ -734,14 +712,13 @@
         <div class="panel-header">
           <div class="panel-title">Genie Chat</div>
           <div class="panel-sub">
-            Antworten von Genie, angepasst an das aktuell gewählte Programm im Launchpad.
+            Antworten von Genie, zugeschnitten auf das aktuell gewählte Programm.
           </div>
         </div>
 
         <div id="chatLog" class="chat-log">
           <div class="chat-placeholder">
-            Noch keine Unterhaltung gestartet. Wähle ein Programm (aktuell nur RESUMÉ-MASTER freigeschaltet), schreibe links
-            deine Aufgabe und drücke <strong>Senden</strong>.
+            Noch keine Unterhaltung gestartet. Nutze links RESUMÉ-MASTER, beschreibe deine Aufgabe und drücke <strong>Senden</strong>.
           </div>
         </div>
 
@@ -774,9 +751,6 @@
       const chatLog = document.getElementById("chatLog");
       const statusText = document.getElementById("statusText");
       const statusModel = document.getElementById("statusModel");
-
-      const installBtn = document.getElementById("installBtn");
-      let deferredPrompt = null;
 
       let activeProgram = "resume-master";
 
@@ -817,8 +791,9 @@
           tile.classList.add("active");
           activeProgram = program;
 
+          // aktuell nur RESUMÉ-MASTER wirklich nutzbar
           dashboardInfo.innerHTML =
-            'Aktives Programm: <strong>RESUMÉ-MASTER</strong> · Dieses Programm ist frei nutzbar. SOCIAL-MAGIC ist bereits sichtbar, aber noch gesperrt.';
+            'Aktives Programm: <strong>RESUMÉ-MASTER</strong> · Dieses Programm ist frei nutzbar. SOCIAL-MAGIC ist sichtbar, aber noch gesperrt.';
           activeProgramLabel.innerHTML =
             'Du nutzt aktuell <strong>RESUMÉ-MASTER</strong>. Formuliere hier deine Bewerbung oder deine Frage.';
         });
@@ -867,7 +842,6 @@
 
         const model = modelSelect.value;
         const temperature = Number(tempRange.value);
-
         const context = buildProgramContext(activeProgram);
         const promptText = context + raw;
 
@@ -929,32 +903,12 @@
         }
       });
 
-      // Service Worker Registrierung
+      // Service Worker Registrierung (wenn du service-worker-genie.js hast)
       if ("serviceWorker" in navigator) {
         window.addEventListener("load", function () {
           navigator.serviceWorker
             .register("/service-worker-genie.js")
             .catch((err) => console.log("Genie SW Fehler:", err));
-        });
-      }
-
-      // PWA Install-Button
-      window.addEventListener("beforeinstallprompt", (event) => {
-        event.preventDefault();
-        deferredPrompt = event;
-        if (installBtn) {
-          installBtn.style.display = "inline-flex";
-        }
-      });
-
-      if (installBtn) {
-        installBtn.addEventListener("click", async () => {
-          if (!deferredPrompt) return;
-          deferredPrompt.prompt();
-          const { outcome } = await deferredPrompt.userChoice;
-          console.log("PWA-Installation:", outcome);
-          deferredPrompt = null;
-          installBtn.style.display = "none";
         });
       }
     })();
