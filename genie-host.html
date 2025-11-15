@@ -576,12 +576,12 @@
     window.addEventListener("load", function () {
       navigator.serviceWorker
         .register("/service-worker-genie.js")
-        .catch(function (err) {
-          console.log("Service Worker Registrierung fehlgeschlagen:", err);
-        });
+        .then(() => console.log("Genie SW registriert"))
+        .catch((err) => console.log("Genie SW Fehler:", err));
     });
   }
 </script>
+
 
 </body>
 </html>
