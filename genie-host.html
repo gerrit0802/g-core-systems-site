@@ -571,5 +571,17 @@
       });
     })();
   </script>
+  <script>
+  if ("serviceWorker" in navigator) {
+    window.addEventListener("load", function () {
+      navigator.serviceWorker
+        .register("/service-worker-genie.js")
+        .catch(function (err) {
+          console.log("Service Worker Registrierung fehlgeschlagen:", err);
+        });
+    });
+  }
+</script>
+
 </body>
 </html>
