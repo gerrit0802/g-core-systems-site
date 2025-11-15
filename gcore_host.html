@@ -198,19 +198,48 @@
       min-height: 0;
       display: grid;
       grid-template-columns: 1fr;
-      grid-auto-rows: minmax(0, 1fr);
+      grid-auto-rows: minmax(auto, 1fr);
       gap: 8px;
+      overflow-y: auto;
+      padding-right: 4px;
+    }
+
+    /* Scrollbar für Programmliste */
+    .program-grid::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .program-grid::-webkit-scrollbar-track {
+      background: #050506;
+      border-radius: 999px;
+    }
+
+    .program-grid::-webkit-scrollbar-thumb {
+      background: linear-gradient(
+        180deg,
+        rgba(215, 184, 111, 0.7),
+        rgba(215, 184, 111, 0.2)
+      );
+      border-radius: 999px;
+    }
+
+    .program-grid::-webkit-scrollbar-thumb:hover {
+      background: linear-gradient(
+        180deg,
+        rgba(244, 210, 124, 0.9),
+        rgba(215, 184, 111, 0.4)
+      );
     }
 
     .program-card {
       position: relative;
       border-radius: 18px;
-      padding: 10px 11px;
+      padding: 9px 10px;
       background: radial-gradient(circle at top, #151722 0, #0a0b10 40%, #050506 100%);
       border: 1px solid rgba(215, 184, 111, 0.3);
       display: flex;
       flex-direction: column;
-      gap: 6px;
+      gap: 4px;
       cursor: pointer;
       overflow: hidden;
       transition: border-color 0.15s ease, box-shadow 0.15s ease, transform 0.1s ease;
@@ -259,7 +288,7 @@
     }
 
     .program-title {
-      font-size: 14px;
+      font-size: 13px;
       font-weight: 600;
       word-break: break-word;
       overflow-wrap: break-word;
@@ -267,7 +296,8 @@
     }
 
     .program-subline {
-      font-size: 11px;
+      font-size: 10px;
+      line-height: 1.35;
       color: var(--text-muted);
       word-break: break-word;
       overflow-wrap: break-word;
@@ -275,7 +305,8 @@
     }
 
     .program-note {
-      font-size: 10px;
+      font-size: 9.5px;
+      line-height: 1.35;
       color: rgba(200, 200, 200, 0.7);
     }
 
@@ -378,41 +409,40 @@
       appearance: none;
       height: 6px;
       border-radius: 999px;
-      background: linear-gradient(90deg, rgba(215, 184, 111, 0.85), rgba(215, 184, 111, 0.25));
+      background: linear-gradient(
+        90deg,
+        rgba(215, 184, 111, 0.6),
+        rgba(215, 184, 111, 0.18)
+      );
       outline: none;
     }
 
     input[type="range"]::-webkit-slider-thumb {
       appearance: none;
-      width: 14px;
-      height: 14px;
+      width: 13px;
+      height: 13px;
       border-radius: 50%;
-      background: radial-gradient(circle, #fff5c7 0, #f0c56a 45%, #c58a2e 100%);
-      box-shadow: 0 0 8px rgba(215, 184, 111, 0.55);
+      background: radial-gradient(circle, #fff2c0 0, #e7be64 45%, #b47f29 100%);
+      box-shadow: 0 0 6px rgba(215, 184, 111, 0.45);
       cursor: pointer;
     }
 
     input[type="range"]::-moz-range-thumb {
-      width: 14px;
-      height: 14px;
+      width: 13px;
+      height: 13px;
       border-radius: 50%;
-      background: radial-gradient(circle, #fff5c7 0, #f0c56a 45%, #c58a2e 100%);
-      box-shadow: 0 0 8px rgba(215, 184, 111, 0.55);
+      background: radial-gradient(circle, #fff2c0 0, #e7be64 45%, #b47f29 100%);
+      box-shadow: 0 0 6px rgba(215, 184, 111, 0.45);
       cursor: pointer;
       border: none;
     }
 
     .temp-value {
-      font-size: 12px;
-      color: var(--gold);
-      min-width: 68px;
-      text-align: right;
+      display: none; /* Zahl neben dem Regler ausblenden */
     }
 
     .send-row {
-      margin-top: 4px;
-      display: flex;
-      justify-content: flex-end;
+      display: none; /* Senden-Button komplett verstecken */
     }
 
     .send-btn {
@@ -582,7 +612,7 @@
 
     <!-- MAIN GRID -->
     <section class="main">
-      <!-- PANEL: PROGRAMME / MODULE (LINKS) -->
+      <!-- PANEL: MODULE LINKS -->
       <section class="panel program-panel">
         <div class="panel-header">
           <div class="panel-title">Module</div>
@@ -598,7 +628,7 @@
 
           <div class="program-grid">
             <!-- OMNI-CORE RUNTIME · AKTIV -->
-            <article class="program-card active" data-program="Omni-Core Runtime" id="mod-omni">
+            <article class="program-card active" data-program="OMNI-CORE RUNTIME" id="mod-omni">
               <div class="program-badge-row">
                 <div class="program-badge">Aktives Modul</div>
                 <div class="program-tag">runtime</div>
@@ -613,7 +643,7 @@
             </article>
 
             <!-- CORE-6 SOCIAL AGENT ENGINE · INTERNAL -->
-            <article class="program-card" data-program="CORE-6 Social Agent Engine · Internal" id="mod-core6">
+            <article class="program-card" data-program="CORE-6 SOCIAL AGENT ENGINE · INTERNAL" id="mod-core6">
               <div class="program-badge-row">
                 <div class="program-badge">CORE-6 Engine</div>
                 <div class="program-tag internal">internal</div>
@@ -628,7 +658,7 @@
             </article>
 
             <!-- SOCIAL-MAGIC · INTERNAL -->
-            <article class="program-card" data-program="SOCIAL-MAGIC · Internal" id="mod-social">
+            <article class="program-card" data-program="SOCIAL-MAGIC · INTERNAL" id="mod-social">
               <div class="program-badge-row">
                 <div class="program-badge">Social Media</div>
                 <div class="program-tag internal">internal</div>
@@ -643,7 +673,7 @@
             </article>
 
             <!-- EMAIL-PRO · INTERNAL -->
-            <article class="program-card" data-program="EMAIL-PRO · Internal" id="mod-email">
+            <article class="program-card" data-program="EMAIL-PRO · INTERNAL" id="mod-email">
               <div class="program-badge-row">
                 <div class="program-badge">Kommunikation</div>
                 <div class="program-tag internal">internal</div>
@@ -658,7 +688,7 @@
             </article>
 
             <!-- RESUMÉ-MASTER · INTERNAL -->
-            <article class="program-card" data-program="RESUMÉ-MASTER · Internal" id="mod-resume">
+            <article class="program-card" data-program="RESUMÉ-MASTER · INTERNAL" id="mod-resume">
               <div class="program-badge-row">
                 <div class="program-badge">Profile</div>
                 <div class="program-tag internal">internal</div>
@@ -675,7 +705,7 @@
         </div>
       </section>
 
-      <!-- PANEL: EINGABE (MITTE) -->
+      <!-- PANEL: EINGABE MITTE -->
       <section class="panel">
         <div class="panel-header">
           <div class="panel-title">Eingabe</div>
@@ -730,7 +760,7 @@
         </div>
       </section>
 
-      <!-- PANEL: CHAT / VERLAUF (RECHTS) -->
+      <!-- PANEL: VERLAUF RECHTS -->
       <section class="panel">
         <div class="panel-header">
           <div class="panel-title">Verlauf</div>
@@ -742,7 +772,7 @@
         <div id="chatLog" class="chat-log">
           <div class="chat-placeholder">
             Noch keine Unterhaltung gestartet. Wähle links ein Modul, formuliere in der Mitte deine Aufgabe
-            und drücke Enter oder den Senden-Button.
+            und drücke Enter.
           </div>
         </div>
 
@@ -766,8 +796,6 @@
       const sendBtn = document.getElementById("sendBtn");
       const modelSelect = document.getElementById("modelSelect");
       const tempRange = document.getElementById("tempRange");
-      const tempValue = document.getElementById("tempValue");
-      const chatLog = document.getElementById("chatLog");
       const statusText = document.getElementById("statusText");
       const statusModel = document.getElementById("statusModel");
       const inputLabel = document.getElementById("inputLabel");
@@ -783,17 +811,16 @@
           "Modell: " + modelSelect.value + " · Temperatur: " + formatTemp(tempRange.value);
       }
 
-      tempValue.textContent = formatTemp(tempRange.value);
       updateStatusModel();
 
       tempRange.addEventListener("input", () => {
-        tempValue.textContent = formatTemp(tempRange.value);
         updateStatusModel();
       });
 
       modelSelect.addEventListener("change", updateStatusModel);
 
       function appendMessage(role, text) {
+        const chatLog = document.getElementById("chatLog");
         const placeholder = chatLog.querySelector(".chat-placeholder");
         if (placeholder) placeholder.remove();
 
@@ -833,7 +860,7 @@
         statusText.textContent =
           "Sende Anfrage an den G-Core Router … Modul: " + activeModule + ".";
 
-        sendBtn.disabled = true;
+        if (sendBtn) sendBtn.disabled = true;
 
         try {
           const body = {
@@ -883,14 +910,16 @@
           statusText.textContent =
             "Der Browser konnte die Anfrage nicht erfolgreich abschließen.";
         } finally {
-          sendBtn.disabled = false;
+          if (sendBtn) sendBtn.disabled = false;
         }
       }
 
-      sendBtn.addEventListener("click", (e) => {
-        e.preventDefault();
-        sendPrompt();
-      });
+      if (sendBtn) {
+        sendBtn.addEventListener("click", (e) => {
+          e.preventDefault();
+          sendPrompt();
+        });
+      }
 
       promptInput.addEventListener("keydown", (e) => {
         if (e.key === "Enter" && !e.shiftKey) {
