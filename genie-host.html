@@ -4,21 +4,18 @@
   <meta charset="UTF-8" />
   <title>G-CORE LAUNCHPAD · G-Core Systems</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="theme-color" content="#0e0e0e" />
-
-  <!-- Manifest & (optionale) Favicon-Anbindung -->
-  <link rel="manifest" href="/manifest.webmanifest" />
-  <link rel="icon" href="/favicon.ico" />
+  <link rel="manifest" href="/manifest_genie.webmanifest" />
 
   <style>
     :root {
-      --bg-dark: #0e0e0e;
-      --bg-darker: #050505;
-      --text-light: #f2f2f2;
-      --text-muted: #bbbbbb;
-      --gold: #d9b15f;
-      --gold-soft: #e5c57a;
-      --tile-locked-bg: rgba(255, 255, 255, 0.03);
+      --bg-dark: #111214;
+      --bg-darker: #050506;
+      --text-light: #f5f5f7;
+      --text-muted: #c8c8c8;
+      --gold: #d7b86f;
+      --gold-soft: #d7b86f33;
+      --gold-strong: #f4d27c;
+      --danger: #ff6b6b;
     }
 
     * {
@@ -31,25 +28,24 @@
       min-height: 100vh;
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       color: var(--text-light);
-      background:
-        radial-gradient(circle at top, #242424 0, var(--bg-dark) 45%, var(--bg-darker) 100%);
+      background: radial-gradient(circle at top, #1d1f24 0, var(--bg-dark) 45%, var(--bg-darker) 100%);
       display: flex;
       align-items: center;
       justify-content: center;
       padding: 16px;
     }
 
-    .launchpad-shell {
+    .shell {
       width: 100%;
-      max-width: 1180px;
+      max-width: 1280px;
       max-height: 860px;
-      background: radial-gradient(circle at top, #18191f 0, #0b0c10 55%, #050505 100%);
+      background: radial-gradient(circle at top, #1a1c22 0, #0c0d10 55%, #050506 100%);
       border-radius: 32px;
-      border: 1px solid rgba(217, 177, 95, 0.28);
+      border: 1px solid rgba(215, 184, 111, 0.25);
       box-shadow:
         0 0 60px rgba(0, 0, 0, 0.85),
-        0 0 40px rgba(217, 177, 95, 0.22);
-      padding: 24px 22px 18px;
+        0 0 40px rgba(215, 184, 111, 0.18);
+      padding: 22px 22px 18px;
       display: flex;
       flex-direction: column;
       gap: 16px;
@@ -58,44 +54,44 @@
 
     /* HEADER */
 
-    .lp-header {
+    .header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      gap: 14px;
+      gap: 16px;
     }
 
-    .lp-title-block {
+    .header-left {
       display: flex;
       flex-direction: column;
       gap: 4px;
     }
 
-    .lp-badge {
+    .badge {
       font-size: 11px;
       letter-spacing: 0.16em;
       text-transform: uppercase;
-      color: var(--gold-soft);
+      color: var(--gold);
     }
 
-    .lp-title {
+    .title {
       font-size: 22px;
-      letter-spacing: 0.20em;
+      letter-spacing: 0.18em;
       text-transform: uppercase;
       color: var(--text-light);
     }
 
-    .lp-subtitle {
+    .subtitle {
       font-size: 13px;
       color: var(--text-muted);
       max-width: 520px;
     }
 
-    .lp-meta {
+    .header-right {
       display: flex;
       flex-direction: column;
       align-items: flex-end;
-      gap: 6px;
+      gap: 8px;
       font-size: 11px;
       color: var(--text-muted);
     }
@@ -103,19 +99,19 @@
     .endpoint-pill {
       padding: 4px 10px;
       border-radius: 999px;
-      background: rgba(5, 5, 5, 0.9);
-      border: 1px solid rgba(217, 177, 95, 0.45);
+      background: rgba(5, 5, 6, 0.9);
+      border: 1px solid rgba(215, 184, 111, 0.35);
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      max-width: 280px;
+      max-width: 320px;
     }
 
     .endpoint-pill span.label {
       font-size: 10px;
       letter-spacing: 0.16em;
       text-transform: uppercase;
-      color: var(--gold-soft);
+      color: var(--gold);
       white-space: nowrap;
     }
 
@@ -132,26 +128,69 @@
       border-radius: 50%;
       background: radial-gradient(circle, #5ffb85 0, #1fbf54 40%, #077933 100%);
       box-shadow: 0 0 7px rgba(95, 251, 133, 0.7);
+      margin-left: 4px;
     }
 
-    /* MAIN LAYOUT */
+    .install-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
 
-    .lp-main {
+    .install-btn {
+      padding: 6px 14px;
+      border-radius: 999px;
+      border: 1px solid rgba(215, 184, 111, 0.6);
+      background: radial-gradient(circle at top, #f6e3b4 0, #e2bf64 45%, #b9862c 100%);
+      color: #201910;
+      font-size: 11px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow:
+        0 0 10px rgba(240, 197, 106, 0.4),
+        0 9px 18px rgba(0, 0, 0, 0.7);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .install-btn span.icon {
+      font-size: 14px;
+    }
+
+    .install-btn:disabled {
+      opacity: 0.5;
+      cursor: default;
+      box-shadow: 0 0 6px rgba(0, 0, 0, 0.8);
+    }
+
+    .install-hint {
+      font-size: 10px;
+      color: var(--text-muted);
+      max-width: 260px;
+      text-align: right;
+    }
+
+    /* MAIN GRID */
+
+    .main {
       flex: 1;
       display: grid;
-      grid-template-columns: minmax(0, 1.05fr) minmax(0, 1.45fr);
+      grid-template-columns: minmax(0, 1.05fr) minmax(0, 1.15fr) minmax(0, 1.3fr);
       gap: 16px;
       min-height: 0;
     }
 
     .panel {
       border-radius: 24px;
-      background: radial-gradient(circle at top, #181920 0, #0a0b10 40%, #050505 100%);
-      border: 1px solid rgba(217, 177, 95, 0.2);
-      padding: 16px 18px;
+      background: radial-gradient(circle at top, #171820 0, #0a0b0f 40%, #050506 100%);
+      border: 1px solid rgba(215, 184, 111, 0.18);
+      padding: 16px 18px 14px;
       display: flex;
       flex-direction: column;
-      gap: 12px;
+      gap: 10px;
       min-height: 0;
     }
 
@@ -175,140 +214,21 @@
       opacity: 0.9;
     }
 
-    /* PROGRAM TILE GRID */
-
-    .program-grid {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 10px;
-    }
-
-    @media (max-width: 980px) {
-      .program-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-      }
-    }
-
-    @media (max-width: 680px) {
-      .program-grid {
-        grid-template-columns: 1fr;
-      }
-    }
-
-    .program-tile {
-      position: relative;
-      border-radius: 18px;
-      padding: 12px 12px 12px 12px;
-      background: radial-gradient(circle at top, rgba(217,177,95,0.22), rgba(0,0,0,0.9));
-      border: 1px solid rgba(217, 177, 95, 0.55);
-      box-shadow: 0 0 20px rgba(217,177,95,0.30);
-      cursor: pointer;
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-      transition: transform 0.12s ease-out, box-shadow 0.12s ease-out, border-color 0.12s;
-    }
-
-    .program-tile:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 0 26px rgba(217,177,95,0.4);
-    }
-
-    .program-tile.active {
-      border-color: rgba(255, 235, 180, 0.95);
-      box-shadow:
-        0 0 30px rgba(217,177,95,0.55),
-        0 0 40px rgba(0,0,0,0.9);
-    }
-
-    .program-tile.locked {
-      background: var(--tile-locked-bg);
-      border-style: dashed;
-      border-color: rgba(255, 255, 255, 0.12);
-      box-shadow: 0 0 12px rgba(0,0,0,0.7);
-      cursor: default;
-    }
-
-    .program-label {
-      font-size: 11px;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: var(--text-muted);
-    }
-
-    .program-name {
-      font-size: 15px;
-      font-weight: 600;
-      color: var(--text-light);
-    }
-
-    .program-tagline {
-      font-size: 11px;
-      color: var(--text-muted);
-    }
-
-    .program-status-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-top: 4px;
-      font-size: 11px;
-      color: var(--text-muted);
-    }
-
-    .pill-free {
-      padding: 2px 8px;
-      border-radius: 999px;
-      background: rgba(89, 193, 120, 0.14);
-      border: 1px solid rgba(89, 193, 120, 0.6);
-      color: #a7ffcb;
-      font-size: 10px;
-      text-transform: uppercase;
-      letter-spacing: 0.14em;
-    }
-
-    .pill-locked {
-      padding: 2px 8px;
-      border-radius: 999px;
-      background: rgba(255, 255, 255, 0.04);
-      border: 1px solid rgba(255, 255, 255, 0.35);
-      font-size: 10px;
-      text-transform: uppercase;
-      letter-spacing: 0.14em;
-    }
-
-    .lock-icon {
-      font-size: 13px;
-      opacity: 0.9;
-      margin-left: 6px;
-    }
-
-    /* Generische Coming-Now-Tiles */
-
-    .program-tile.generic .program-name {
-      opacity: 0.85;
-    }
-
-    .program-tile.generic .program-tagline {
-      font-size: 10px;
-      opacity: 0.75;
-    }
-
-    /* INPUT-BEREICH */
-
-    .input-stack {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-      flex: 1;
-      min-height: 0;
-    }
+    /* INPUT PANEL */
 
     .field-label {
       font-size: 11px;
       letter-spacing: 0.18em;
       text-transform: uppercase;
       color: var(--text-muted);
+    }
+
+    .input-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      flex: 1;
+      min-height: 0;
     }
 
     .prompt-area {
@@ -320,17 +240,17 @@
     .prompt-input {
       width: 100%;
       height: 100%;
-      min-height: 140px;
+      min-height: 130px;
       resize: none;
-      background: radial-gradient(circle at top left, #22232a 0, #14151b 40%, #09090f 100%);
+      background: radial-gradient(circle at top left, #20222c 0, #12141b 40%, #090a0f 100%);
       border-radius: 18px;
-      border: 1px solid rgba(217, 177, 95, 0.26);
+      border: 1px solid rgba(215, 184, 111, 0.25);
       padding: 14px 16px;
       color: var(--text-light);
       font-size: 14px;
       line-height: 1.45;
       outline: none;
-      box-shadow: inset 0 0 16px rgba(0, 0, 0, 0.7);
+      box-shadow: inset 0 0 18px rgba(0, 0, 0, 0.6);
     }
 
     .prompt-input::placeholder {
@@ -345,22 +265,22 @@
       color: rgba(200, 200, 200, 0.6);
     }
 
-    .controls-row {
+    .model-temp-row {
       display: grid;
-      grid-template-columns: minmax(0, 1.05fr) minmax(0, 1.25fr);
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
       gap: 10px;
       align-items: center;
     }
 
     .select-shell,
     .slider-shell {
-      background: radial-gradient(circle at top, #181921 0, #0b0c11 40%, #050609 100%);
+      background: radial-gradient(circle at top, #181921 0, #0b0c11 40%, #06070a 100%);
       border-radius: 16px;
-      border: 1px solid rgba(217, 177, 95, 0.20);
+      border: 1px solid rgba(215, 184, 111, 0.22);
       padding: 9px 11px;
       display: flex;
       flex-direction: column;
-      gap: 4px;
+      gap: 6px;
     }
 
     .select-shell span,
@@ -373,10 +293,10 @@
 
     select {
       width: 100%;
-      background: #060607;
+      background: #050506;
       color: var(--text-light);
       border-radius: 10px;
-      border: 1px solid rgba(217, 177, 95, 0.45);
+      border: 1px solid rgba(215, 184, 111, 0.4);
       padding: 6px 8px;
       font-size: 13px;
       outline: none;
@@ -385,7 +305,7 @@
     .temp-row {
       display: flex;
       align-items: center;
-      gap: 9px;
+      gap: 10px;
     }
 
     input[type="range"] {
@@ -393,7 +313,7 @@
       appearance: none;
       height: 6px;
       border-radius: 999px;
-      background: linear-gradient(90deg, rgba(217,177,95,0.7), rgba(217,177,95,0.20));
+      background: linear-gradient(90deg, rgba(215, 184, 111, 0.85), rgba(215, 184, 111, 0.25));
       outline: none;
     }
 
@@ -402,10 +322,8 @@
       width: 14px;
       height: 14px;
       border-radius: 50%;
-      background: radial-gradient(circle, #f7e1a8 0, #e3be6a 45%, #b38435 100%);
-      box-shadow:
-        0 0 6px rgba(247, 225, 168, 0.7),
-        0 0 10px rgba(217, 177, 95, 0.65);
+      background: radial-gradient(circle, #fff5c7 0, #f0c56a 45%, #c58a2e 100%);
+      box-shadow: 0 0 8px rgba(215, 184, 111, 0.55);
       cursor: pointer;
     }
 
@@ -413,41 +331,40 @@
       width: 14px;
       height: 14px;
       border-radius: 50%;
-      background: radial-gradient(circle, #f7e1a8 0, #e3be6a 45%, #b38435 100%);
-      box-shadow:
-        0 0 6px rgba(247, 225, 168, 0.7),
-        0 0 10px rgba(217, 177, 95, 0.65);
+      background: radial-gradient(circle, #fff5c7 0, #f0c56a 45%, #c58a2e 100%);
+      box-shadow: 0 0 8px rgba(215, 184, 111, 0.55);
       cursor: pointer;
       border: none;
     }
 
     .temp-value {
       font-size: 12px;
-      color: var(--gold-soft);
-      min-width: 64px;
+      color: var(--gold);
+      min-width: 68px;
       text-align: right;
     }
 
     .send-row {
-      margin-top: 6px;
+      margin-top: 4px;
       display: flex;
       justify-content: flex-end;
     }
 
     .send-btn {
+      position: relative;
       padding: 10px 26px;
       border-radius: 999px;
       border: none;
       cursor: pointer;
-      background: radial-gradient(circle at top, #ffe3a4 0, #f0c76e 45%, #c38a33 100%);
-      color: #1f1810;
+      background: radial-gradient(circle at top, #ffe39d 0, #f0c56a 40%, #c58a2e 100%);
+      color: #201910;
       font-weight: 600;
       font-size: 13px;
       letter-spacing: 0.16em;
       text-transform: uppercase;
       box-shadow:
-        0 0 18px rgba(240, 199, 111, 0.48),
-        0 12px 24px rgba(0, 0, 0, 0.80);
+        0 0 18px rgba(240, 197, 106, 0.5),
+        0 12px 22px rgba(0, 0, 0, 0.7);
       display: inline-flex;
       align-items: center;
       gap: 8px;
@@ -461,26 +378,137 @@
     .send-btn:disabled {
       opacity: 0.55;
       cursor: default;
-      box-shadow: 0 0 8px rgba(0,0,0,0.7);
+      box-shadow: 0 0 8px rgba(0, 0, 0, 0.7);
     }
 
-    /* CHAT-BEREICH */
+    /* PROGRAMM PANEL */
 
-    .answer-panel {
-      flex: 1;
-      min-height: 0;
+    .programs-wrapper {
       display: flex;
       flex-direction: column;
       gap: 10px;
+      flex: 1;
+      min-height: 0;
     }
+
+    .programs-hint {
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    .program-grid {
+      flex: 1;
+      min-height: 0;
+      display: grid;
+      grid-template-columns: 1fr;
+      grid-auto-rows: minmax(0, 1fr);
+      gap: 8px;
+    }
+
+    .program-card {
+      position: relative;
+      border-radius: 18px;
+      padding: 10px 11px;
+      background: radial-gradient(circle at top, #151722 0, #0a0b10 40%, #050506 100%);
+      border: 1px solid rgba(215, 184, 111, 0.3);
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      cursor: pointer;
+      overflow: hidden;
+    }
+
+    .program-card.locked {
+      background: radial-gradient(circle at top, #14151b 0, #07080c 45%, #040406 100%);
+      border-style: dashed;
+      border-color: rgba(200, 200, 200, 0.35);
+      cursor: default;
+      opacity: 0.8;
+    }
+
+    .program-card.upcoming {
+      background: radial-gradient(circle at top, #15161c 0, #08090d 45%, #040406 100%);
+      border-style: dashed;
+      border-color: rgba(215, 184, 111, 0.4);
+      cursor: default;
+    }
+
+    .program-badge-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .program-badge {
+      font-size: 10px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--gold-strong);
+    }
+
+    .program-tag {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      padding: 3px 8px;
+      border-radius: 999px;
+      border: 1px solid rgba(215, 184, 111, 0.6);
+      background: rgba(5, 5, 6, 0.9);
+      color: var(--gold-strong);
+      white-space: nowrap;
+    }
+
+    .program-tag.locked-tag {
+      border-color: rgba(200, 200, 200, 0.6);
+      color: rgba(200, 200, 200, 0.9);
+    }
+
+    .program-title {
+      font-size: 14px;
+      font-weight: 600;
+      word-break: break-word;
+      overflow-wrap: break-word;
+      hyphens: auto;
+    }
+
+    .program-subline {
+      font-size: 11px;
+      color: var(--text-muted);
+      word-break: break-word;
+      overflow-wrap: break-word;
+      hyphens: auto;
+    }
+
+    .program-lock {
+      position: absolute;
+      right: 9px;
+      bottom: 8px;
+      font-size: 12px;
+      color: rgba(200, 200, 200, 0.9);
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .program-lock span.icon {
+      font-size: 13px;
+    }
+
+    .program-note {
+      font-size: 10px;
+      color: rgba(200, 200, 200, 0.7);
+    }
+
+    /* CHAT PANEL */
 
     .chat-log {
       flex: 1;
       min-height: 0;
-      background: radial-gradient(circle at top left, #22232b 0, #15161d 40%, #09090f 100%);
+      background: radial-gradient(circle at top left, #20222c 0, #12141b 40%, #090a0f 100%);
       border-radius: 18px;
-      border: 1px solid rgba(217, 177, 95, 0.25);
-      padding: 14px 16px;
+      border: 1px solid rgba(215, 184, 111, 0.25);
+      padding: 12px 14px;
       overflow-y: auto;
       font-size: 13px;
       line-height: 1.5;
@@ -494,32 +522,33 @@
     .chat-row {
       display: flex;
       flex-direction: column;
-      gap: 4px;
-      margin-bottom: 12px;
+      gap: 3px;
+      margin-bottom: 10px;
     }
 
     .chat-label {
       font-size: 11px;
       letter-spacing: 0.16em;
       text-transform: uppercase;
-      color: rgba(200, 200, 200, 0.72);
+      color: rgba(200, 200, 200, 0.7);
     }
 
     .chat-bubble {
-      background: rgba(4, 4, 6, 0.92);
+      background: rgba(5, 5, 6, 0.85);
       border-radius: 12px;
-      border: 1px solid rgba(217, 177, 95, 0.20);
+      border: 1px solid rgba(215, 184, 111, 0.2);
       padding: 8px 10px;
       white-space: pre-wrap;
+      word-break: break-word;
     }
 
     .chat-row.user .chat-bubble {
-      border-color: rgba(217, 177, 95, 0.45);
-      background: rgba(18, 14, 8, 0.96);
+      border-color: rgba(215, 184, 111, 0.45);
+      background: rgba(12, 10, 7, 0.95);
     }
 
     .chat-row.error .chat-bubble {
-      border-color: #ff6b6b;
+      border-color: var(--danger);
       color: #ffdede;
     }
 
@@ -529,6 +558,7 @@
       display: flex;
       justify-content: space-between;
       gap: 10px;
+      margin-top: 6px;
     }
 
     .status-main {
@@ -538,202 +568,104 @@
     }
 
     .status-model {
-      color: var(--gold-soft);
+      color: var(--gold);
       white-space: nowrap;
     }
 
-    /* INSTALL-BANNER */
+    /* RESPONSIVE */
 
-    .install-banner {
-      margin-top: 8px;
-      padding-top: 8px;
-      border-top: 1px solid rgba(255, 255, 255, 0.05);
-      display: none;
-      text-align: center;
-    }
-
-    .install-btn {
-      background: radial-gradient(circle at top, #f4d88c 0, #e1bb61 45%, #b27d2d 100%);
-      padding: 9px 22px;
-      border-radius: 16px;
-      font-size: 14px;
-      font-weight: 600;
-      border: none;
-      cursor: pointer;
-      color: #241a0d;
-      box-shadow: 0 0 18px rgba(217,177,95,0.45);
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .install-btn span.icon {
-      font-size: 17px;
-    }
-
-    @media (max-width: 980px) {
-      .launchpad-shell {
-        padding: 20px 16px 14px;
-        border-radius: 26px;
+    @media (max-width: 1080px) {
+      .main {
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr);
+        grid-template-rows: minmax(0, 1.1fr) minmax(0, 1.2fr);
       }
-      .lp-main {
+      .panel.program-panel {
+        grid-row: span 2;
+      }
+    }
+
+    @media (max-width: 880px) {
+      .shell {
+        border-radius: 24px;
+        padding: 18px 14px 14px;
+      }
+      .header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .header-right {
+        align-items: flex-start;
+      }
+      .main {
         grid-template-columns: 1fr;
         grid-auto-rows: minmax(0, 1fr);
       }
       .panel {
         min-height: 260px;
       }
-      .lp-header {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-      .lp-meta {
-        align-items: flex-start;
-      }
-    }
-
-    @media (max-width: 600px) {
-      .lp-title {
-        font-size: 18px;
-        letter-spacing: 0.16em;
-      }
-      .lp-subtitle {
-        font-size: 12px;
+      .install-hint {
+        text-align: left;
       }
     }
   </style>
 </head>
 
 <body>
-  <main class="launchpad-shell">
-    <header class="lp-header">
-      <div class="lp-title-block">
-        <div class="lp-badge">G-Core Systems · KI Launchpad</div>
-        <div class="lp-title">G-CORE LAUNCHPAD</div>
-        <div class="lp-subtitle">
-          Zentrale Oberfläche für deine G-Core Programme. Aktuell ist RESUMÉ-MASTER frei nutzbar,
-          weitere Programme folgen Schritt für Schritt.
+  <main class="shell">
+    <!-- HEADER -->
+    <header class="header">
+      <div class="header-left">
+        <div class="badge">G-Core Systems · KI Launchpad</div>
+        <div class="title">G-CORE LAUNCHPAD</div>
+        <div class="subtitle">
+          Zentrale Oberfläche für deine G-Core Programme. Aktuell ist <strong>RESUMÉ-MASTER</strong> frei nutzbar,
+          weitere Module folgen schrittweise.
         </div>
       </div>
-      <div class="lp-meta">
+
+      <div class="header-right">
         <div class="endpoint-pill">
           <span class="label">Endpoint</span>
-          <span class="value">https://api.g-core-systems.com/genie</span>
+          <span class="value">https://rp.g-core-systems.com/genie</span>
           <span class="status-dot" title="Router aktiv"></span>
         </div>
-        <div>Modus: <span style="color: var(--gold-soft);">Direkt-Client</span></div>
+        <div>Modus: <span style="color: var(--gold);">Launchpad</span></div>
+
+        <div class="install-row">
+          <button id="installBtn" class="install-btn" disabled>
+            <span class="icon">⬇</span>
+            <span>App installieren</span>
+          </button>
+        </div>
+        <div class="install-hint">
+          Wenn dein Browser die Installation unterstützt, kannst du das Launchpad als App auf deinem Gerät ablegen.
+        </div>
       </div>
     </header>
 
-    <section class="lp-main">
-      <!-- LINKES PANEL: Programme + Eingabe -->
+    <!-- MAIN GRID -->
+    <section class="main">
+      <!-- PANEL: EINGABE -->
       <section class="panel">
         <div class="panel-header">
-          <div class="panel-title">Programme</div>
-          <div class="panel-sub">Wähle ein Programm aus und formuliere deine Aufgabe.</div>
+          <div class="panel-title">Eingabe</div>
+          <div class="panel-sub">
+            Formuliere hier deine Aufgabe für das aktuell aktive Programm.
+          </div>
         </div>
 
-        <!-- PROGRAMM-KACHELN -->
-        <div class="program-grid" id="programGrid">
-          <!-- Aktives Programm: RESUMÉ-MASTER (frei) -->
-          <article class="program-tile active" data-program="resume-master" data-locked="false">
-            <div class="program-label">Aktives Programm</div>
-            <div class="program-name">RESUMÉ-MASTER</div>
-            <div class="program-tagline">
-              KI-gestützte Unterstützung für Lebensläufe und Bewerbungsunterlagen.
-            </div>
-            <div class="program-status-row">
-              <span class="pill-free">Free Version</span>
-              <span style="font-size: 11px; color: var(--text-muted);">
-                E-Mail-Unterstützung aktiviert
-              </span>
-            </div>
-          </article>
-
-          <!-- SOCIAL-MAGIC: sichtbar, aber gesperrt -->
-          <article class="program-tile locked" data-program="social-magic" data-locked="true">
-            <div class="program-label">Demnächst verfügbar</div>
-            <div class="program-name">SOCIAL-MAGIC</div>
-            <div class="program-tagline">
-              Geplantes Social-Media-Studio für Serien, Hooks und Content-Pläne.
-            </div>
-            <div class="program-status-row">
-              <span class="pill-locked">
-                <span>Gesperrt</span>
-                <span class="lock-icon">🔒</span>
-              </span>
-              <span style="font-size: 11px; color: var(--text-muted);">
-                Beta in Vorbereitung
-              </span>
-            </div>
-          </article>
-
-          <!-- Generische Coming-Programme: nur Hintergrund, keine Namen -->
-          <article class="program-tile locked generic" data-program="_coming1" data-locked="true">
-            <div class="program-label">Coming Soon</div>
-            <div class="program-name">Neues G-Core Modul</div>
-            <div class="program-tagline">
-              Platzhalter für zukünftige Programme des G-Core Ökosystems.
-            </div>
-            <div class="program-status-row">
-              <span class="pill-locked">
-                <span>In Planung</span>
-                <span class="lock-icon">🔒</span>
-              </span>
-              <span style="font-size: 11px; color: var(--text-muted);">
-                Freischaltung folgt
-              </span>
-            </div>
-          </article>
-
-          <article class="program-tile locked generic" data-program="_coming2" data-locked="true">
-            <div class="program-label">Coming Soon</div>
-            <div class="program-name">G-Core Modul</div>
-            <div class="program-tagline">
-              Reservierter Slot für weitere Tools wie Home, Music, Story, u. a.
-            </div>
-            <div class="program-status-row">
-              <span class="pill-locked">
-                <span>Reserviert</span>
-                <span class="lock-icon">🔒</span>
-              </span>
-              <span style="font-size: 11px; color: var(--text-muted);">
-                Sichtbar nur als Hintergrund
-              </span>
-            </div>
-          </article>
-
-          <article class="program-tile locked generic" data-program="_coming3" data-locked="true">
-            <div class="program-label">Coming Soon</div>
-            <div class="program-name">G-Core Modul</div>
-            <div class="program-tagline">
-              Weitere Programme werden hier später freigeschaltet.
-            </div>
-            <div class="program-status-row">
-              <span class="pill-locked">
-                <span>Später</span>
-                <span class="lock-icon">🔒</span>
-              </span>
-              <span style="font-size: 11px; color: var(--text-muted);">
-                Noch nicht auswählbar
-              </span>
-            </div>
-          </article>
-        </div>
-
-        <!-- EINGABE-BEREICH -->
-        <div class="input-stack" style="margin-top: 12px;">
-          <div class="field-label">Eingabe</div>
+        <div class="input-stack">
+          <div class="field-label">RESUMÉ-MASTER · Aufgabe</div>
           <div class="prompt-area">
             <textarea
               id="promptInput"
               class="prompt-input"
-              placeholder="Formuliere hier deine Aufgabe. Beispiel für RESUMÉ-MASTER: &#10;'Erstelle mir einen modernen Lebenslauf auf Basis dieser Stichpunkte: ...'"
+              placeholder="Schreibe hier deine Aufgabe für RESUMÉ-MASTER …"
             ></textarea>
             <div class="prompt-hint">Enter = Senden · Shift+Enter = Zeilenumbruch</div>
           </div>
 
-          <div class="controls-row">
+          <div class="model-temp-row">
             <div class="select-shell">
               <span>Modell</span>
               <select id="modelSelect">
@@ -768,35 +700,109 @@
         </div>
       </section>
 
-      <!-- RECHTES PANEL: Chat / Verlauf -->
-      <section class="panel answer-panel">
+      <!-- PANEL: PROGRAMME -->
+      <section class="panel program-panel">
+        <div class="panel-header">
+          <div class="panel-title">Programme</div>
+          <div class="panel-sub">
+            Wähle ein Programm aus und formuliere deine Aufgabe. Aktuell ist nur RESUMÉ-MASTER freigeschaltet.
+          </div>
+        </div>
+
+        <div class="programs-wrapper">
+          <div class="programs-hint">
+            Kacheln mit Schloss sind noch gesperrt. Inhalte und Namen können sich bis zum Release ändern.
+          </div>
+
+          <div class="program-grid">
+            <!-- RESUMÉ-MASTER · AKTIV -->
+            <article class="program-card" data-program="resume" data-state="active" id="card-resume">
+              <div class="program-badge-row">
+                <div class="program-badge">Aktives Programm</div>
+                <div class="program-tag">frei nutzbar</div>
+              </div>
+              <div class="program-title">RESUMÉ-MASTER</div>
+              <div class="program-subline">
+                Erstellung, Überarbeitung und Analyse von Lebensläufen und Bewerbungen.
+              </div>
+              <div class="program-note">
+                Dieses Modul ist vollständig freigeschaltet und kann sofort genutzt werden.
+              </div>
+            </article>
+
+            <!-- SOCIAL-MAGIC · DEMNÄCHST VERFÜGBAR (ausgegraut, aber mit Namen) -->
+            <article class="program-card locked upcoming" data-program="social-magic" data-state="upcoming">
+              <div class="program-badge-row">
+                <div class="program-badge">Demnächst verfügbar</div>
+                <div class="program-tag locked-tag">gesperrt</div>
+              </div>
+              <div class="program-title">SOCIAL-MAGIC MODUL</div>
+              <div class="program-subline">
+                Geplantes Modul für Inhalte, Postings und Strategien rund um Social Media.
+              </div>
+              <div class="program-lock">
+                <span class="icon">🔒</span>
+                <span>Freischaltung folgt</span>
+              </div>
+            </article>
+
+            <!-- GENERISCHE COMING-SOON-KACHEL 1 (kein Programmname) -->
+            <article class="program-card locked" data-state="locked">
+              <div class="program-badge-row">
+                <div class="program-badge">Coming Soon</div>
+                <div class="program-tag locked-tag">in Planung</div>
+              </div>
+              <div class="program-title">Neues G-Core Modul</div>
+              <div class="program-subline">
+                Reservierte Kachel für ein zukünftiges G-Core Programm. Details werden später bekanntgegeben.
+              </div>
+              <div class="program-lock">
+                <span class="icon">🔒</span>
+                <span>noch nicht verfügbar</span>
+              </div>
+            </article>
+
+            <!-- GENERISCHE COMING-SOON-KACHEL 2 (kein Programmname) -->
+            <article class="program-card locked" data-state="locked">
+              <div class="program-badge-row">
+                <div class="program-badge">Coming Soon</div>
+                <div class="program-tag locked-tag">konzeptphase</div>
+              </div>
+              <div class="program-title">Weiteres G-Core Modul</div>
+              <div class="program-subline">
+                Platzhalter für ein weiteres Modul innerhalb des Launchpads. Keine Inhalte sichtbar, bis es freigeschaltet wird.
+              </div>
+              <div class="program-lock">
+                <span class="icon">🔒</span>
+                <span>wird später gefüllt</span>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- PANEL: CHAT / VERLAUF -->
+      <section class="panel">
         <div class="panel-header">
           <div class="panel-title">Verlauf</div>
-          <div class="panel-sub">Deine Unterhaltung mit dem aktiven Programm.</div>
+          <div class="panel-sub">
+            Verlauf deiner Unterhaltung mit Genie für das aktuell aktive Programm.
+          </div>
         </div>
 
         <div id="chatLog" class="chat-log">
           <div class="chat-placeholder">
-            Noch kein Verlauf. Wähle links ein Programm (RESUMÉ-MASTER ist aktiv),
-            formuliere deine Aufgabe und drücke Enter oder den Senden-Button.
+            Noch keine Unterhaltung gestartet. Formuliere links deine Aufgabe für RESUMÉ-MASTER und drücke Enter oder den Senden-Button.
           </div>
         </div>
 
         <div class="status-line">
           <div id="statusText" class="status-main">
-            Bereit. Aktives Programm: RESUMÉ-MASTER.
+            Bereit. Router ist aktiv, Programm: RESUMÉ-MASTER.
           </div>
           <div id="statusModel" class="status-model">
             Modell: gpt-4.1-mini · Temperatur: 0,70
           </div>
-        </div>
-
-        <!-- INSTALL-BANNER -->
-        <div id="installBanner" class="install-banner">
-          <button id="installBtn" class="install-btn">
-            <span class="icon">📲</span>
-            <span>App installieren</span>
-          </button>
         </div>
       </section>
     </section>
@@ -804,9 +810,8 @@
 
   <script>
     (function () {
-      const API_URL = "https://api.g-core-systems.com/genie";
+      const API_URL = "https://rp.g-core-systems.com/genie";
 
-      const programGrid = document.getElementById("programGrid");
       const promptInput = document.getElementById("promptInput");
       const sendBtn = document.getElementById("sendBtn");
       const modelSelect = document.getElementById("modelSelect");
@@ -815,61 +820,37 @@
       const chatLog = document.getElementById("chatLog");
       const statusText = document.getElementById("statusText");
       const statusModel = document.getElementById("statusModel");
+      const installBtn = document.getElementById("installBtn");
+      const resumeCard = document.getElementById("card-resume");
 
-      let activeProgram = "resume-master";
+      let activeProgram = "RESUMÉ-MASTER";
+      let deferredPrompt = null;
 
       function formatTemp(val) {
         return Number(val).toFixed(2).replace(".", ",");
       }
 
       tempValue.textContent = formatTemp(tempRange.value);
-      statusModel.textContent = "Modell: " + modelSelect.value + " · Temperatur: " + formatTemp(tempRange.value);
+      statusModel.textContent =
+        "Modell: " + modelSelect.value + " · Temperatur: " + formatTemp(tempRange.value);
 
       tempRange.addEventListener("input", () => {
         tempValue.textContent = formatTemp(tempRange.value);
-        statusModel.textContent = "Modell: " + modelSelect.value + " · Temperatur: " + formatTemp(tempRange.value);
+        statusModel.textContent =
+          "Modell: " + modelSelect.value + " · Temperatur: " + formatTemp(tempRange.value);
       });
 
       modelSelect.addEventListener("change", () => {
-        statusModel.textContent = "Modell: " + modelSelect.value + " · Temperatur: " + formatTemp(tempRange.value);
+        statusModel.textContent =
+          "Modell: " + modelSelect.value + " · Temperatur: " + formatTemp(tempRange.value);
       });
 
-      // PROGRAMM-WECHSEL ÜBER KACHELN
-      programGrid.addEventListener("click", (e) => {
-        const tile = e.target.closest(".program-tile");
-        if (!tile) return;
-
-        const locked = tile.getAttribute("data-locked") === "true";
-        const program = tile.getAttribute("data-program");
-
-        if (locked) {
-          // Nur Hinweis im Verlauf, kein Programmwechsel
-          appendMessage(
-            "system",
-            "Dieses Programm ist noch nicht freigeschaltet. Aktuell ist nur RESUMÉ-MASTER nutzbar."
-          );
-          return;
-        }
-
-        // Aktive Klasse aktualisieren
-        document.querySelectorAll(".program-tile").forEach((el) => {
-          el.classList.remove("active");
-        });
-        tile.classList.add("active");
-
-        activeProgram = program || "resume-master";
-        statusText.textContent =
-          "Bereit. Aktives Programm: " +
-          (activeProgram === "resume-master" ? "RESUMÉ-MASTER" : activeProgram);
-      });
-
-      function ensurePlaceholderRemoved() {
-        const placeholder = chatLog.querySelector(".chat-placeholder");
-        if (placeholder) placeholder.remove();
-      }
+      // Nur RESUMÉ-MASTER darf aktuell aktiv sein – visuell markieren
+      resumeCard.classList.add("active-program");
 
       function appendMessage(role, text) {
-        ensurePlaceholderRemoved();
+        const placeholder = chatLog.querySelector(".chat-placeholder");
+        if (placeholder) placeholder.remove();
 
         const row = document.createElement("div");
         row.className = "chat-row " + role;
@@ -877,10 +858,11 @@
         const label = document.createElement("div");
         label.className = "chat-label";
         label.textContent =
-          role === "user" ? "Du" :
-          role === "error" ? "Systemfehler" :
-          role === "system" ? "System" :
-          "Genie";
+          role === "user"
+            ? "Du · " + activeProgram
+            : role === "error"
+            ? "Fehler"
+            : "Genie";
 
         const bubble = document.createElement("div");
         bubble.className = "chat-bubble";
@@ -893,37 +875,29 @@
       }
 
       async function sendPrompt() {
-        const text = promptInput.value.trim();
-        if (!text) return;
-
-        if (activeProgram !== "resume-master") {
-          appendMessage(
-            "system",
-            "Dieses Programm ist noch nicht freigeschaltet. Bitte nutze aktuell RESUMÉ-MASTER."
-          );
-          return;
-        }
+        const prompt = promptInput.value.trim();
+        if (!prompt) return;
 
         const model = modelSelect.value;
         const temperature = Number(tempRange.value);
 
-        appendMessage("user", "[" + "RESUMÉ-MASTER" + "] " + text);
+        appendMessage("user", prompt);
         promptInput.value = "";
-        statusText.textContent = "Sende Anfrage an deinen G-Core Router …";
+        statusText.textContent = "Sende Anfrage an den G-Core Router …";
+
         sendBtn.disabled = true;
 
         try {
           const res = await fetch(API_URL, {
             method: "POST",
             headers: {
-              "Content-Type": "application/json"
+              "Content-Type": "application/json",
             },
             body: JSON.stringify({
-              prompt: text,
+              prompt: "[" + activeProgram + "] " + prompt,
               model: model,
               temperature: temperature,
-              program: activeProgram
-            })
+            }),
           });
 
           if (!res.ok) {
@@ -937,7 +911,8 @@
                 "\n\nAntwort des Routers:\n" +
                 txt
             );
-            statusText.textContent = "Die API hat mit einem Fehler geantwortet.";
+            statusText.textContent =
+              "Die API hat mit einem Fehler geantwortet. Details im Verlauf.";
             return;
           }
 
@@ -973,39 +948,66 @@
         }
       });
 
-      // SERVICE WORKER REGISTRIERUNG (falls noch nicht vorhanden)
+      // Klicks auf gesperrte Kacheln ignorieren (nur visuelles Feedback optional)
+      document.querySelectorAll(".program-card").forEach((card) => {
+        card.addEventListener("click", () => {
+          const state = card.getAttribute("data-state");
+          if (state !== "active") {
+            // z. B. kleines Status-Update unten
+            statusText.textContent =
+              "Dieses Modul ist noch nicht freigeschaltet. Aktives Programm bleibt: " +
+              activeProgram +
+              ".";
+            return;
+          }
+          // Aktuell gibt es nur RESUMÉ-MASTER als aktiv, aber falls später weitere kommen:
+          activeProgram = "RESUMÉ-MASTER";
+          statusText.textContent =
+            "Bereit. Router ist aktiv, Programm: " + activeProgram + ".";
+        });
+      });
+
+      // SERVICE WORKER REGISTRIEREN
       if ("serviceWorker" in navigator) {
-        navigator.serviceWorker.register("/sw.js").catch((err) => {
-          console.log("ServiceWorker-Registrierung fehlgeschlagen:", err);
+        window.addEventListener("load", () => {
+          navigator.serviceWorker
+            .register("/service-worker-genie.js")
+            .catch((err) => {
+              console.warn("Service Worker Registrierung fehlgeschlagen:", err);
+            });
         });
       }
 
-      // PWA INSTALL HANDLING
-      let deferredPrompt = null;
-      const installBanner = document.getElementById("installBanner");
-      const installBtn = document.getElementById("installBtn");
-
+      // PWA INSTALLATIONS-LOGIK
       window.addEventListener("beforeinstallprompt", (e) => {
         e.preventDefault();
         deferredPrompt = e;
-        installBanner.style.display = "block";
+        installBtn.disabled = false;
       });
 
       installBtn.addEventListener("click", async () => {
-        if (!deferredPrompt) return;
-        installBanner.style.display = "none";
-        deferredPrompt.prompt();
-        try {
-          await deferredPrompt.userChoice;
-        } catch (e) {
-          console.log("Installationsentscheidung:", e);
+        if (!deferredPrompt) {
+          alert(
+            "Dein Browser bietet aktuell keinen Installationsdialog an. Du kannst die Seite später über die Browserfunktionen zum Startbildschirm hinzufügen."
+          );
+          return;
         }
+
+        deferredPrompt.prompt();
+        const result = await deferredPrompt.userChoice;
         deferredPrompt = null;
+        installBtn.disabled = true;
+
+        if (result.outcome === "accepted") {
+          installBtn.textContent = "Installiert";
+        } else {
+          installBtn.textContent = "Installation abgebrochen";
+        }
       });
 
       window.addEventListener("appinstalled", () => {
-        console.log("G-Core Launchpad wurde installiert.");
-        installBanner.style.display = "none";
+        installBtn.disabled = true;
+        installBtn.textContent = "Installiert";
       });
     })();
   </script>
