@@ -627,7 +627,7 @@
       const TEMPERATURE = 0.7;
 
       let activeProgram = "RESUMÉ-MASTER";
-      var deferredPrompt = null;
+       deferredPrompt = null;
 
       // RESUMÉ-MASTER als aktiv markieren (falls du CSS dafür ergänzen willst)
       resumeCard.classList.add("active-program");
@@ -751,47 +751,62 @@
       }
 
      // PWA INSTALLATIONS-LOGIK
+// PWA INSTALLATIONS-LOGIK
 let deferredPrompt = null;
 
-// Event kommt nur, wenn der Browser die "richtige" PWA-Install-Situation erkennt
+// Browser meldet, dass eine Installation möglich ist
 window.addEventListener("beforeinstallprompt", (e) => {
   e.preventDefault();
   deferredPrompt = e;
-  // Optional: kleines Status-Feedback
-  statusText.textContent = "Dieses Launchpad kann als App installiert werden.";
+  if (installBtn) {
+    installBtn.disabled = false;
+    installBtn.textContent = "App installieren";
+  }
 });
 
-installBtn.addEventListener("click", async () => {
-  // Fall 1: Browser hat das PWA-Event geliefert → echter Install-Dialog
-  if (deferredPrompt) {
+// Klick auf den Install-Button
+if (installBtn) {
+  installBtn.addEventListener("click", async () => {
+    if (!deferredPrompt) {
+      if (statusText) {
+        statusText.textContent =
+          "Dein Browser zeigt aktuell keinen Installationsdialog an. Du kannst die Seite später über das Browser-Menü zum Startbildschirm hinzufügen.";
+      }
+      return;
+    }
+
     deferredPrompt.prompt();
     const result = await deferredPrompt.userChoice;
     deferredPrompt = null;
+    installBtn.disabled = true;
 
     if (result.outcome === "accepted") {
+      if (statusText) {
+        statusText.textContent = "Launchpad als App installiert.";
+      }
       installBtn.textContent = "Installiert";
-      statusText.textContent = "Das Launchpad wurde als App installiert.";
     } else {
-      statusText.textContent =
-        "Installation abgebrochen. Du kannst es später erneut versuchen.";
+      if (statusText) {
+        statusText.textContent =
+          "Installation abgebrochen. Du kannst es später erneut versuchen.";
+      }
+      installBtn.textContent = "Installation abgebrochen";
     }
-    return;
-  }
+  });
+}
 
-  // Fall 2: Kein beforeinstallprompt verfügbar → Fallback-Hinweis
-  alert(
-    "Dein Browser zeigt aktuell keinen Installationsdialog an.\n\n" +
-      "Du kannst die App normalerweise über das Browser-Menü installieren:\n" +
-      "• In Edge: Menü > Apps > Diese Seite installieren\n" +
-      "• In Chrome: Menü > Installieren oder Zum Startbildschirm hinzufügen."
-  );
-});
-    
-// Wenn App bereits installiert ist
+// Wenn die App installiert wurde
 window.addEventListener("appinstalled", () => {
-  installBtn.textContent = "Installiert";
-  statusText.textContent = "Launchpad ist bereits als App installiert.";
+  deferredPrompt = null;
+  if (installBtn) {
+    installBtn.disabled = true;
+    installBtn.textContent = "Installiert";
+  }
+  if (statusText) {
+    statusText.textContent = "Launchpad ist als App installiert.";
+  }
 });
+
 
     })();
   </script>
