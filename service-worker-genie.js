@@ -5,8 +5,8 @@ const APP_SHELL = [
   "/",
   "/genie-host.html",
   "/manifest_genie.webmanifest",
-  "/assets_icons/gcore_logo_192.png",
-  "/assets_icons/gcore_logo_512.png"
+  "/assets_icons/gcore_icon_192.png",
+  "/assets_icons/gcore_icon_512.png"
 ];
 
 // Installation – Shell in Cache legen
