@@ -979,18 +979,19 @@
             </article>
 
             <!-- RESUMÉ-MASTER · INTERNAL -->
-            <article class="program-card" data-program-id="resume-master">
-    <div class="program-badge internal-badge">Profil / INTERNAL</div>
-
-    <div class="program-title">RESUMÉ MASTER – INTERNAL</div>
-
-    <div class="program-subtitle internal">INTERNAL</div>
-
-    <div class="program-note">
-        Nutze dieses Modul, wenn du an der Logik von Résumé-Master arbeitest oder Profile prüfst.
-    </div>
-</article>
-
+            <article class="program-card" data-program="RESUMÉ-MASTER · INTERNAL" id="mod-resume">
+              <div class="program-badge-row">
+                <div class="program-badge">Profile</div>
+                <div class="program-tag internal">internal</div>
+              </div>
+              <div class="program-title">RESUMÉ-MASTER · INTERNAL</div>
+              <div class="program-subline">
+                Interne Tests für Lebenslauf-Logiken, Profil-Layout, Textqualität und Blueprint-Anpassungen.
+              </div>
+              <div class="program-note">
+                Nutze dieses Modul, wenn du an der Logik von Resumé-Master arbeitest oder Profile prüfst.
+              </div>
+            </article>
           </div>
         </div>
       </section>
@@ -1078,7 +1079,7 @@
     </section>
   </main>
 
-    <script>
+  <script>
     (function () {
       const API_URL = "https://api.g-core-systems.com/genie";
 
@@ -1092,32 +1093,25 @@
 
       let activeModule = "OMNI-CORE RUNTIME";
 
-      // Temperaturformat
       function formatTemp(val) {
         return Number(val).toFixed(2).replace(".", ",");
       }
 
-      // Anzeige Modell / Temperatur
       function updateStatusModel() {
-        if (!statusModel || !modelSelect || !tempRange) return;
         statusModel.textContent =
-          "Modell: " +
-          modelSelect.value +
-          " · Temperatur: " +
-          formatTemp(tempRange.value);
+          "Modell: " + modelSelect.value + " · Temperatur: " + formatTemp(tempRange.value);
       }
 
-      if (statusModel && modelSelect && tempRange) {
+      updateStatusModel();
+
+      tempRange.addEventListener("input", () => {
         updateStatusModel();
-        tempRange.addEventListener("input", updateStatusModel);
-        modelSelect.addEventListener("change", updateStatusModel);
-      }
+      });
 
-      // Nachricht in den Verlauf schreiben
+      modelSelect.addEventListener("change", updateStatusModel);
+
       function appendMessage(role, text) {
         const chatLog = document.getElementById("chatLog");
-        if (!chatLog) return;
-
         const placeholder = chatLog.querySelector(".chat-placeholder");
         if (placeholder) placeholder.remove();
 
@@ -1145,23 +1139,17 @@
         chatLog.scrollTop = chatLog.scrollHeight;
       }
 
-      // Request an den Router schicken
       async function sendPrompt() {
-        if (!promptInput) return;
-
         const prompt = promptInput.value.trim();
         if (!prompt) return;
 
-        const model = modelSelect ? modelSelect.value : "gpt-4.1-mini";
-        const temperature = tempRange ? Number(tempRange.value) : 0.7;
+        const model = modelSelect.value;
+        const temperature = Number(tempRange.value);
 
         appendMessage("user", prompt);
         promptInput.value = "";
-
-        if (statusText) {
-          statusText.textContent =
-            "Sende Anfrage an den G-Core Router … Modul: " + activeModule + ".";
-        }
+        statusText.textContent =
+          "Sende Anfrage an den G-Core Router … Modul: " + activeModule + ".";
 
         if (sendBtn) sendBtn.disabled = true;
 
@@ -1191,10 +1179,8 @@
                 "\n\nAntwort des Routers:\n" +
                 txt
             );
-            if (statusText) {
-              statusText.textContent =
-                "Die API hat mit einem Fehler geantwortet. Details siehst du im Verlauf.";
-            }
+            statusText.textContent =
+              "Die API hat mit einem Fehler geantwortet. Details siehst du im Verlauf.";
             return;
           }
 
@@ -1204,28 +1190,21 @@
             JSON.stringify(data, null, 2);
 
           appendMessage("genie", reply);
-          if (statusText) {
-            statusText.textContent =
-              "Antwort der OMNI-CORE SUITE erfolgreich erhalten. Modul: " +
-              activeModule +
-              ".";
-          }
+          statusText.textContent =
+            "Antwort der OMNI-CORE SUITE erfolgreich erhalten. Modul: " + activeModule + ".";
         } catch (err) {
           appendMessage(
             "error",
             "Fetch-Fehler: " +
               (err && err.message ? err.message : String(err))
           );
-          if (statusText) {
-            statusText.textContent =
-              "Der Browser konnte die Anfrage nicht erfolgreich abschließen.";
-          }
+          statusText.textContent =
+            "Der Browser konnte die Anfrage nicht erfolgreich abschließen.";
         } finally {
           if (sendBtn) sendBtn.disabled = false;
         }
       }
 
-      // Senden-Button
       if (sendBtn) {
         sendBtn.addEventListener("click", (e) => {
           e.preventDefault();
@@ -1233,54 +1212,29 @@
         });
       }
 
-      // Enter im Textfeld
-      if (promptInput) {
-        promptInput.addEventListener("keydown", (e) => {
-          if (e.key === "Enter" && !e.shiftKey) {
-            e.preventDefault();
-            sendPrompt();
-          }
-        });
-      }
+      promptInput.addEventListener("keydown", (e) => {
+        if (e.key === "Enter" && !e.shiftKey) {
+          e.preventDefault();
+          sendPrompt();
+        }
+      });
 
-      // Modul-Wechsel für alle Programmkarten
-      const programCards = document.querySelectorAll(".program-card");
-
-      programCards.forEach((card) => {
+      // Modul-Wechsel
+      document.querySelectorAll(".program-card").forEach((card) => {
         card.addEventListener("click", () => {
-          // 1. Alle Karten deaktivieren
-          programCards.forEach((c) => c.classList.remove("active"));
+          document
+            .querySelectorAll(".program-card")
+            .forEach((c) => c.classList.remove("active"));
 
-          // 2. Geklickte Karte aktiv setzen
           card.classList.add("active");
+          activeModule = card.getAttribute("data-program") || "OMNI-CORE RUNTIME";
+          inputLabel.textContent = activeModule + " · Aufgabe";
 
-          // 3. Modulname aus data-program (oder Fallback)
-          const programName =
-            card.getAttribute("data-program") || "OMNI-CORE RUNTIME";
-          activeModule = programName;
-
-          if (inputLabel) {
-            inputLabel.textContent = activeModule + " · Aufgabe";
-          }
-
-          if (statusText) {
-            statusText.textContent =
-              "Bereit. Router ist aktiv, Modul: " + activeModule + ".";
-          }
-
-          // 4. Test: program-id auslesen (z. B. RESUMÉ MASTER)
-          const programId = card.getAttribute("data-program-id");
-          if (programId) {
-            console.log("Programm gewählt:", programId);
-            alert("Programm gewählt: " + programId);
-          }
+          statusText.textContent =
+            "Bereit. Router ist aktiv, Modul: " + activeModule + ".";
         });
       });
     })();
   </script>
-
-
-
-
 </body>
 </html>
