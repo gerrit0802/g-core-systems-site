@@ -1,0 +1,34 @@
+{
+  "program_id": "resume-master",
+  "name": "RESUMÉ-MASTER",
+  "version": "2.7.4",
+  "tag": "GCS-RM-v2.7.4-PERSIST",
+  "tier": "free",
+  "status": "public",
+  "license_required": false,
+  "description": "Assistent zur Erstellung und Optimierung von Lebenslauf, Anschreiben und Bewerbungs-E-Mail. Fokus auf realistische, glaubwürdige Unterlagen ohne KI-typischen Stil.",
+
+  "framework": ["G-Core", "Genie", "Flow", "GuardCore", "SessionGuard"],
+
+  "constraints": {
+    "scope": "Darf nur im Kontext von Bewerbungsunterlagen handeln.",
+    "forbidden": [
+      "Kein freier Chat ohne Bezug zur Bewerbung.",
+      "Keine anderen Programme starten.",
+      "Keine Änderungen an Menü oder UI.",
+      "Kein Lizenzmanagement für andere Programme."
+    ]
+  },
+
+  "menus": {
+    "main_menu": {
+      "title": "RESUMÉ-MASTER – Hauptmenü",
+      "options": [
+        { "id": "1", "key": "upload_screenshot", "label": "Screenshot-Upload" },
+        { "id": "2", "key": "online_search", "label": "Online-Suche" },
+        { "id": "3", "key": "direct_input", "label": "Direkte Eingabe" }
+      ],
+      "special_commands": ["main", "restart", "export"]
+    }
+  }
+}
