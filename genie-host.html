@@ -750,65 +750,64 @@
         });
       }
 
-     // PWA INSTALLATIONS-LOGIK
-// PWA INSTALLATIONS-LOGIK
+<!-- ================== PWA INSTALLATION FIX ================== -->
+<script>
 let deferredPrompt = null;
+const installBtn = document.getElementById("installBtn");
+const statusText = document.getElementById("install_status");
 
-// Browser meldet, dass eine Installation möglich ist
+// Browser erkennt Installations-Situation
 window.addEventListener("beforeinstallprompt", (e) => {
-  e.preventDefault();
-  deferredPrompt = e;
-  if (installBtn) {
-    installBtn.disabled = false;
-    installBtn.textContent = "App installieren";
-  }
+    e.preventDefault();
+    deferredPrompt = e;
+
+    if (installBtn) {
+        installBtn.disabled = false;
+        installBtn.textContent = "App installieren";
+    }
 });
 
-// Klick auf den Install-Button
+// Klick auf Installieren
 if (installBtn) {
-  installBtn.addEventListener("click", async () => {
-    if (!deferredPrompt) {
-      if (statusText) {
-        statusText.textContent =
-          "Dein Browser zeigt aktuell keinen Installationsdialog an. Du kannst die Seite später über das Browser-Menü zum Startbildschirm hinzufügen.";
-      }
-      return;
-    }
+    installBtn.addEventListener("click", async () => {
 
-    deferredPrompt.prompt();
-    const result = await deferredPrompt.userChoice;
-    deferredPrompt = null;
-    installBtn.disabled = true;
+        if (!deferredPrompt) {
+            if (statusText) {
+                statusText.textContent =
+                    "Keine Installationsmöglichkeit. Du kannst die App später über das Browser-Menü hinzufügen.";
+            }
+            return;
+        }
 
-    if (result.outcome === "accepted") {
-      if (statusText) {
-        statusText.textContent = "Launchpad als App installiert.";
-      }
-      installBtn.textContent = "Installiert";
-    } else {
-      if (statusText) {
-        statusText.textContent =
-          "Installation abgebrochen. Du kannst es später erneut versuchen.";
-      }
-      installBtn.textContent = "Installation abgebrochen";
-    }
-  });
+        deferredPrompt.prompt();
+
+        const choice = await deferredPrompt.userChoice;
+
+        if (choice.outcome === "accepted") {
+            if (statusText) statusText.textContent = "App installiert!";
+            installBtn.textContent = "Installiert";
+        } else {
+            if (statusText) statusText.textContent =
+                "Installation abgebrochen. Du kannst es später erneut versuchen.";
+            installBtn.textContent = "Installation abgebrochen";
+        }
+
+        deferredPrompt = null;
+    });
 }
 
-// Wenn die App installiert wurde
+// Wenn App installiert wurde
 window.addEventListener("appinstalled", () => {
-  deferredPrompt = null;
-  if (installBtn) {
-    installBtn.disabled = true;
-    installBtn.textContent = "Installiert";
-  }
-  if (statusText) {
-    statusText.textContent = "Launchpad ist als App installiert.";
-  }
+    deferredPrompt = null;
+    if (installBtn) {
+        installBtn.disabled = true;
+        installBtn.textContent = "Installiert";
+    }
+    if (statusText) {
+        statusText.textContent = "App erfolgreich installiert.";
+    }
 });
+</script>
 
-
-    })();
-  </script>
 </body>
 </html>
