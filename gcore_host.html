@@ -733,6 +733,104 @@
 <link rel="manifest" href="/manifest_genie.webmanifest">
 
     }
+    /* ============================================
+   G-CORE MOBILE OPTIMIERUNG – UNIVERSAL FIX
+   ============================================ */
+
+@media (max-width: 768px) {
+
+  /* Shell enger machen */
+  .shell {
+    padding: 14px;
+    border-radius: 20px;
+    max-height: none;
+  }
+
+  /* Header kompakter */
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .title {
+    font-size: 20px;
+    letter-spacing: 0.15em;
+  }
+
+  .subtitle {
+    font-size: 12px;
+    line-height: 1.45;
+  }
+
+  /* Installieren-Button kleiner */
+  .install-btn {
+    padding: 6px 12px;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+  }
+
+  /* Haupt-Grid auf 1-Spalte */
+  .main {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  /* Panels müssen besser reagieren */
+  .panel {
+    padding: 14px 12px;
+    border-radius: 16px;
+  }
+
+  .panel-title {
+    font-size: 12px;
+    letter-spacing: 0.14em;
+  }
+
+  .panel-sub {
+    font-size: 10px;
+  }
+
+  /* Programme-Karten */
+  .program-card {
+    padding: 12px;
+    border-radius: 14px;
+  }
+
+  .program-title {
+    font-size: 13px;
+  }
+
+  .program-subline,
+  .program-note {
+    font-size: 10px;
+  }
+
+  /* Eingabefeld */
+  .prompt-input {
+    min-height: 100px;
+    font-size: 13px;
+  }
+
+  /* Chatlog */
+  .chat-log {
+    min-height: 120px;
+    max-height: 260px;
+    padding: 10px;
+    font-size: 12px;
+  }
+
+  /* Omni-Core Module Liste – SCROLLBAR FIX */
+  .modules-list,
+  .modules-panel,
+  .module-container {
+    max-height: 340px !important;
+    overflow-y: auto !important;
+  }
+
+}
+
   </style>
 </head>
 
