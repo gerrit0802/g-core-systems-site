@@ -828,6 +828,41 @@
     max-height: 340px !important;
     overflow-y: auto !important;
   }
+/* =======================================
+   OMNI-CORE SUITE – STABILE MODUL-KARTEN
+   ======================================= */
+
+/* Basis: alle Modul-Karten haben immer dieselbe Größe */
+.module-card {
+  position: relative;
+  box-sizing: border-box;
+  padding: 14px 14px 12px;      /* einheitlich */
+  border-width: 1px;            /* immer 1px */
+  border-style: solid;
+  border-color: rgba(215, 184, 111, 0.35);
+  transition:
+    background 0.2s ease,
+    box-shadow 0.2s ease,
+    border-color 0.2s ease;
+}
+
+/* Aktive Karte: nur Farbe/Glow, KEINE anderen Maße */
+.module-card.active,
+.module-card--active {
+  padding: 14px 14px 12px;      /* exakt wie oben, damit nichts „wächst“ */
+  border-width: 1px;            /* kein dickerer Rand */
+  border-color: rgba(244, 210, 124, 0.95);
+  box-shadow:
+    0 0 0 1px rgba(244, 210, 124, 0.55),
+    0 0 24px rgba(244, 210, 124, 0.25);
+  transform: none;              /* falls vorher ein translate o.Ä. drin war */
+  margin: 0;                    /* falls im aktiven Zustand Margin geändert wurde */
+}
+
+/* Optional: alle Module gleich hoch (wirkt ruhiger) */
+.module-card {
+  min-height: 150px;
+}
 
 }
 
