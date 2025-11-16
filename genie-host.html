@@ -757,11 +757,11 @@
         });
       }
 
-<!-- ================== PWA INSTALLATION FIX ================== -->
-<script>
+// ====================== PWA INSTALLATION FIX ======================
 let deferredPrompt = null;
 const installBtn = document.getElementById("installBtn");
 const statusText = document.getElementById("install_status");
+
 
 // Browser erkennt Installations-Situation
 window.addEventListener("beforeinstallprompt", (e) => {
@@ -814,7 +814,6 @@ window.addEventListener("appinstalled", () => {
         statusText.textContent = "App erfolgreich installiert.";
     }
 });
-</script>
 
 </body>
 </html>
