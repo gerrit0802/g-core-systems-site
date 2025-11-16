@@ -761,7 +761,7 @@
       if ("serviceWorker" in navigator) {
         window.addEventListener("load", () => {
           navigator.serviceWorker
-            .register("/service_worker_genie.js")
+            .register("/service-worker-genie.js")
             .then(() => {
               console.log("[G-CORE] Service Worker registriert.");
             })
