@@ -6,6 +6,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="manifest" href="/manifest_genie.webmanifest" />
 
+  <!-- FAVICONS / APP-ICONS -->
+  <link rel="icon" type="image/png" sizes="16x16" href="/assets_icons/favicon-16.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets_icons/favicon-32.png">
+  <link rel="icon" type="image/png" sizes="48x48" href="/assets_icons/favicon-48.png">
+  <link rel="apple-touch-icon" sizes="192x192" href="/assets_icons/gcore_logo_192.png">
+
   <style>
     :root {
       --bg-dark: #111214;
@@ -451,13 +457,6 @@
         min-height: 260px;
       }
     }
-    <link rel="icon" type="image/png" sizes="16x16" href="/assets_icons/favicon-16.png">
-<link rel="icon" type="image/png" sizes="32x32" href="/assets_icons/favicon-32.png">
-<link rel="icon" type="image/png" sizes="48x48" href="/assets_icons/favicon-48.png">
-
-<link rel="apple-touch-icon" sizes="192x192" href="/assets_icons/gcore_logo_192.png">
-<link rel="manifest" href="/manifest_genie.webmanifest">
-
   </style>
 </head>
 
@@ -481,7 +480,7 @@
             <span>App installieren</span>
           </button>
         </div>
-        <div class="install-hint">
+        <div class="install-hint" id="install_status">
           Wenn dein Browser die Installation unterstützt, kannst du das Launchpad als App auf deinem Gerät ablegen.
         </div>
       </div>
@@ -624,20 +623,23 @@
       // ✅ KORREKTER ENDPOINT (Fix für Fail-to-Fetch)
       const API_URL = "https://api.g-core-systems.com/genie";
 
-      const promptInput = document.getElementById("promptInput");
-      const chatLog = document.getElementById("chatLog");
-      const statusText = document.getElementById("statusText");
-      const installBtn = document.getElementById("installBtn");
-      const resumeCard = document.getElementById("card-resume");
+      const promptInput   = document.getElementById("promptInput");
+      const chatLog       = document.getElementById("chatLog");
+      const statusTextMain = document.getElementById("statusText");    // Status im Verlauf
+      const installBtn    = document.getElementById("installBtn");     // Button im Header
+      const installStatus = document.getElementById("install_status"); // Text unter dem Button
+      const resumeCard    = document.getElementById("card-resume");
 
-      const MODEL = "gpt-4.1-mini";
-      const TEMPERATURE = 0.7;
+      const MODEL        = "gpt-4.1-mini";
+      const TEMPERATURE  = 0.7;
 
-      let activeProgram = "RESUMÉ-MASTER";
-       deferredPrompt = null;
+      let activeProgram  = "RESUMÉ-MASTER";
+      let deferredPrompt = null;
 
-      // RESUMÉ-MASTER als aktiv markieren (falls du CSS dafür ergänzen willst)
-      resumeCard.classList.add("active-program");
+      // RESUMÉ-MASTER als aktiv markieren (falls du CSS dafür nutzen willst)
+      if (resumeCard) {
+        resumeCard.classList.add("active-program");
+      }
 
       function appendMessage(role, text) {
         const placeholder = chatLog.querySelector(".chat-placeholder");
@@ -671,7 +673,7 @@
 
         appendMessage("user", prompt);
         promptInput.value = "";
-        statusText.textContent = "Sende Anfrage an den G-Core Router …";
+        statusTextMain.textContent = "Sende Anfrage an den G-Core Router …";
 
         try {
           const res = await fetch(API_URL, {
@@ -697,7 +699,7 @@
                 "\n\nAntwort des Routers:\n" +
                 txt
             );
-            statusText.textContent =
+            statusTextMain.textContent =
               "Die API hat mit einem Fehler geantwortet. Details im Verlauf.";
             return;
           }
@@ -708,7 +710,7 @@
             JSON.stringify(data, null, 2);
 
           appendMessage("genie", reply);
-          statusText.textContent =
+          statusTextMain.textContent =
             "Antwort erfolgreich erhalten. Aktives Programm: " + activeProgram + ".";
         } catch (err) {
           appendMessage(
@@ -716,7 +718,7 @@
             "Fetch-Fehler: " +
               (err && err.message ? err.message : String(err))
           );
-          statusText.textContent =
+          statusTextMain.textContent =
             "Der Browser konnte die Anfrage nicht erfolgreich abschließen.";
         }
       }
@@ -734,100 +736,95 @@
         card.addEventListener("click", () => {
           const state = card.getAttribute("data-state");
           if (state !== "active") {
-            statusText.textContent =
+            statusTextMain.textContent =
               "Dieses Modul ist noch nicht freigeschaltet. Aktives Programm bleibt: " +
               activeProgram +
               ".";
             return;
           }
           activeProgram = "RESUMÉ-MASTER";
-          statusText.textContent =
+          statusTextMain.textContent =
             "Bereit. Router ist aktiv, Programm: " + activeProgram + ".";
         });
       });
 
-         
-    // ============================
-    // G-CORE LAUNCHPAD – PWA BASIS
-    // ============================
-  (function () {
-      // -----------------------------
-         // SERVICE WORKER REGISTRIEREN
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('load', () => {
-        navigator.serviceWorker
-          .register('/service_worker_genie.js')
-          .then(() => {
-            console.log('[G-CORE] Service Worker registriert.');
-          })
-          .catch(err => {
-            console.warn('[G-CORE] Service Worker Registrierung fehlgeschlagen:', err);
-          });
-      });
-    }
+      // ============================
+      // G-CORE LAUNCHPAD – PWA BASIS
+      // ============================
 
-    // PWA INSTALLATION – LOGIK
-    let deferredPrompt = null;
-    const installBtn = document.getElementById('installBtn');
-    const statusText = document.getElementById('install_status');
-
-    // 1. Browser meldet "Installierbar"
-    window.addEventListener('beforeinstallprompt', (e) => {
-      e.preventDefault();
-      deferredPrompt = e;
-
-      if (installBtn) {
-        installBtn.disabled = false;
-        installBtn.textContent = 'App installieren';
+      // SERVICE WORKER REGISTRIEREN
+      if ("serviceWorker" in navigator) {
+        window.addEventListener("load", () => {
+          navigator.serviceWorker
+            .register("/service_worker_genie.js")
+            .then(() => {
+              console.log("[G-CORE] Service Worker registriert.");
+            })
+            .catch((err) => {
+              console.warn("[G-CORE] Service Worker Registrierung fehlgeschlagen:", err);
+            });
+        });
       }
-    });
 
-    // 2. Klick auf den Installieren-Button
-    if (installBtn) {
-      installBtn.addEventListener('click', async () => {
-        // Keine Install-Möglichkeit verfügbar
-        if (!deferredPrompt) {
-          if (statusText) {
-            statusText.textContent =
-              'Keine Installationsmöglichkeit. Du kannst die App später über das Browser-Menü hinzufügen.';
-          }
-          return;
+      // PWA INSTALLATION – LOGIK
+
+      // 1. Browser meldet "Installierbar"
+      window.addEventListener("beforeinstallprompt", (e) => {
+        e.preventDefault();
+        deferredPrompt = e;
+
+        if (installBtn) {
+          installBtn.disabled = false;
+          installBtn.textContent = "App installieren";
         }
+        if (installStatus) {
+          installStatus.textContent =
+            "App kann installiert werden. Klicke auf „App installieren“, um das Launchpad hinzuzufügen.";
+        }
+      });
 
-        // Browser-Dialog anzeigen
-        deferredPrompt.prompt();
-        const choice = await deferredPrompt.userChoice;
-
-        if (choice.outcome === 'accepted') {
-          if (statusText) {
-            statusText.textContent = 'App installiert!';
+      // 2. Klick auf den Installieren-Button
+      if (installBtn) {
+        installBtn.addEventListener("click", async () => {
+          if (!deferredPrompt) {
+            if (installStatus) {
+              installStatus.textContent =
+                "Keine Installationsmöglichkeit. Du kannst die App später über das Browser-Menü hinzufügen.";
+            }
+            return;
           }
-          installBtn.textContent = 'Installiert';
+
+          deferredPrompt.prompt();
+          const choice = await deferredPrompt.userChoice;
+
+          if (choice.outcome === "accepted") {
+            if (installStatus) {
+              installStatus.textContent = "App installiert.";
+            }
+            installBtn.textContent = "Installiert";
+            installBtn.disabled = true;
+          } else {
+            if (installStatus) {
+              installStatus.textContent =
+                "Installation abgebrochen. Du kannst es später erneut versuchen.";
+            }
+          }
+
+          deferredPrompt = null;
+        });
+      }
+
+      // 3. Wenn App installiert wurde
+      window.addEventListener("appinstalled", () => {
+        console.log("[G-CORE] App installiert – Launchpad läuft als PWA.");
+        if (installStatus) {
+          installStatus.textContent = "Launchpad ist als App installiert.";
+        }
+        if (installBtn) {
           installBtn.disabled = true;
-        } else {
-          if (statusText) {
-            statusText.textContent =
-              'Installation abgebrochen. Du kannst es später erneut versuchen.';
-          }
+          installBtn.textContent = "Installiert";
         }
-
-        // Prompt nur einmal verwenden
-        deferredPrompt = null;
       });
-    }
-
-    // 3. Wenn App installiert wurde
-    window.addEventListener('appinstalled', () => {
-      console.log('[G-CORE] App installiert – Launchpad läuft als PWA.');
-      if (statusText) {
-        statusText.textContent = 'Launchpad ist als App installiert.';
-      }
-      if (installBtn) {
-        installBtn.disabled = true;
-        installBtn.textContent = 'Installiert';
-      }
-    });
-
     })();
   </script>
 </body>
