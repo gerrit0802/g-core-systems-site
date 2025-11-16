@@ -752,103 +752,82 @@
     // ============================
   (function () {
       // -----------------------------
-      // 1. SERVICE WORKER REGISTRIEREN
-      // -----------------------------
-      if ("serviceWorker" in navigator) {
-        window.addEventListener("load", () => {
-          console.log("[G-CORE] Versuche ServiceWorker zu registrieren …");
+         // SERVICE WORKER REGISTRIEREN
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker
+          .register('/service_worker_genie.js')
+          .then(() => {
+            console.log('[G-CORE] Service Worker registriert.');
+          })
+          .catch(err => {
+            console.warn('[G-CORE] Service Worker Registrierung fehlgeschlagen:', err);
+          });
+      });
+    }
 
-          navigator.serviceWorker
-            .register("./service-worker-genie.js")
-            .then((reg) => {
-              console.log("[G-CORE] ServiceWorker registriert. Scope:", reg.scope);
-            })
-            .catch((err) => {
-              console.error("[G-CORE] ServiceWorker-Registrierung fehlgeschlagen:", err);
-            });
-        });
-      } else {
-        console.warn("[G-CORE] Browser unterstützt keine ServiceWorker.");
+    // PWA INSTALLATION – LOGIK
+    let deferredPrompt = null;
+    const installBtn = document.getElementById('installBtn');
+    const statusText = document.getElementById('install_status');
+
+    // 1. Browser meldet "Installierbar"
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
+
+      if (installBtn) {
+        installBtn.disabled = false;
+        installBtn.textContent = 'App installieren';
       }
+    });
 
-      // -------------------------------------
-      // 2. PWA INSTALLATIONSBUTTON – LOGIK
-      // -------------------------------------
-      let deferredPrompt = null;
-      const installBtn = document.getElementById("installBtn");
-      const statusText = document.getElementById("install_status");
+    // 2. Klick auf den Installieren-Button
+    if (installBtn) {
+      installBtn.addEventListener('click', async () => {
+        // Keine Install-Möglichkeit verfügbar
+        if (!deferredPrompt) {
+          if (statusText) {
+            statusText.textContent =
+              'Keine Installationsmöglichkeit. Du kannst die App später über das Browser-Menü hinzufügen.';
+          }
+          return;
+        }
 
-      // Button erstmal deaktivieren, bis Browser Installations-Event meldet
+        // Browser-Dialog anzeigen
+        deferredPrompt.prompt();
+        const choice = await deferredPrompt.userChoice;
+
+        if (choice.outcome === 'accepted') {
+          if (statusText) {
+            statusText.textContent = 'App installiert!';
+          }
+          installBtn.textContent = 'Installiert';
+          installBtn.disabled = true;
+        } else {
+          if (statusText) {
+            statusText.textContent =
+              'Installation abgebrochen. Du kannst es später erneut versuchen.';
+          }
+        }
+
+        // Prompt nur einmal verwenden
+        deferredPrompt = null;
+      });
+    }
+
+    // 3. Wenn App installiert wurde
+    window.addEventListener('appinstalled', () => {
+      console.log('[G-CORE] App installiert – Launchpad läuft als PWA.');
+      if (statusText) {
+        statusText.textContent = 'Launchpad ist als App installiert.';
+      }
       if (installBtn) {
         installBtn.disabled = true;
+        installBtn.textContent = 'Installiert';
       }
+    });
 
-      // Browser signalisiert: Diese Seite ist installierbar
-      window.addEventListener("beforeinstallprompt", (e) => {
-        console.log("[G-CORE] beforeinstallprompt empfangen.");
-        e.preventDefault();
-        deferredPrompt = e;
-
-        if (installBtn) {
-          installBtn.disabled = false;
-        }
-        if (statusText) {
-          statusText.textContent = "Dieses Launchpad kann als App installiert werden.";
-        }
-      });
-
-      // Klick auf den Button
-      if (installBtn) {
-        installBtn.addEventListener("click", async () => {
-          // Fall A: Browser stellt gerade KEINEN echten Install-Dialog bereit
-          if (!deferredPrompt) {
-            console.warn("[G-CORE] Kein deferredPrompt – Browser bietet gerade keine direkte Installation an.");
-            if (statusText) {
-              statusText.textContent =
-                "Dein Browser bietet gerade keinen Installationsdialog an. Nutze das Browser-Menü, um die Seite als App hinzuzufügen.";
-            }
-            alert(
-              "Aktuell stellt dein Browser keinen automatischen Installationsdialog bereit.\n\n" +
-              "Du kannst die Seite trotzdem als App hinzufügen:\n" +
-              "• In Edge oder Chrome: Menü öffnen und 'App installieren' oder 'Zum Startbildschirm hinzufügen' wählen."
-            );
-            return;
-          }
-
-          // Fall B: echter Install-Dialog verfügbar
-          deferredPrompt.prompt();
-          const choice = await deferredPrompt.userChoice;
-          console.log("[G-CORE] Installationsentscheidung:", choice.outcome);
-
-          if (choice.outcome === "accepted") {
-            if (statusText) {
-              statusText.textContent = "Launchpad wurde als App installiert.";
-            }
-            if (installBtn) {
-              installBtn.disabled = true;
-              installBtn.textContent = "Installiert";
-            }
-          } else {
-            if (statusText) {
-              statusText.textContent = "Installation abgebrochen. Du kannst es später erneut versuchen.";
-            }
-          }
-
-          deferredPrompt = null;
-        });
-      }
-
-      // Browser meldet erfolgreiche Installation
-      window.addEventListener("appinstalled", () => {
-        console.log("[G-CORE] App installiert laut Browser-Ereignis.");
-        if (statusText) {
-          statusText.textContent = "Launchpad ist als App installiert.";
-        }
-        if (installBtn) {
-          installBtn.disabled = true;
-          installBtn.textContent = "Installiert";
-        }
-      });
     })();
   </script>
 </body>
