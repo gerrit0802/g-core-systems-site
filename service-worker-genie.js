@@ -1,13 +1,19 @@
 // G-CORE LAUNCHPAD – Minimaler Service Worker
 
 const CACHE_NAME = "gcore-launchpad-v1";
+
 const APP_SHELL = [
-  "/",
-  "/genie-host.html",
-  "/manifest_genie.webmanifest",
+  "/",                           // Start
+  "/genie-host.html",            // deine Launchpad-Seite
+  "/manifest_genie.webmanifest", // Manifest
+  "/assets_icons/gcore_icon_64.png",
+  "/assets_icons/gcore_icon_128.png",
   "/assets_icons/gcore_icon_192.png",
-  "/assets_icons/gcore_icon_512.png"
+  "/assets_icons/gcore_icon_256.png",
+  "/assets_icons/gcore_icon_512.png",
+  "/assets_icons/gcore_icon_1024.png"
 ];
+
 
 // Installation – Shell in Cache legen
 self.addEventListener("install", (event) => {
