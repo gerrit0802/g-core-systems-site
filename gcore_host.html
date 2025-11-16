@@ -1218,41 +1218,42 @@
         }
       });
 
-      // Modul-Wechsel
-      // Klick-Logik für alle Programmkarten
-document.querySelectorAll('.program-card').forEach((card) => {
-  card.addEventListener('click', () => {
-    // 1. Alle Karten zuerst deaktivieren
-    document
-      .querySelectorAll('.program-card')
-      .forEach((c) => c.classList.remove('active'));
+            // Modul-Wechsel
+      document.querySelectorAll(".program-card").forEach((card) => {
+        card.addEventListener("click", () => {
+          // 1. Alle Karten deaktivieren
+          document
+            .querySelectorAll(".program-card")
+            .forEach((c) => c.classList.remove("active"));
 
-    // 2. Geklickte Karte aktiv setzen
-    card.classList.add('active');
+          // 2. Geklickte Karte aktiv setzen
+          card.classList.add("active");
 
-    // 3. Modul-Namen ermitteln (für Eingabefeld und Statuszeile)
-    activeModule = card.getAttribute('data-program') || 'OMNI-CORE RUNTIME';
+          // 3. Modul-Namen für Eingabe-Label und Status ermitteln
+          const programName =
+            card.getAttribute("data-program") || "OMNI-CORE RUNTIME";
+          activeModule = programName;
 
-    if (typeof inputLabel !== 'undefined' && inputLabel) {
-      inputLabel.textContent = activeModule + ' – Aufgabe';
-    }
+          if (inputLabel) {
+            inputLabel.textContent = activeModule + " · Aufgabe";
+          }
 
-    if (typeof statusText !== 'undefined' && statusText) {
-      statusText.textContent =
-        'Bereit. Router ist aktiv, Modul: ' + activeModule + '.';
-    }
+          if (statusText) {
+            statusText.textContent =
+              "Bereit. Router ist aktiv, Modul: " + activeModule + ".";
+          }
 
-    // 4. Test: program-id auslesen (z. B. RESUMÉ MASTER)
-    var programId = card.getAttribute('data-program-id');
-    if (programId) {
-      console.log('Programm gewählt:', programId);
-      alert('Programm gewählt: ' + programId);
-    }
-  });
-});
-
+          // 4. Optional: program-id auslesen (z. B. RESUMÉ MASTER)
+          const programId = card.getAttribute("data-program-id");
+          if (programId) {
+            console.log("Programm gewählt:", programId);
+            alert("Programm gewählt: " + programId);
+          }
+        });
+      });
     })();
   </script>
+
 
 
 </body>
