@@ -1231,25 +1231,19 @@
 
           statusText.textContent =
             "Bereit. Router ist aktiv, Modul: " + activeModule + ".";
+
+          // Test: program-id auslesen (z. B. für RESUMÉ MASTER)
+var programId = card.getAttribute('data-program-id');
+if (programId) {
+  console.log('Programm gewählt:', programId);
+  alert('Programm gewählt: ' + programId);
+}
+
         });
       });
     })();
   </script>
-  <script>
-document.addEventListener('DOMContentLoaded', function () {
-  // Alle Kacheln suchen, die ein data-program-id besitzen
-  var programCards = document.querySelectorAll('[data-program-id]');
 
-  programCards.forEach(function (card) {
-    card.addEventListener('click', function () {
-      var programId = card.getAttribute('data-program-id') || '(keine ID gefunden)';
-      // Test-Ausgabe
-      console.log('Programm gewählt:', programId);
-      alert('Programm gewählt: ' + programId);
-    });
-  });
-});
-</script>
 
 </body>
 </html>
