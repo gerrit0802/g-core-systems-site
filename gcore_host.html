@@ -1235,5 +1235,21 @@
       });
     })();
   </script>
+  <script>
+document.addEventListener('DOMContentLoaded', function () {
+  // Alle Kacheln suchen, die ein data-program-id besitzen
+  var programCards = document.querySelectorAll('[data-program-id]');
+
+  programCards.forEach(function (card) {
+    card.addEventListener('click', function () {
+      var programId = card.getAttribute('data-program-id') || '(keine ID gefunden)';
+      // Test-Ausgabe
+      console.log('Programm gewählt:', programId);
+      alert('Programm gewählt: ' + programId);
+    });
+  });
+});
+</script>
+
 </body>
 </html>
