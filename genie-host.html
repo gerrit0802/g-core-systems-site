@@ -735,7 +735,12 @@
 
           <div class="program-grid">
             <!-- RESUMÉ-MASTER · AKTIV -->
-            <article class="program-card" data-program="resume" data-state="active" id="card-resume">
+            <article class="program-card"
+         data-program="resume"
+         data-program-id="resume-master"
+         data-state="active"
+         id="card-resume">
+
               <div class="program-badge-row">
                 <div class="program-badge">Aktives Programm</div>
                 <div class="program-tag">frei nutzbar</div>
@@ -849,25 +854,29 @@
     </section>
   </main>
 
-  <script>
+    <script>
     (function () {
-      // ✅ KORREKTER ENDPOINT (Fix für Fail-to-Fetch)
+      // Zentrale Router-URL
       const API_URL = "https://api.g-core-systems.com/genie";
 
-      const promptInput   = document.getElementById("promptInput");
-      const chatLog       = document.getElementById("chatLog");
-      const statusTextMain = document.getElementById("statusText");    // Status im Verlauf
-      const installBtn    = document.getElementById("installBtn");     // Button im Header
-      const installStatus = document.getElementById("install_status"); // Text unter dem Button
-      const resumeCard    = document.getElementById("card-resume");
+      const promptInput    = document.getElementById("promptInput");
+      const chatLog        = document.getElementById("chatLog");
+      const statusTextMain = document.getElementById("statusText");
 
-      const MODEL        = "gpt-4.1-mini";
-      const TEMPERATURE  = 0.7;
+      const installBtn     = document.getElementById("installBtn");
+      const installStatus  = document.getElementById("install_status");
+      const resumeCard     = document.getElementById("card-resume");
 
-      let activeProgram  = "RESUMÉ-MASTER";
-      let deferredPrompt = null;
+      // Feste Modell-Parameter für das Launchpad
+      const MODEL       = "gpt-4.1-mini";
+      const TEMPERATURE = 0.7;
 
-      // RESUMÉ-MASTER als aktiv markieren (falls du CSS dafür nutzen willst)
+      // Logische Bezeichnungen
+      let activeProgramName = "RESUMÉ-MASTER";     // Anzeigename
+      let activeProgramId   = "resume-master";     // technische Program-ID für den Router
+      let deferredPrompt    = null;
+
+      // Résumé-Master optisch markieren (falls du CSS für .active-program nutzt)
       if (resumeCard) {
         resumeCard.classList.add("active-program");
       }
@@ -881,12 +890,14 @@
 
         const label = document.createElement("div");
         label.className = "chat-label";
-        label.textContent =
-          role === "user"
-            ? "Du"
-            : role === "error"
-            ? "Fehler"
-            : activeProgram;
+
+        if (role === "user") {
+          label.textContent = "Du";
+        } else if (role === "error") {
+          label.textContent = "Fehler";
+        } else {
+          label.textContent = activeProgramName;
+        }
 
         const bubble = document.createElement("div");
         bubble.className = "chat-bubble";
@@ -913,7 +924,9 @@
               "Content-Type": "application/json",
             },
             body: JSON.stringify({
-              prompt: "[" + activeProgram + "] " + prompt,
+              // WICHTIG: Programmlogik kommt von dir, daher programId separat
+              programId: activeProgramId,
+              prompt: "[" + activeProgramName + "] " + prompt,
               model: MODEL,
               temperature: TEMPERATURE,
             }),
@@ -942,7 +955,7 @@
 
           appendMessage("genie", reply);
           statusTextMain.textContent =
-            "Antwort erfolgreich erhalten. Aktives Programm: " + activeProgram + ".";
+            "Antwort erfolgreich erhalten. Aktives Programm: " + activeProgramName + ".";
         } catch (err) {
           appendMessage(
             "error",
@@ -955,27 +968,41 @@
       }
 
       // Enter = senden, Shift+Enter = Zeilenumbruch
-      promptInput.addEventListener("keydown", (e) => {
-        if (e.key === "Enter" && !e.shiftKey) {
-          e.preventDefault();
-          sendPrompt();
-        }
-      });
+      if (promptInput) {
+        promptInput.addEventListener("keydown", (e) => {
+          if (e.key === "Enter" && !e.shiftKey) {
+            e.preventDefault();
+            sendPrompt();
+          }
+        });
+      }
 
-      // Kacheln: nur RESUMÉ-MASTER kann aktiv sein, andere bleiben gesperrt
+      // Kacheln: nur RESUMÉ-MASTER kann aktuell wirklich aktiv sein
       document.querySelectorAll(".program-card").forEach((card) => {
         card.addEventListener("click", () => {
           const state = card.getAttribute("data-state");
+
+          // Gesperrte Module geben nur Statusmeldung
           if (state !== "active") {
             statusTextMain.textContent =
               "Dieses Modul ist noch nicht freigeschaltet. Aktives Programm bleibt: " +
-              activeProgram +
+              activeProgramName +
               ".";
             return;
           }
-          activeProgram = "RESUMÉ-MASTER";
+
+          // Aktives, freigeschaltetes Programm: Daten übernehmen
+          const nameFromCard =
+            card.querySelector(".program-title")?.textContent?.trim() ||
+            "RESUMÉ-MASTER";
+          const idFromCard =
+            card.getAttribute("data-program-id") || "resume-master";
+
+          activeProgramName = nameFromCard;
+          activeProgramId   = idFromCard;
+
           statusTextMain.textContent =
-            "Bereit. Router ist aktiv, Programm: " + activeProgram + ".";
+            "Bereit. Router ist aktiv, Programm: " + activeProgramName + ".";
         });
       });
 
@@ -983,7 +1010,7 @@
       // G-CORE LAUNCHPAD – PWA BASIS
       // ============================
 
-      // SERVICE WORKER REGISTRIEREN
+      // Service Worker registrieren
       if ("serviceWorker" in navigator) {
         window.addEventListener("load", () => {
           navigator.serviceWorker
@@ -992,14 +1019,15 @@
               console.log("[G-CORE] Service Worker registriert.");
             })
             .catch((err) => {
-              console.warn("[G-CORE] Service Worker Registrierung fehlgeschlagen:", err);
+              console.warn(
+                "[G-CORE] Service Worker Registrierung fehlgeschlagen:",
+                err
+              );
             });
         });
       }
 
-      // PWA INSTALLATION – LOGIK
-
-      // 1. Browser meldet "Installierbar"
+      // PWA Installations-Logik
       window.addEventListener("beforeinstallprompt", (e) => {
         e.preventDefault();
         deferredPrompt = e;
@@ -1014,7 +1042,6 @@
         }
       });
 
-      // 2. Klick auf den Installieren-Button
       if (installBtn) {
         installBtn.addEventListener("click", async () => {
           if (!deferredPrompt) {
@@ -1045,7 +1072,6 @@
         });
       }
 
-      // 3. Wenn App installiert wurde
       window.addEventListener("appinstalled", () => {
         console.log("[G-CORE] App installiert – Launchpad läuft als PWA.");
         if (installStatus) {
@@ -1058,5 +1084,6 @@
       });
     })();
   </script>
+
 </body>
 </html>
