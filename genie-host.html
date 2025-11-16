@@ -231,6 +231,12 @@
       cursor: pointer;
       overflow: hidden;
     }
+    /* Aktive Programm-Kachel mit Glow (wie bei Omni-Core) */
+.program-card.active {
+  border-color: var(--gold-strong);
+  box-shadow: 0 0 16px rgba(244, 210, 124, 0.45);
+}
+
 
     .program-card.locked {
       background: radial-gradient(circle at top, #14151b 0, #07080c 45%, #040406 100%);
@@ -735,11 +741,8 @@
 
           <div class="program-grid">
             <!-- RESUMÉ-MASTER · AKTIV -->
-            <article class="program-card"
-         data-program="resume"
-         data-program-id="resume-master"
-         data-state="active"
-         id="card-resume">
+            <article class="program-card active" data-program="resume" data-state="active" id="card-resume">
+
 
               <div class="program-badge-row">
                 <div class="program-badge">Aktives Programm</div>
@@ -978,33 +981,39 @@
       }
 
       // Kacheln: nur RESUMÉ-MASTER kann aktuell wirklich aktiv sein
-      document.querySelectorAll(".program-card").forEach((card) => {
-        card.addEventListener("click", () => {
-          const state = card.getAttribute("data-state");
+document.querySelectorAll(".program-card").forEach((card) => {
+  card.addEventListener("click", () => {
+    const state = card.getAttribute("data-state");
 
-          // Gesperrte Module geben nur Statusmeldung
-          if (state !== "active") {
-            statusTextMain.textContent =
-              "Dieses Modul ist noch nicht freigeschaltet. Aktives Programm bleibt: " +
-              activeProgramName +
-              ".";
-            return;
-          }
+    // Gesperrte Module geben nur eine Hinweis-Meldung
+    if (state !== "active") {
+      statusTextMain.textContent =
+        "Dieses Modul ist noch nicht freigeschaltet. Aktives Programm bleibt: " +
+        activeProgramName +
+        ".";
+      return;
+    }
 
-          // Aktives, freigeschaltetes Programm: Daten übernehmen
-          const nameFromCard =
-            card.querySelector(".program-title")?.textContent?.trim() ||
-            "RESUMÉ-MASTER";
-          const idFromCard =
-            card.getAttribute("data-program-id") || "resume-master";
+    // 1. Alle Karten optisch deaktivieren
+    document
+      .querySelectorAll(".program-card")
+      .forEach((c) => c.classList.remove("active"));
 
-          activeProgramName = nameFromCard;
-          activeProgramId   = idFromCard;
+    // 2. Geklickte Karte hervorheben
+    card.classList.add("active");
 
-          statusTextMain.textContent =
-            "Bereit. Router ist aktiv, Programm: " + activeProgramName + ".";
-        });
-      });
+    // 3. Namen aus der Karte lesen (für später erweiterbar)
+    const nameFromCard =
+      card.querySelector(".program-title")?.textContent?.trim() ||
+      "RESUMÉ-MASTER";
+
+    activeProgramName = nameFromCard;
+
+    statusTextMain.textContent =
+      "Bereit. Router ist aktiv, Programm: " + activeProgramName + ".";
+  });
+});
+
 
       // ============================
       // G-CORE LAUNCHPAD – PWA BASIS
