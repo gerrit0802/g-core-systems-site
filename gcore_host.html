@@ -1219,28 +1219,38 @@
       });
 
       // Modul-Wechsel
-      document.querySelectorAll(".program-card").forEach((card) => {
-        card.addEventListener("click", () => {
-          document
-            .querySelectorAll(".program-card")
-            .forEach((c) => c.classList.remove("active"));
+      // Klick-Logik für alle Programmkarten
+document.querySelectorAll('.program-card').forEach((card) => {
+  card.addEventListener('click', () => {
+    // 1. Alle Karten zuerst deaktivieren
+    document
+      .querySelectorAll('.program-card')
+      .forEach((c) => c.classList.remove('active'));
 
-          card.classList.add("active");
-          activeModule = card.getAttribute("data-program") || "OMNI-CORE RUNTIME";
-          inputLabel.textContent = activeModule + " · Aufgabe";
+    // 2. Geklickte Karte aktiv setzen
+    card.classList.add('active');
 
-          statusText.textContent =
-            "Bereit. Router ist aktiv, Modul: " + activeModule + ".";
+    // 3. Modul-Namen ermitteln (für Eingabefeld und Statuszeile)
+    activeModule = card.getAttribute('data-program') || 'OMNI-CORE RUNTIME';
 
-          // Test: program-id auslesen (z. B. für RESUMÉ MASTER)
-var programId = card.getAttribute('data-program-id');
-if (programId) {
-  console.log('Programm gewählt:', programId);
-  alert('Programm gewählt: ' + programId);
-}
+    if (typeof inputLabel !== 'undefined' && inputLabel) {
+      inputLabel.textContent = activeModule + ' – Aufgabe';
+    }
 
-        });
-      });
+    if (typeof statusText !== 'undefined' && statusText) {
+      statusText.textContent =
+        'Bereit. Router ist aktiv, Modul: ' + activeModule + '.';
+    }
+
+    // 4. Test: program-id auslesen (z. B. RESUMÉ MASTER)
+    var programId = card.getAttribute('data-program-id');
+    if (programId) {
+      console.log('Programm gewählt:', programId);
+      alert('Programm gewählt: ' + programId);
+    }
+  });
+});
+
     })();
   </script>
 
