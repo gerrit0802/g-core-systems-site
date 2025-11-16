@@ -9,8 +9,8 @@ const SHELL_ASSETS = [
   "/",
   "/genie-host.html",
   "/manifest_genie.webmanifest",
-  "/assets_icons/genie-softglow-192.png",
-  "/assets_icons/genie-softglow-512.png",
+  "/assets_icons/gcore-icon-192.png",
+  "/assets_icons/gcore-icon-512.png",
   "/assets_icons/gcore_launchpad_maskable_192.png"
 ];
 
