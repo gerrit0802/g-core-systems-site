@@ -746,74 +746,95 @@
         });
       });
 
-      // SERVICE WORKER REGISTRIEREN
+         // SERVICE WORKER REGISTRIEREN
+    (function () {
+      // 1. Service Worker Registrierung
       if ("serviceWorker" in navigator) {
         window.addEventListener("load", () => {
+          console.log("[G-CORE] ServiceWorker-Unterstützung erkannt. Versuche Registrierung …");
+
           navigator.serviceWorker
             .register("/service-worker-genie.js")
+            .then((reg) => {
+              console.log("[G-CORE] ServiceWorker registriert unter Scope:", reg.scope);
+            })
             .catch((err) => {
-              console.warn("Service Worker Registrierung fehlgeschlagen:", err);
+              console.warn("[G-CORE] ServiceWorker-Registrierung fehlgeschlagen:", err);
             });
+        });
+      } else {
+        console.warn("[G-CORE] Dieser Browser unterstützt keine ServiceWorker-API.");
+      }
+
+      // 2. PWA Installationslogik für den Button
+      let deferredPrompt = null;
+      const installBtn = document.getElementById("installBtn");
+      const statusText = document.getElementById("install_status");
+
+      // Button zunächst deaktiviert lassen
+      if (installBtn) {
+        installBtn.disabled = true;
+      }
+
+      // Browser meldet, dass eine Installation möglich ist
+      window.addEventListener("beforeinstallprompt", (e) => {
+        console.log("[G-CORE] beforeinstallprompt-Ereignis empfangen.");
+        e.preventDefault();
+        deferredPrompt = e;
+
+        if (installBtn) {
+          installBtn.disabled = false;
+          if (statusText) {
+            statusText.textContent = "Dieses Launchpad kann als App installiert werden.";
+          }
+        }
+      });
+
+      // Klick auf "App installieren"
+      if (installBtn) {
+        installBtn.addEventListener("click", async () => {
+          if (!deferredPrompt) {
+            // Fallback, wenn der Browser gerade keinen Dialog anbietet
+            console.warn("[G-CORE] Kein deferredPrompt verfügbar. Browser bietet keine Installation an.");
+            if (statusText) {
+              statusText.textContent =
+                "Dein Browser bietet aktuell keinen Installationsdialog an. Nutze ggf. das Browser-Menü.";
+            }
+            alert(
+              "Dein Browser bietet im Moment keinen Installationsdialog an.\n" +
+              "Du kannst die Seite später über das Browser-Menü zum Startbildschirm hinzufügen."
+            );
+            return;
+          }
+
+          deferredPrompt.prompt();
+          const choice = await deferredPrompt.userChoice;
+          console.log("[G-CORE] PWA Installationsentscheidung:", choice.outcome);
+
+          if (choice.outcome === "accepted") {
+            if (statusText) statusText.textContent = "Launchpad wurde als App installiert.";
+            if (installBtn) {
+              installBtn.disabled = true;
+              installBtn.textContent = "Installiert";
+            }
+          } else {
+            if (statusText) statusText.textContent = "Installation abgebrochen. Du kannst es später erneut versuchen.";
+          }
+
+          deferredPrompt = null;
         });
       }
 
-// ====================== PWA INSTALLATION FIX ======================
-let deferredPrompt = null;
-const installBtn = document.getElementById("installBtn");
-const statusText = document.getElementById("install_status");
-
-
-// Browser erkennt Installations-Situation
-window.addEventListener("beforeinstallprompt", (e) => {
-    e.preventDefault();
-    deferredPrompt = e;
-
-    if (installBtn) {
-        installBtn.disabled = false;
-        installBtn.textContent = "App installieren";
-    }
-});
-
-// Klick auf Installieren
-if (installBtn) {
-    installBtn.addEventListener("click", async () => {
-
-        if (!deferredPrompt) {
-            if (statusText) {
-                statusText.textContent =
-                    "Keine Installationsmöglichkeit. Du kannst die App später über das Browser-Menü hinzufügen.";
-            }
-            return;
+      // Wenn App installiert wurde
+      window.addEventListener("appinstalled", () => {
+        console.log("[G-CORE] Launchpad wurde als App installiert.");
+        if (statusText) statusText.textContent = "Launchpad ist als App installiert.";
+        if (installBtn) {
+          installBtn.disabled = true;
+          installBtn.textContent = "Installiert";
         }
-
-        deferredPrompt.prompt();
-
-        const choice = await deferredPrompt.userChoice;
-
-        if (choice.outcome === "accepted") {
-            if (statusText) statusText.textContent = "App installiert!";
-            installBtn.textContent = "Installiert";
-        } else {
-            if (statusText) statusText.textContent =
-                "Installation abgebrochen. Du kannst es später erneut versuchen.";
-            installBtn.textContent = "Installation abgebrochen";
-        }
-
-        deferredPrompt = null;
-    });
-}
-
-// Wenn App installiert wurde
-window.addEventListener("appinstalled", () => {
-    deferredPrompt = null;
-    if (installBtn) {
-        installBtn.disabled = true;
-        installBtn.textContent = "Installiert";
-    }
-    if (statusText) {
-        statusText.textContent = "App erfolgreich installiert.";
-    }
-});
-
+      });
+    })();
+  </script>
 </body>
 </html>
