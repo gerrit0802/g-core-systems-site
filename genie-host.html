@@ -984,62 +984,77 @@
     }
 
     async function sendPrompt() {
-      const prompt = promptInput.value.trim();
-      if (!prompt) return;
+    const prompt = promptInput.value.trim();
+    if (!prompt) return;
 
-      appendMessage("user", prompt);
-      promptInput.value = "";
-      statusTextMain.textContent = "Sende Anfrage an den G-Core Router …";
+    // Eingabe direkt im Verlauf anzeigen
+    appendMessage("user", prompt);
+    promptInput.value = "";
 
-      try {
+    // Statusanzeige aktualisieren
+    statusTextMain.textContent =
+        "Sende Anfrage an " +
+        (activeProgramName ? activeProgramName : "G-CORE Router") +
+        " …";
+
+    // 1) Finalen Prompt bauen
+    //    Wenn ein Blueprint geladen ist, wird er vor die Nutzeraufgabe gepackt
+    let finalPrompt = prompt;
+
+    if (activeProgramId === "resume-master" && blueprintLoaded && activeBlueprint) {
+        finalPrompt =
+            activeBlueprint +
+            "\n\n" +
+            "NUTZER-AUFGABE:\n" +
+            prompt;
+    }
+
+    try {
         const res = await fetch(API_URL, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            // Programmlogik kommt vom Router, daher programId separat
-            programId: activeProgramId,
-            prompt: "[" + activeProgramName + "] " + prompt,
-            model: MODEL,
-            temperature: TEMPERATURE,
-          }),
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                programId: activeProgramId,
+                programName: activeProgramName,
+                prompt: finalPrompt,
+                model: MODEL,
+                temperature: TEMPERATURE,
+            }),
         });
 
         if (!res.ok) {
-          const txt = await res.text();
-          appendMessage(
-            "error",
-            "HTTP-Fehler " +
-              res.status +
-              ": " +
-              res.statusText +
-              "\n\nAntwort des Routers:\n" +
-              txt
-          );
-          statusTextMain.textContent =
-            "Die API hat mit einem Fehler geantwortet. Details im Verlauf.";
-          return;
+            console.error("[G-CORE] Router-Response nicht OK:", res.status);
+            statusTextMain.textContent =
+                "Fehler vom Router: Status " + res.status + ".";
+            return;
         }
 
         const data = await res.json();
-        const reply =
-          (data && (data.reply || data.response)) ||
-          JSON.stringify(data, null, 2);
 
-        appendMessage("genie", reply);
-        statusTextMain.textContent =
-          "Antwort erfolgreich erhalten. Aktives Programm: " + activeProgramName + ".";
-      } catch (err) {
-        appendMessage(
-          "error",
-          "Fetch-Fehler: " +
-            (err && err.message ? err.message : String(err))
+        if (data && data.ok === false) {
+            console.error("[G-CORE] API-Fehler:", data.message || data.error);
+            statusTextMain.textContent =
+                "Fehler: " + (data.message || data.error || "Unbekannter Fehler.");
+            return;
+        }
+
+        const reply = (data && (data.reply || data.response || data.result)) || "";
+
+        appendMessage("assistant", reply);
+
         );
+
         statusTextMain.textContent =
-          "Der Browser konnte die Anfrage nicht erfolgreich abschließen.";
-      }
+            "Antwort erfolgreich erhalten. Aktives Programm: " +
+            (activeProgramName ? activeProgramName : "GENIE") +
+            ".";
+    } catch (err) {
+        console.error("[G-CORE] Fetch-Fehler beim Senden des Prompts:", err);
+        statusTextMain.textContent =
+            "Fetch-Fehler: Anfrage konnte nicht gesendet werden.";
     }
+}
+
 
     // Enter = senden, Shift+Enter = Zeilenumbruch
     if (promptInput) {
