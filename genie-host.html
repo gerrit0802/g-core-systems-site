@@ -741,7 +741,8 @@
 
           <div class="program-grid">
             <!-- RESUMÉ-MASTER · AKTIV -->
-            <article class="program-card active" data-program="resume" data-state="active" id="card-resume">
+            <article class="program-card active" data-program="resume-master" data-state="active" id="card-resume">
+
 
 
               <div class="program-badge-row">
@@ -857,242 +858,287 @@
     </section>
   </main>
 
-    <script>
-    (function () {
-      // Zentrale Router-URL
-      const API_URL = "https://api.g-core-systems.com/genie";
+   <script>
+  (function () {
+    // Zentrale Router-URL
+    const ROUTER_BASE = "https://api.g-core-systems.com";
+    const API_URL     = ROUTER_BASE + "/genie";
 
-      const promptInput    = document.getElementById("promptInput");
-      const chatLog        = document.getElementById("chatLog");
-      const statusTextMain = document.getElementById("statusText");
+    const promptInput    = document.getElementById("promptInput");
+    const chatLog        = document.getElementById("chatLog");
+    const statusTextMain = document.getElementById("statusText");
 
-      const installBtn     = document.getElementById("installBtn");
-      const installStatus  = document.getElementById("install_status");
-      const resumeCard     = document.getElementById("card-resume");
+    const installBtn     = document.getElementById("installBtn");
+    const installStatus  = document.getElementById("install_status");
+    const resumeCard     = document.getElementById("card-resume");
 
-      // Feste Modell-Parameter für das Launchpad
-      const MODEL       = "gpt-4.1-mini";
-      const TEMPERATURE = 0.7;
+    // Label über dem Eingabefeld (für spätere Programme dynamisch)
+    const fieldLabel     = document.querySelector(".field-label");
 
-      // Logische Bezeichnungen
-      let activeProgramName = "RESUMÉ-MASTER";     // Anzeigename
-      let activeProgramId   = "resume-master";     // technische Program-ID für den Router
-      let deferredPrompt    = null;
+    // Feste Modell-Parameter für das Launchpad
+    const MODEL       = "gpt-4.1-mini";
+    const TEMPERATURE = 0.7;
 
-      // Résumé-Master optisch markieren (falls du CSS für .active-program nutzt)
-      if (resumeCard) {
-        resumeCard.classList.add("active-program");
-      }
+    // Logische Bezeichnungen
+    let activeProgramName = "RESUMÉ-MASTER";   // Anzeigename
+    let activeProgramId   = "resume-master";   // technische Program-ID für den Router
+    let deferredPrompt    = null;
 
-      function appendMessage(role, text) {
-        const placeholder = chatLog.querySelector(".chat-placeholder");
-        if (placeholder) placeholder.remove();
-
-        const row = document.createElement("div");
-        row.className = "chat-row " + role;
-
-        const label = document.createElement("div");
-        label.className = "chat-label";
-
-        if (role === "user") {
-          label.textContent = "Du";
-        } else if (role === "error") {
-          label.textContent = "Fehler";
-        } else {
-          label.textContent = activeProgramName;
-        }
-
-        const bubble = document.createElement("div");
-        bubble.className = "chat-bubble";
-        bubble.textContent = text;
-
-        row.appendChild(label);
-        row.appendChild(bubble);
-        chatLog.appendChild(row);
-        chatLog.scrollTop = chatLog.scrollHeight;
-      }
-
-      async function sendPrompt() {
-        const prompt = promptInput.value.trim();
-        if (!prompt) return;
-
-        appendMessage("user", prompt);
-        promptInput.value = "";
-        statusTextMain.textContent = "Sende Anfrage an den G-Core Router …";
-
-        try {
-          const res = await fetch(API_URL, {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              // WICHTIG: Programmlogik kommt von dir, daher programId separat
-              programId: activeProgramId,
-              prompt: "[" + activeProgramName + "] " + prompt,
-              model: MODEL,
-              temperature: TEMPERATURE,
-            }),
-          });
-
-          if (!res.ok) {
-            const txt = await res.text();
-            appendMessage(
-              "error",
-              "HTTP-Fehler " +
-                res.status +
-                ": " +
-                res.statusText +
-                "\n\nAntwort des Routers:\n" +
-                txt
-            );
-            statusTextMain.textContent =
-              "Die API hat mit einem Fehler geantwortet. Details im Verlauf.";
-            return;
-          }
-
-          const data = await res.json();
-          const reply =
-            (data && (data.reply || data.response)) ||
-            JSON.stringify(data, null, 2);
-
-          appendMessage("genie", reply);
-          statusTextMain.textContent =
-            "Antwort erfolgreich erhalten. Aktives Programm: " + activeProgramName + ".";
-        } catch (err) {
-          appendMessage(
-            "error",
-            "Fetch-Fehler: " +
-              (err && err.message ? err.message : String(err))
-          );
-          statusTextMain.textContent =
-            "Der Browser konnte die Anfrage nicht erfolgreich abschließen.";
-        }
-      }
-
-      // Enter = senden, Shift+Enter = Zeilenumbruch
-      if (promptInput) {
-        promptInput.addEventListener("keydown", (e) => {
-          if (e.key === "Enter" && !e.shiftKey) {
-            e.preventDefault();
-            sendPrompt();
-          }
-        });
-      }
-
-      // Kacheln: nur RESUMÉ-MASTER kann aktuell wirklich aktiv sein
-document.querySelectorAll(".program-card").forEach((card) => {
-  card.addEventListener("click", () => {
-    const state = card.getAttribute("data-state");
-
-    // Gesperrte Module geben nur eine Hinweis-Meldung
-    if (state !== "active") {
-      statusTextMain.textContent =
-        "Dieses Modul ist noch nicht freigeschaltet. Aktives Programm bleibt: " +
-        activeProgramName +
-        ".";
-      return;
+    // Résumé-Master optisch markieren
+    if (resumeCard) {
+      resumeCard.classList.add("active-program");
     }
 
-    // 1. Alle Karten optisch deaktivieren
-    document
-      .querySelectorAll(".program-card")
-      .forEach((c) => c.classList.remove("active"));
+    function appendMessage(role, text) {
+      const placeholder = chatLog.querySelector(".chat-placeholder");
+      if (placeholder) placeholder.remove();
 
-    // 2. Geklickte Karte hervorheben
-    card.classList.add("active");
+      const row = document.createElement("div");
+      row.className = "chat-row " + role;
 
-    // 3. Namen aus der Karte lesen (für später erweiterbar)
-    const nameFromCard =
-      card.querySelector(".program-title")?.textContent?.trim() ||
-      "RESUMÉ-MASTER";
+      const label = document.createElement("div");
+      label.className = "chat-label";
 
-    activeProgramName = nameFromCard;
-
-    statusTextMain.textContent =
-      "Bereit. Router ist aktiv, Programm: " + activeProgramName + ".";
-  });
-});
-
-
-      // ============================
-      // G-CORE LAUNCHPAD – PWA BASIS
-      // ============================
-
-      // Service Worker registrieren
-      if ("serviceWorker" in navigator) {
-        window.addEventListener("load", () => {
-          navigator.serviceWorker
-            .register("/service-worker-genie.js")
-            .then(() => {
-              console.log("[G-CORE] Service Worker registriert.");
-            })
-            .catch((err) => {
-              console.warn(
-                "[G-CORE] Service Worker Registrierung fehlgeschlagen:",
-                err
-              );
-            });
-        });
+      if (role === "user") {
+        label.textContent = "Du";
+      } else if (role === "error") {
+        label.textContent = "Fehler";
+      } else {
+        label.textContent = activeProgramName;
       }
 
-      // PWA Installations-Logik
-      window.addEventListener("beforeinstallprompt", (e) => {
-        e.preventDefault();
-        deferredPrompt = e;
+      const bubble = document.createElement("div");
+      bubble.className = "chat-bubble";
+      bubble.textContent = text;
 
-        if (installBtn) {
-          installBtn.disabled = false;
-          installBtn.textContent = "App installieren";
+      row.appendChild(label);
+      row.appendChild(bubble);
+      chatLog.appendChild(row);
+      chatLog.scrollTop = chatLog.scrollHeight;
+    }
+
+    async function sendPrompt() {
+      const prompt = promptInput.value.trim();
+      if (!prompt) return;
+
+      appendMessage("user", prompt);
+      promptInput.value = "";
+      statusTextMain.textContent = "Sende Anfrage an den G-Core Router …";
+
+      try {
+        const res = await fetch(API_URL, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            // Programmlogik kommt vom Router, daher programId separat
+            programId: activeProgramId,
+            prompt: "[" + activeProgramName + "] " + prompt,
+            model: MODEL,
+            temperature: TEMPERATURE,
+          }),
+        });
+
+        if (!res.ok) {
+          const txt = await res.text();
+          appendMessage(
+            "error",
+            "HTTP-Fehler " +
+              res.status +
+              ": " +
+              res.statusText +
+              "\n\nAntwort des Routers:\n" +
+              txt
+          );
+          statusTextMain.textContent =
+            "Die API hat mit einem Fehler geantwortet. Details im Verlauf.";
+          return;
         }
-        if (installStatus) {
-          installStatus.textContent =
-            "App kann installiert werden. Klicke auf „App installieren“, um das Launchpad hinzuzufügen.";
+
+        const data = await res.json();
+        const reply =
+          (data && (data.reply || data.response)) ||
+          JSON.stringify(data, null, 2);
+
+        appendMessage("genie", reply);
+        statusTextMain.textContent =
+          "Antwort erfolgreich erhalten. Aktives Programm: " + activeProgramName + ".";
+      } catch (err) {
+        appendMessage(
+          "error",
+          "Fetch-Fehler: " +
+            (err && err.message ? err.message : String(err))
+        );
+        statusTextMain.textContent =
+          "Der Browser konnte die Anfrage nicht erfolgreich abschließen.";
+      }
+    }
+
+    // Enter = senden, Shift+Enter = Zeilenumbruch
+    if (promptInput) {
+      promptInput.addEventListener("keydown", (e) => {
+        if (e.key === "Enter" && !e.shiftKey) {
+          e.preventDefault();
+          sendPrompt();
         }
       });
+    }
+
+    // Optionaler Blueprint-Check beim Programmwechsel
+    async function checkBlueprintAvailability(programId) {
+      try {
+        const res = await fetch(
+          ROUTER_BASE + "/programs/" + programId + "/blueprint"
+        );
+
+        if (!res.ok) {
+          console.warn(
+            "[G-CORE] Blueprint-Check für",
+            programId,
+            "fehlgeschlagen mit Status",
+            res.status
+          );
+          return;
+        }
+
+        console.log("[G-CORE] Blueprint für", programId, "ist erreichbar.");
+        statusTextMain.textContent =
+          "Blueprint für " + activeProgramName + " ist verfügbar. Programm bereit.";
+      } catch (err) {
+        console.warn(
+          "[G-CORE] Fehler beim Blueprint-Check:",
+          err && err.message ? err.message : String(err)
+        );
+      }
+    }
+
+    // Kacheln: aktuell ist nur RESUMÉ-MASTER wirklich aktiv
+    document.querySelectorAll(".program-card").forEach((card) => {
+      card.addEventListener("click", () => {
+        const state        = card.getAttribute("data-state");
+        const programId    = card.getAttribute("data-program") || "resume-master";
+        const nameFromCard =
+          card.querySelector(".program-title")?.textContent?.trim() ||
+          "RESUMÉ-MASTER";
+
+        // Gesperrte Module: nur Hinweis, kein Programmwechsel
+        if (state !== "active") {
+          statusTextMain.textContent =
+            "Dieses Modul ist noch nicht freigeschaltet. Aktives Programm bleibt: " +
+            activeProgramName +
+            ".";
+          return;
+        }
+
+        // 1. Alle Karten optisch deaktivieren
+        document
+          .querySelectorAll(".program-card")
+          .forEach((c) => c.classList.remove("active"));
+
+        // 2. Geklickte Karte hervorheben
+        card.classList.add("active");
+
+        // 3. Logische Programm-Daten setzen
+        activeProgramId   = programId;
+        activeProgramName = nameFromCard;
+
+        // 4. Label & Placeholder im Eingabefeld anpassen
+        if (fieldLabel) {
+          fieldLabel.textContent = activeProgramName + " · Aufgabe";
+        }
+        if (promptInput) {
+          promptInput.placeholder =
+            "Schreibe hier deine Aufgabe für " + activeProgramName + " …";
+        }
+
+        // 5. Blueprint-Verfügbarkeit prüfen
+        checkBlueprintAvailability(activeProgramId);
+
+        statusTextMain.textContent =
+          "Bereit. Router ist aktiv, Programm: " + activeProgramName + ".";
+      });
+    });
+
+    // ============================
+    // G-CORE LAUNCHPAD – PWA BASIS
+    // ============================
+
+    // Service Worker registrieren
+    if ("serviceWorker" in navigator) {
+      window.addEventListener("load", () => {
+        navigator.serviceWorker
+          .register("/service-worker-genie.js")
+          .then(() => {
+            console.log("[G-CORE] Service Worker registriert.");
+          })
+          .catch((err) => {
+            console.warn(
+              "[G-CORE] Service Worker Registrierung fehlgeschlagen:",
+              err
+            );
+          });
+      });
+    }
+
+    // PWA Installations-Logik
+    window.addEventListener("beforeinstallprompt", (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
 
       if (installBtn) {
-        installBtn.addEventListener("click", async () => {
-          if (!deferredPrompt) {
-            if (installStatus) {
-              installStatus.textContent =
-                "Keine Installationsmöglichkeit. Du kannst die App später über das Browser-Menü hinzufügen.";
-            }
-            return;
-          }
-
-          deferredPrompt.prompt();
-          const choice = await deferredPrompt.userChoice;
-
-          if (choice.outcome === "accepted") {
-            if (installStatus) {
-              installStatus.textContent = "App installiert.";
-            }
-            installBtn.textContent = "Installiert";
-            installBtn.disabled = true;
-          } else {
-            if (installStatus) {
-              installStatus.textContent =
-                "Installation abgebrochen. Du kannst es später erneut versuchen.";
-            }
-          }
-
-          deferredPrompt = null;
-        });
+        installBtn.disabled = false;
+        installBtn.textContent = "App installieren";
       }
+      if (installStatus) {
+        installStatus.textContent =
+          "App kann installiert werden. Klicke auf „App installieren“, um das Launchpad hinzuzufügen.";
+      }
+    });
 
-      window.addEventListener("appinstalled", () => {
-        console.log("[G-CORE] App installiert – Launchpad läuft als PWA.");
-        if (installStatus) {
-          installStatus.textContent = "Launchpad ist als App installiert.";
+    if (installBtn) {
+      installBtn.addEventListener("click", async () => {
+        if (!deferredPrompt) {
+          if (installStatus) {
+            installStatus.textContent =
+              "Keine Installationsmöglichkeit. Du kannst die App später über das Browser-Menü hinzufügen.";
+          }
+          return;
         }
-        if (installBtn) {
-          installBtn.disabled = true;
+
+        deferredPrompt.prompt();
+        const choice = await deferredPrompt.userChoice;
+
+        if (choice.outcome === "accepted") {
+          if (installStatus) {
+            installStatus.textContent = "App installiert.";
+          }
           installBtn.textContent = "Installiert";
+          installBtn.disabled = true;
+        } else {
+          if (installStatus) {
+            installStatus.textContent =
+              "Installation abgebrochen. Du kannst es später erneut versuchen.";
+          }
         }
+
+        deferredPrompt = null;
       });
-    })();
-  </script>
+    }
+
+    window.addEventListener("appinstalled", () => {
+      console.log("[G-CORE] App installiert – Launchpad läuft als PWA.");
+      if (installStatus) {
+        installStatus.textContent = "Launchpad ist als App installiert.";
+      }
+      if (installBtn) {
+        installBtn.disabled = true;
+        installBtn.textContent = "Installiert";
+      }
+    });
+  })();
+</script>
+
 
 </body>
 </html>
