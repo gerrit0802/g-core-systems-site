@@ -864,6 +864,7 @@
     const ROUTER_BASE = "https://api.g-core-systems.com";
     const API_URL     = ROUTER_BASE + "/genie";
 
+    // DOM-Elemente
     const promptInput    = document.getElementById("promptInput");
     const chatLog        = document.getElementById("chatLog");
     const statusTextMain = document.getElementById("statusText");
@@ -872,22 +873,87 @@
     const installStatus  = document.getElementById("install_status");
     const resumeCard     = document.getElementById("card-resume");
 
-    // Label über dem Eingabefeld (für spätere Programme dynamisch)
-    const fieldLabel     = document.querySelector(".field-label");
+    // Basis-URL für Programm-Endpunkte
+    const PROGRAM_BASE   = ROUTER_BASE + "/programs";
 
     // Feste Modell-Parameter für das Launchpad
     const MODEL       = "gpt-4.1-mini";
     const TEMPERATURE = 0.7;
 
-    // Logische Bezeichnungen
-    let activeProgramName = "RESUMÉ-MASTER";   // Anzeigename
-    let activeProgramId   = "resume-master";   // technische Program-ID für den Router
+    // Runtime-Status
+    let activeProgramId   = "resume-master";     // technische Program-ID
+    let activeProgramName = "RESUMÉ-MASTER";     // Anzeigename im Chat
+    let activeBlueprint   = null;
+    let blueprintLoaded   = false;
     let deferredPrompt    = null;
 
-    // Résumé-Master optisch markieren
+    // Blueprint vom Router laden
+    async function loadBlueprint(programId) {
+      blueprintLoaded   = false;
+      activeBlueprint   = null;
+
+      try {
+        const res = await fetch(`${PROGRAM_BASE}/${programId}/blueprint`);
+
+        if (!res.ok) {
+          console.error("[G-CORE] Blueprint-Request fehlgeschlagen:", res.status);
+          statusTextMain.textContent = "Blueprint konnte nicht geladen werden.";
+          return;
+        }
+
+        const data = await res.json();
+
+        if (!data.ok) {
+          console.error("[G-CORE] Blueprint-API meldet Fehler:", data.message || data.error);
+          statusTextMain.textContent =
+            "Blueprint-Fehler: " + (data.message || data.error || "");
+          return;
+        }
+
+        activeBlueprint = data.blueprint;
+        blueprintLoaded = true;
+
+        console.log(
+          "[G-CORE] Blueprint geladen für",
+          data.program,
+          "Version:",
+          data.version
+        );
+        statusTextMain.textContent =
+          "Blueprint für " + data.program + " ist verfügbar. Programm bereit.";
+      } catch (err) {
+        console.error("[G-CORE] Fehler beim Laden des Blueprints:", err);
+        statusTextMain.textContent = "Fehler beim Laden des Blueprints.";
+      }
+    }
+
+    // Programm aktiv setzen
+    function setActiveProgram(programId, programName) {
+      activeProgramId   = programId;
+      activeProgramName = programName;
+
+      statusTextMain.textContent =
+        "Aktives Programm: " + programName + " – Blueprint wird geprüft …";
+
+      loadBlueprint(programId);
+    }
+
+    // Klick auf die Résumé-Master-Kachel
     if (resumeCard) {
+      resumeCard.addEventListener("click", () => {
+        setActiveProgram("resume-master", "RESUMÉ-MASTER");
+      });
+
+      // optische Markierung im Grid
       resumeCard.classList.add("active-program");
     }
+
+    // Label über dem Eingabefeld (wenn vorhanden)
+    const fieldLabel = document.querySelector(".field-label");
+    if (fieldLabel) {
+      fieldLabel.textContent = "RESUMÉ-MASTER · Aufgabe";
+    }
+
 
     function appendMessage(role, text) {
       const placeholder = chatLog.querySelector(".chat-placeholder");
