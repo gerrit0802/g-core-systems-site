@@ -983,78 +983,99 @@
       chatLog.scrollTop = chatLog.scrollHeight;
     }
 
-    async function sendPrompt() {
-    const prompt = promptInput.value.trim();
-    if (!prompt) return;
+       async function sendPrompt() {
+      const prompt = promptInput.value.trim();
+      if (!prompt) return;
 
-    // Eingabe direkt im Verlauf anzeigen
-    appendMessage("user", prompt);
-    promptInput.value = "";
+      // Eingabe direkt im Verlauf anzeigen
+      appendMessage("user", prompt);
+      promptInput.value = "";
 
-    // Statusanzeige aktualisieren
-    statusTextMain.textContent =
+      // Statusanzeige aktualisieren
+      statusTextMain.textContent =
         "Sende Anfrage an " +
         (activeProgramName ? activeProgramName : "G-CORE Router") +
         " …";
 
-    // 1) Finalen Prompt bauen
-    //    Wenn ein Blueprint geladen ist, wird er vor die Nutzeraufgabe gepackt
-    let finalPrompt = prompt;
+      // 1) Finalen Prompt bauen
+      //    Wenn ein Blueprint geladen ist, wird er vor die Nutzeraufgabe gepackt
+      let finalPrompt = prompt;
 
-    if (activeProgramId === "resume-master" && blueprintLoaded && activeBlueprint) {
+      if (
+        activeProgramId === "resume-master" &&
+        typeof blueprintLoaded !== "undefined" &&
+        typeof activeBlueprint !== "undefined" &&
+        blueprintLoaded &&
+        activeBlueprint
+      ) {
         finalPrompt =
-            activeBlueprint +
-            "\n\n" +
-            "NUTZER-AUFGABE:\n" +
-            prompt;
-    }
+          activeBlueprint +
+          "\n\n" +
+          "NUTZER-AUFGABE:\n" +
+          prompt;
+      }
 
-    try {
+      try {
         const res = await fetch(API_URL, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-                programId: activeProgramId,
-                programName: activeProgramName,
-                prompt: finalPrompt,
-                model: MODEL,
-                temperature: TEMPERATURE,
-            }),
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            programId: activeProgramId,
+            programName: activeProgramName,
+            prompt: finalPrompt,
+            model: MODEL,
+            temperature: TEMPERATURE,
+          }),
         });
 
         if (!res.ok) {
-            console.error("[G-CORE] Router-Response nicht OK:", res.status);
-            statusTextMain.textContent =
-                "Fehler vom Router: Status " + res.status + ".";
-            return;
+          console.error("[G-CORE] Router-Response nicht OK:", res.status);
+          statusTextMain.textContent =
+            "Fehler vom Router: Status " + res.status + ".";
+          appendMessage(
+            "assistant",
+            "Es gab einen technischen Fehler beim Router. Bitte versuche es später erneut."
+          );
+          return;
         }
 
         const data = await res.json();
 
         if (data && data.ok === false) {
-            console.error("[G-CORE] API-Fehler:", data.message || data.error);
-            statusTextMain.textContent =
-                "Fehler: " + (data.message || data.error || "Unbekannter Fehler.");
-            return;
+          console.error("[G-CORE] API-Fehler:", data.message || data.error);
+          statusTextMain.textContent =
+            "Fehler: " +
+            (data.message || data.error || "Unbekannter Fehler.");
+          appendMessage(
+            "assistant",
+            "Das Programm meldet einen Fehler: " +
+              (data.message || data.error || "Unbekannter Fehler.")
+          );
+          return;
         }
 
-        const reply = (data && (data.reply || data.response || data.result)) || "";
+        const reply =
+          (data && (data.reply || data.response || data.result)) || "";
 
-        appendMessage("assistant", reply);
-
+        appendMessage(
+          "assistant",
+          reply || "Es kam eine leere Antwort vom Programm zurück."
         );
 
         statusTextMain.textContent =
-            "Antwort erfolgreich erhalten. Aktives Programm: " +
-            (activeProgramName ? activeProgramName : "GENIE") +
-            ".";
-    } catch (err) {
+          "Antwort erfolgreich erhalten. Aktives Programm: " +
+          (activeProgramName ? activeProgramName : "GENIE") +
+          ".";
+      } catch (err) {
         console.error("[G-CORE] Fetch-Fehler beim Senden des Prompts:", err);
         statusTextMain.textContent =
-            "Fetch-Fehler: Anfrage konnte nicht gesendet werden.";
+          "Fetch-Fehler: Anfrage konnte nicht gesendet werden.";
+        appendMessage(
+          "assistant",
+          "Ich konnte den Router gerade nicht erreichen. Prüfe deine Verbindung oder versuche es später noch einmal."
+        );
+      }
     }
-}
-
 
     // Enter = senden, Shift+Enter = Zeilenumbruch
     if (promptInput) {
@@ -1085,7 +1106,9 @@
 
         console.log("[G-CORE] Blueprint für", programId, "ist erreichbar.");
         statusTextMain.textContent =
-          "Blueprint für " + activeProgramName + " ist verfügbar. Programm bereit.";
+          "Blueprint für " +
+          (activeProgramName || "das aktive Programm") +
+          " ist verfügbar. Programm bereit.";
       } catch (err) {
         console.warn(
           "[G-CORE] Fehler beim Blueprint-Check:",
@@ -1097,8 +1120,8 @@
     // Kacheln: aktuell ist nur RESUMÉ-MASTER wirklich aktiv
     document.querySelectorAll(".program-card").forEach((card) => {
       card.addEventListener("click", () => {
-        const state        = card.getAttribute("data-state");
-        const programId    = card.getAttribute("data-program") || "resume-master";
+        const state = card.getAttribute("data-state");
+        const programId = card.getAttribute("data-program") || "resume-master";
         const nameFromCard =
           card.querySelector(".program-title")?.textContent?.trim() ||
           "RESUMÉ-MASTER";
@@ -1107,7 +1130,7 @@
         if (state !== "active") {
           statusTextMain.textContent =
             "Dieses Modul ist noch nicht freigeschaltet. Aktives Programm bleibt: " +
-            activeProgramName +
+            (activeProgramName || "RESUMÉ-MASTER") +
             ".";
           return;
         }
@@ -1121,7 +1144,7 @@
         card.classList.add("active");
 
         // 3. Logische Programm-Daten setzen
-        activeProgramId   = programId;
+        activeProgramId = programId;
         activeProgramName = nameFromCard;
 
         // 4. Label & Placeholder im Eingabefeld anpassen
@@ -1219,7 +1242,6 @@
     });
   })();
 </script>
-
 
 </body>
 </html>
