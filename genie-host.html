@@ -227,6 +227,15 @@
       gap: 8px;
     }
 
+    .program-grid {
+  grid-auto-rows: 180px;  /* feste, kompakte Höhe */
+}
+.program-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
     .program-card {
       position: relative;
       border-radius: 18px;
@@ -728,69 +737,75 @@
           </div>
 
           <div class="program-grid">
-            <!-- RESUMÉ-MASTER · AKTIV -->
-            <article class="program-card active" data-program="resume-master" data-state="active" id="card-resume">
-              <div class="program-badge-row">
-                <div class="program-badge">Aktives Programm</div>
-                <div class="program-tag">frei nutzbar</div>
-              </div>
-              <div class="program-title">RESUMÉ-MASTER</div>
-              <div class="program-subline">
-                Erstellung, Überarbeitung und Analyse von Lebensläufen und Bewerbungen.
-              </div>
-              <div class="program-note">
-                Dieses Modul ist vollständig freigeschaltet und kann sofort genutzt werden.
-              </div>
-            </article>
 
-            <!-- SOCIAL-MAGIC · DEMNÄCHST VERFÜGBAR -->
-            <article class="program-card locked upcoming" data-program="social-magic" data-state="upcoming">
-              <div class="program-badge-row">
-                <div class="program-badge">Demnächst verfügbar</div>
-                <div class="program-tag locked-tag">gesperrt</div>
-              </div>
-              <div class="program-title">SOCIAL-MAGIC MODUL</div>
-              <div class="program-subline">
-                Geplantes Modul für Inhalte, Postings und Strategien rund um Social Media.
-              </div>
-              <div class="program-lock">
-                <span class="icon">🔒</span>
-                <span>Freischaltung folgt</span>
-              </div>
-            </article>
+  <!-- 1: Aktiv -->
+  <article class="program-card active" data-program="resume-master" data-state="active" id="card-resume">
+    <div class="program-badge-row">
+      <div class="program-badge">Aktives Programm</div>
+      <div class="program-tag">frei nutzbar</div>
+    </div>
+    <div class="program-title">RESUMÉ-MASTER</div>
+    <div class="program-subline">Erstellung, Überarbeitung und Analyse von Bewerbungen.</div>
+  </article>
 
-            <!-- GENERISCHE COMING-SOON-KACHEL 1 -->
-            <article class="program-card locked" data-state="locked">
-              <div class="program-badge-row">
-                <div class="program-badge">Coming Soon</div>
-                <div class="program-tag locked-tag">in Planung</div>
-              </div>
-              <div class="program-title">Neues G-Core Modul</div>
-              <div class="program-subline">
-                Reservierte Kachel für ein zukünftiges G-Core Programm. Details werden später bekanntgegeben.
-              </div>
-              <div class="program-lock">
-                <span class="icon">🔒</span>
-                <span>noch nicht verfügbar</span>
-              </div>
-            </article>
+  <!-- 2: Social Magic (gesperrt) -->
+  <article class="program-card locked upcoming" data-program="social-magic" data-state="upcoming">
+    <div class="program-badge-row">
+      <div class="program-badge">Demnächst</div>
+      <div class="program-tag locked-tag">gesperrt</div>
+    </div>
+    <div class="program-title">SOCIAL-MAGIC MODUL</div>
+    <div class="program-subline">Modul für Social-Media-Strategien & Creation.</div>
+  </article>
 
-            <!-- GENERISCHE COMING-SOON-KACHEL 2 -->
-            <article class="program-card locked" data-state="locked">
-              <div class="program-badge-row">
-                <div class="program-badge">Coming Soon</div>
-                <div class="program-tag locked-tag">konzeptphase</div>
-              </div>
-              <div class="program-title">Weiteres G-Core Modul</div>
-              <div class="program-subline">
-                Platzhalter für ein weiteres Modul innerhalb des Launchpads. Keine Inhalte sichtbar, bis es freigeschaltet wird.
-              </div>
-              <div class="program-lock">
-                <span class="icon">🔒</span>
-                <span>wird später gefüllt</span>
-              </div>
-            </article>
-          </div>
+  <!-- Ab hier: Ökosystem-Vitrine (alle gesperrt) -->
+  <article class="program-card locked" data-state="locked">
+    <div class="program-badge-row">
+      <div class="program-badge">Coming Soon</div>
+      <div class="program-tag locked-tag">in Planung</div>
+    </div>
+    <div class="program-title">COUPLE-CORE™</div>
+    <div class="program-subline">Beziehungsanalyse & Dialogsystem.</div>
+  </article>
+
+  <article class="program-card locked" data-state="locked">
+    <div class="program-badge-row">
+      <div class="program-badge">Coming Soon</div>
+      <div class="program-tag locked-tag">in Planung</div>
+    </div>
+    <div class="program-title">STORY-FORGE™</div>
+    <div class="program-subline">Professionelles Story- & Content-System.</div>
+  </article>
+
+  <article class="program-card locked" data-state="locked">
+    <div class="program-badge-row">
+      <div class="program-badge">Coming Soon</div>
+      <div class="program-tag locked-tag">R&D</div>
+    </div>
+    <div class="program-title">CORE-6 AGENTS</div>
+    <div class="program-subline">Influencer- & Brand-Automation.</div>
+  </article>
+
+  <article class="program-card locked" data-state="locked">
+    <div class="program-badge-row">
+      <div class="program-badge">Coming Soon</div>
+      <div class="program-tag locked-tag">in Planung</div>
+    </div>
+    <div class="program-title">CARE-FLOW™</div>
+    <div class="program-subline">Professionelle Dokumentationssysteme.</div>
+  </article>
+
+  <article class="program-card locked" data-state="locked">
+    <div class="program-badge-row">
+      <div class="program-badge">Coming Soon</div>
+      <div class="program-tag locked-tag">konzeptphase</div>
+    </div>
+    <div class="program-title">EMAIL-PRO™</div>
+    <div class="program-subline">Automatisiertes Mailing & Professional Writing.</div>
+  </article>
+
+</div>
+
         </div>
       </section>
 
@@ -805,7 +820,7 @@
 
         <div id="chatLog" class="chat-log">
           <div class="chat-placeholder">
-            Noch keine Unterhaltung gestartet. Formuliere in der Mitte deine Aufgabe für RESUMÉ-MASTER und drücke Enter.
+            Noch keine Unterhaltung gestartet. Formuliere deine Aufgabe für RESUMÉ-MASTER und drücke Enter.
           </div>
         </div>
 
