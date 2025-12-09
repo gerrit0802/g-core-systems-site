@@ -52,21 +52,21 @@
     }
 
     .shell {
-  width: 100%;
-  max-width: 1280px;
-  background: radial-gradient(circle at top, #1a1c22 0, #0c0d10 55%, #050506 100%);
-  border-radius: 32px;
-  border: 1px solid rgba(215, 184, 111, 0.25);
-  box-shadow:
-    0 0 60px rgba(0, 0, 0, 0.85),
-    0 0 40px rgba(215, 184, 111, 0.18);
-  padding: 22px 22px 18px;
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  overflow: hidden;
-}
-
+      width: 100%;
+      max-width: 100%;
+      min-height: calc(100vh - 32px);
+      background: radial-gradient(circle at top, #1a1c22 0, #0c0d10 55%, #050506 100%);
+      border-radius: 32px;
+      border: 1px solid rgba(215, 184, 111, 0.25);
+      box-shadow:
+        0 0 60px rgba(0, 0, 0, 0.85),
+        0 0 40px rgba(215, 184, 111, 0.18);
+      padding: 22px 22px 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      overflow: hidden;
+    }
 
     /* HEADER */
 
@@ -154,20 +154,19 @@
       text-align: right;
     }
 
-    /* MAIN GRID – KACHELN LINKS, AUSGABE GROSS RECHTS, EINGABE DARUNTER */
+    /* MAIN GRID */
 
     .main {
-  flex: 1;
-  display: grid;
-  grid-template-columns: minmax(0, 1.05fr) minmax(0, 1.6fr);
-  grid-template-rows: minmax(0, 2fr) minmax(0, 0.7fr);
-  grid-template-areas:
-    "programs output"
-    "programs input";
-  gap: 16px;
-  min-height: 0;
-}
-
+      flex: 1;
+      display: grid;
+      grid-template-columns: minmax(0, 1.05fr) minmax(0, 1.6fr);
+      grid-template-rows: minmax(0, 2fr) minmax(0, 0.8fr);
+      grid-template-areas:
+        "programs output"
+        "programs input";
+      gap: 16px;
+      min-height: 0;
+    }
 
     .panel {
       border-radius: 24px;
@@ -180,18 +179,9 @@
       min-height: 0;
     }
 
-    /* Grid-Zuweisung für die drei Panels */
-    .program-panel {
-      grid-area: programs;
-    }
-
-    .chat-panel {
-      grid-area: output;
-    }
-
-    .input-panel {
-      grid-area: input;
-    }
+    .program-panel { grid-area: programs; }
+    .chat-panel    { grid-area: output; }
+    .input-panel   { grid-area: input; }
 
     .panel-header {
       display: flex;
@@ -250,7 +240,6 @@
       overflow: hidden;
     }
 
-    /* Aktive Programm-Kachel mit Glow (wie bei Omni-Core) */
     .program-card.active {
       border-color: var(--gold-strong);
       box-shadow: 0 0 16px rgba(244, 210, 124, 0.45);
@@ -338,7 +327,7 @@
       color: rgba(200, 200, 200, 0.7);
     }
 
-    /* INPUT PANEL (RECHTS UNTEN, KLEINER BLOCK) */
+    /* INPUT PANEL (RECHTS UNTEN) */
 
     .field-label {
       font-size: 11px;
@@ -364,7 +353,7 @@
     .prompt-input {
       width: 100%;
       height: 100%;
-      min-height: 130px;
+      min-height: 120px;
       resize: none;
       background: radial-gradient(circle at top left, #20222c 0, #12141b 40%, #090a0f 100%);
       border-radius: 18px;
@@ -389,7 +378,7 @@
       color: rgba(200, 200, 200, 0.6);
     }
 
-    /* CHAT PANEL (RECHTS OBEN, GROSSER BLOCK) */
+    /* CHAT PANEL (RECHTS OBEN) */
 
     .chat-log {
       flex: 1;
@@ -455,10 +444,6 @@
       overflow: hidden;
       text-overflow: ellipsis;
     }
-
-    /* ===========================
-       RESPONSIVE OPTIMIERUNG
-       =========================== */
 
     /* Tablet / kleinere Laptops */
     @media (max-width: 1080px) {
@@ -527,8 +512,7 @@
 
       .main {
         grid-template-columns: 1fr;
-        grid-auto-rows: minmax(0, 1fr);
-        gap: 12px;
+        grid-template-rows: auto auto auto;
       }
 
       .panel {
@@ -615,20 +599,14 @@
       }
     }
 
-    /* ============================================
-       G-CORE MOBILE OPTIMIERUNG – UNIVERSAL FIX
-       ============================================ */
-
+    /* G-CORE MOBILE OPTIMIERUNG – UNIVERSAL FIX */
     @media (max-width: 768px) {
-
-      /* Shell enger machen */
       .shell {
         padding: 14px;
         border-radius: 20px;
         max-height: none;
       }
 
-      /* Header kompakter */
       .header {
         flex-direction: column;
         align-items: flex-start;
@@ -645,21 +623,18 @@
         line-height: 1.45;
       }
 
-      /* Installieren-Button kleiner */
       .install-btn {
         padding: 6px 12px;
         font-size: 10px;
         letter-spacing: 0.12em;
       }
 
-      /* Haupt-Grid auf 1-Spalte */
       .main {
         display: flex;
         flex-direction: column;
         gap: 14px;
       }
 
-      /* Panels müssen besser reagieren */
       .panel {
         padding: 14px 12px;
         border-radius: 16px;
@@ -674,7 +649,6 @@
         font-size: 10px;
       }
 
-      /* Programme-Karten */
       .program-card {
         padding: 12px;
         border-radius: 14px;
@@ -689,13 +663,11 @@
         font-size: 10px;
       }
 
-      /* Eingabefeld */
       .prompt-input {
         min-height: 100px;
         font-size: 13px;
       }
 
-      /* Chatlog */
       .chat-log {
         min-height: 120px;
         max-height: 260px;
@@ -703,14 +675,12 @@
         font-size: 12px;
       }
 
-      /* Omni-Core Module Liste – SCROLLBAR FIX */
       .modules-list,
       .modules-panel,
       .module-container {
         max-height: 340px !important;
         overflow-y: auto !important;
       }
-
     }
   </style>
 </head>
@@ -824,7 +794,7 @@
         </div>
       </section>
 
-      <!-- PANEL: CHAT / VERLAUF (RECHTS OBEN, GROSSER BLOCK) -->
+      <!-- PANEL: CHAT / VERLAUF (RECHTS OBEN) -->
       <section class="panel chat-panel">
         <div class="panel-header">
           <div class="panel-title">Verlauf</div>
@@ -843,13 +813,11 @@
           <div id="statusText" class="status-main">
             Bereit. Router ist aktiv, Programm: RESUMÉ-MASTER.
           </div>
-          <div class="status-main">
-            <!-- bewusst leer gehalten, kein Modell-/Temperatur-Text -->
-          </div>
+          <div class="status-main"></div>
         </div>
       </section>
 
-      <!-- PANEL: EINGABE (RECHTS UNTEN, KLEINER BLOCK) -->
+      <!-- PANEL: EINGABE (RECHTS UNTEN) -->
       <section class="panel input-panel">
         <div class="panel-header">
           <div class="panel-title">Eingabe</div>
@@ -875,11 +843,9 @@
 
   <script>
     (function () {
-      // Zentrale Router-URL
       const ROUTER_BASE = "https://api.g-core-systems.com";
       const API_URL     = ROUTER_BASE + "/genie";
 
-      // DOM-Elemente
       const promptInput    = document.getElementById("promptInput");
       const chatLog        = document.getElementById("chatLog");
       const statusTextMain = document.getElementById("statusText");
@@ -888,21 +854,17 @@
       const installStatus  = document.getElementById("install_status");
       const resumeCard     = document.getElementById("card-resume");
 
-      // Basis-URL für Programm-Endpunkte
       const PROGRAM_BASE   = ROUTER_BASE + "/programs";
 
-      // Feste Modell-Parameter für das Launchpad
       const MODEL       = "gpt-4.1-mini";
       const TEMPERATURE = 0.7;
 
-      // Runtime-Status
-      let activeProgramId   = "resume-master";     // technische Program-ID
-      let activeProgramName = "RESUMÉ-MASTER";     // Anzeigename im Chat
+      let activeProgramId   = "resume-master";
+      let activeProgramName = "RESUMÉ-MASTER";
       let activeBlueprint   = null;
       let blueprintLoaded   = false;
       let deferredPrompt    = null;
 
-      // Blueprint vom Router laden
       async function loadBlueprint(programId) {
         blueprintLoaded   = false;
         activeBlueprint   = null;
@@ -942,7 +904,6 @@
         }
       }
 
-      // Programm aktiv setzen
       function setActiveProgram(programId, programName) {
         activeProgramId   = programId;
         activeProgramName = programName;
@@ -953,17 +914,14 @@
         loadBlueprint(programId);
       }
 
-      // Klick auf die Résumé-Master-Kachel
       if (resumeCard) {
         resumeCard.addEventListener("click", () => {
           setActiveProgram("resume-master", "RESUMÉ-MASTER");
         });
 
-        // optische Markierung im Grid
         resumeCard.classList.add("active-program");
       }
 
-      // Label über dem Eingabefeld (wenn vorhanden)
       const fieldLabel = document.querySelector(".field-label");
       if (fieldLabel) {
         fieldLabel.textContent = "RESUMÉ-MASTER · Aufgabe";
@@ -1001,18 +959,14 @@
         const prompt = promptInput.value.trim();
         if (!prompt) return;
 
-        // Eingabe direkt im Verlauf anzeigen
         appendMessage("user", prompt);
         promptInput.value = "";
 
-        // Statusanzeige aktualisieren
         statusTextMain.textContent =
           "Sende Anfrage an " +
           (activeProgramName ? activeProgramName : "G-CORE Router") +
           " …";
 
-        // 1) Finalen Prompt bauen
-        //    Wenn ein Blueprint geladen ist, wird er vor die Nutzeraufgabe gepackt
         let finalPrompt = prompt;
 
         if (
@@ -1091,7 +1045,6 @@
         }
       }
 
-      // Enter = senden, Shift+Enter = Zeilenumbruch
       if (promptInput) {
         promptInput.addEventListener("keydown", (e) => {
           if (e.key === "Enter" && !e.shiftKey) {
@@ -1101,7 +1054,6 @@
         });
       }
 
-      // Optionaler Blueprint-Check beim Programmwechsel
       async function checkBlueprintAvailability(programId) {
         try {
           const res = await fetch(
@@ -1131,7 +1083,6 @@
         }
       }
 
-      // Kacheln: aktuell ist nur RESUMÉ-MASTER wirklich aktiv
       document.querySelectorAll(".program-card").forEach((card) => {
         card.addEventListener("click", () => {
           const state = card.getAttribute("data-state");
@@ -1140,7 +1091,6 @@
             card.querySelector(".program-title")?.textContent?.trim() ||
             "RESUMÉ-MASTER";
 
-          // Gesperrte Module: nur Hinweis, kein Programmwechsel
           if (state !== "active") {
             statusTextMain.textContent =
               "Dieses Modul ist noch nicht freigeschaltet. Aktives Programm bleibt: " +
@@ -1149,19 +1099,15 @@
             return;
           }
 
-          // 1. Alle Karten optisch deaktivieren
           document
             .querySelectorAll(".program-card")
             .forEach((c) => c.classList.remove("active"));
 
-          // 2. Geklickte Karte hervorheben
           card.classList.add("active");
 
-          // 3. Logische Programm-Daten setzen
           activeProgramId = programId;
           activeProgramName = nameFromCard;
 
-          // 4. Label & Placeholder im Eingabefeld anpassen
           if (fieldLabel) {
             fieldLabel.textContent = activeProgramName + " · Aufgabe";
           }
@@ -1170,7 +1116,6 @@
               "Schreibe hier deine Aufgabe für " + activeProgramName + " …";
           }
 
-          // 5. Blueprint-Verfügbarkeit prüfen
           checkBlueprintAvailability(activeProgramId);
 
           statusTextMain.textContent =
@@ -1178,11 +1123,6 @@
         });
       });
 
-      // ============================
-      // G-CORE LAUNCHPAD – PWA BASIS
-      // ============================
-
-      // Service Worker registrieren
       if ("serviceWorker" in navigator) {
         window.addEventListener("load", () => {
           navigator.serviceWorker
@@ -1199,7 +1139,6 @@
         });
       }
 
-      // PWA Installations-Logik
       window.addEventListener("beforeinstallprompt", (e) => {
         e.preventDefault();
         deferredPrompt = e;
@@ -1256,6 +1195,5 @@
       });
     })();
   </script>
-
 </body>
 </html>
