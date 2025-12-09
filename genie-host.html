@@ -53,8 +53,8 @@
 
     .shell {
       width: 100%;
-      max-width: 100%;
-      min-height: calc(100vh - 32px);
+      max-width: 1280px;
+      max-height: 860px;
       background: radial-gradient(circle at top, #1a1c22 0, #0c0d10 55%, #050506 100%);
       border-radius: 32px;
       border: 1px solid rgba(215, 184, 111, 0.25);
@@ -159,11 +159,7 @@
     .main {
       flex: 1;
       display: grid;
-      grid-template-columns: minmax(0, 1.05fr) minmax(0, 1.6fr);
-      grid-template-rows: minmax(0, 2fr) minmax(0, 0.8fr);
-      grid-template-areas:
-        "programs output"
-        "programs input";
+      grid-template-columns: minmax(0, 1.05fr) minmax(0, 1.15fr) minmax(0, 1.3fr);
       gap: 16px;
       min-height: 0;
     }
@@ -178,10 +174,6 @@
       gap: 10px;
       min-height: 0;
     }
-
-    .program-panel { grid-area: programs; }
-    .chat-panel    { grid-area: output; }
-    .input-panel   { grid-area: input; }
 
     .panel-header {
       display: flex;
@@ -211,6 +203,7 @@
       gap: 10px;
       flex: 1;
       min-height: 0;
+      overflow-y: auto; /* NEU: nur Kacheln scrollen, nicht gesamte Seite */
     }
 
     .programs-hint {
@@ -222,24 +215,15 @@
       flex: 1;
       min-height: 0;
       display: grid;
-      grid-template-columns: 1fr;
-      grid-auto-rows: minmax(0, 1fr);
+      grid-template-columns: repeat(2, minmax(0, 1fr)); /* NEU: 2 Spalten */
+      grid-auto-rows: auto; /* NEU: Höhe nach Inhalt, keine Riesen-Kacheln */
       gap: 8px;
     }
 
-    .program-grid {
-  grid-auto-rows: 180px;  /* feste, kompakte Höhe */
-}
-.program-card {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-}
-
     .program-card {
       position: relative;
-      border-radius: 18px;
-      padding: 10px 11px;
+      border-radius: 16px;
+      padding: 8px 9px; /* etwas kompakter */
       background: radial-gradient(circle at top, #151722 0, #0a0b10 40%, #050506 100%);
       border: 1px solid rgba(215, 184, 111, 0.3);
       display: flex;
@@ -247,8 +231,10 @@
       gap: 6px;
       cursor: pointer;
       overflow: hidden;
+      min-height: 110px; /* NEU: kleine, einheitliche Mindesthöhe */
     }
 
+    /* Aktive Programm-Kachel mit Glow (wie bei Omni-Core) */
     .program-card.active {
       border-color: var(--gold-strong);
       box-shadow: 0 0 16px rgba(244, 210, 124, 0.45);
@@ -336,7 +322,7 @@
       color: rgba(200, 200, 200, 0.7);
     }
 
-    /* INPUT PANEL (RECHTS UNTEN) */
+    /* INPUT PANEL (MITTE) */
 
     .field-label {
       font-size: 11px;
@@ -362,7 +348,7 @@
     .prompt-input {
       width: 100%;
       height: 100%;
-      min-height: 120px;
+      min-height: 130px;
       resize: none;
       background: radial-gradient(circle at top left, #20222c 0, #12141b 40%, #090a0f 100%);
       border-radius: 18px;
@@ -387,7 +373,7 @@
       color: rgba(200, 200, 200, 0.6);
     }
 
-    /* CHAT PANEL (RECHTS OBEN) */
+    /* CHAT PANEL (RECHTS) */
 
     .chat-log {
       flex: 1;
@@ -454,6 +440,10 @@
       text-overflow: ellipsis;
     }
 
+    /* ===========================
+       RESPONSIVE OPTIMIERUNG
+       =========================== */
+
     /* Tablet / kleinere Laptops */
     @media (max-width: 1080px) {
       .shell {
@@ -461,8 +451,8 @@
       }
 
       .main {
-        grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
-        grid-template-rows: minmax(0, 1.3fr) minmax(0, 1fr);
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr);
+        grid-template-rows: minmax(0, 1.1fr) minmax(0, 1.2fr);
       }
 
       .panel.program-panel {
@@ -521,7 +511,8 @@
 
       .main {
         grid-template-columns: 1fr;
-        grid-template-rows: auto auto auto;
+        grid-auto-rows: minmax(0, 1fr);
+        gap: 12px;
       }
 
       .panel {
@@ -608,7 +599,10 @@
       }
     }
 
-    /* G-CORE MOBILE OPTIMIERUNG – UNIVERSAL FIX */
+    /* ============================================
+       G-CORE MOBILE OPTIMIERUNG – UNIVERSAL FIX
+       ============================================ */
+
     @media (max-width: 768px) {
       .shell {
         padding: 14px;
@@ -737,103 +731,130 @@
           </div>
 
           <div class="program-grid">
+            <!-- RESUMÉ-MASTER · AKTIV -->
+            <article class="program-card active" data-program="resume-master" data-state="active" id="card-resume">
+              <div class="program-badge-row">
+                <div class="program-badge">Aktives Programm</div>
+                <div class="program-tag">frei nutzbar</div>
+              </div>
+              <div class="program-title">RESUMÉ-MASTER</div>
+              <div class="program-subline">
+                Erstellung, Überarbeitung und Analyse von Lebensläufen und Bewerbungen.
+              </div>
+            </article>
 
-  <!-- 1: Aktiv -->
-  <article class="program-card active" data-program="resume-master" data-state="active" id="card-resume">
-    <div class="program-badge-row">
-      <div class="program-badge">Aktives Programm</div>
-      <div class="program-tag">frei nutzbar</div>
-    </div>
-    <div class="program-title">RESUMÉ-MASTER</div>
-    <div class="program-subline">Erstellung, Überarbeitung und Analyse von Bewerbungen.</div>
-  </article>
+            <!-- SOCIAL-MAGIC · DEMNÄCHST VERFÜGBAR (gesperrt) -->
+            <article class="program-card locked upcoming" data-program="social-magic" data-state="upcoming">
+              <div class="program-badge-row">
+                <div class="program-badge">Demnächst verfügbar</div>
+                <div class="program-tag locked-tag">gesperrt</div>
+              </div>
+              <div class="program-title">SOCIAL-MAGIC MODUL</div>
+              <div class="program-subline">
+                Geplantes Modul für Inhalte, Postings und Strategien rund um Social Media.
+              </div>
+              <div class="program-lock">
+                <span class="icon">🔒</span>
+                <span>Freischaltung folgt</span>
+              </div>
+            </article>
 
-  <!-- 2: Social Magic (gesperrt) -->
-  <article class="program-card locked upcoming" data-program="social-magic" data-state="upcoming">
-    <div class="program-badge-row">
-      <div class="program-badge">Demnächst</div>
-      <div class="program-tag locked-tag">gesperrt</div>
-    </div>
-    <div class="program-title">SOCIAL-MAGIC MODUL</div>
-    <div class="program-subline">Modul für Social-Media-Strategien & Creation.</div>
-  </article>
+            <!-- GENERISCHE PLACEHOLDER-KACHELN (OHNE ECHTE PROGRAMMNAMEN) -->
+            <article class="program-card locked" data-state="locked">
+              <div class="program-badge-row">
+                <div class="program-badge">Coming Soon</div>
+                <div class="program-tag locked-tag">in Planung</div>
+              </div>
+              <div class="program-title">G-CORE Modul</div>
+              <div class="program-subline">
+                Reservierte Kachel für ein zukünftiges G-CORE Programm.
+              </div>
+              <div class="program-lock">
+                <span class="icon">🔒</span>
+                <span>noch nicht verfügbar</span>
+              </div>
+            </article>
 
-  <!-- Ab hier: Ökosystem-Vitrine (alle gesperrt) -->
-  <article class="program-card locked" data-state="locked">
-    <div class="program-badge-row">
-      <div class="program-badge">Coming Soon</div>
-      <div class="program-tag locked-tag">in Planung</div>
-    </div>
-    <div class="program-title">COUPLE-CORE™</div>
-    <div class="program-subline">Beziehungsanalyse & Dialogsystem.</div>
-  </article>
+            <article class="program-card locked" data-state="locked">
+              <div class="program-badge-row">
+                <div class="program-badge">Coming Soon</div>
+                <div class="program-tag locked-tag">konzeptphase</div>
+              </div>
+              <div class="program-title">G-CORE Modul</div>
+              <div class="program-subline">
+                Platzhalter für ein weiteres Modul innerhalb des Launchpads.
+              </div>
+              <div class="program-lock">
+                <span class="icon">🔒</span>
+                <span>wird später gefüllt</span>
+              </div>
+            </article>
 
-  <article class="program-card locked" data-state="locked">
-    <div class="program-badge-row">
-      <div class="program-badge">Coming Soon</div>
-      <div class="program-tag locked-tag">in Planung</div>
-    </div>
-    <div class="program-title">STORY-FORGE™</div>
-    <div class="program-subline">Professionelles Story- & Content-System.</div>
-  </article>
+            <article class="program-card locked" data-state="locked">
+              <div class="program-badge-row">
+                <div class="program-badge">Coming Soon</div>
+                <div class="program-tag locked-tag">R&amp;D</div>
+              </div>
+              <div class="program-title">G-CORE Modul</div>
+              <div class="program-subline">
+                Geplantes Modul im internen Entwicklungsstatus.
+              </div>
+              <div class="program-lock">
+                <span class="icon">🔒</span>
+                <span>intern in Arbeit</span>
+              </div>
+            </article>
 
-  <article class="program-card locked" data-state="locked">
-    <div class="program-badge-row">
-      <div class="program-badge">Coming Soon</div>
-      <div class="program-tag locked-tag">R&D</div>
-    </div>
-    <div class="program-title">CORE-6 AGENTS</div>
-    <div class="program-subline">Influencer- & Brand-Automation.</div>
-  </article>
+            <article class="program-card locked" data-state="locked">
+              <div class="program-badge-row">
+                <div class="program-badge">Coming Soon</div>
+                <div class="program-tag locked-tag">in Planung</div>
+              </div>
+              <div class="program-title">G-CORE Modul</div>
+              <div class="program-subline">
+                Reservierte Kachel für ein zukünftiges Programm im Ökosystem.
+              </div>
+              <div class="program-lock">
+                <span class="icon">🔒</span>
+                <span>noch nicht sichtbar</span>
+              </div>
+            </article>
 
-  <article class="program-card locked" data-state="locked">
-    <div class="program-badge-row">
-      <div class="program-badge">Coming Soon</div>
-      <div class="program-tag locked-tag">in Planung</div>
-    </div>
-    <div class="program-title">CARE-FLOW™</div>
-    <div class="program-subline">Professionelle Dokumentationssysteme.</div>
-  </article>
+            <article class="program-card locked" data-state="locked">
+              <div class="program-badge-row">
+                <div class="program-badge">Coming Soon</div>
+                <div class="program-tag locked-tag">in Planung</div>
+              </div>
+              <div class="program-title">G-CORE Modul</div>
+              <div class="program-subline">
+                Geplantes Zusatzmodul für spätere Erweiterungen.
+              </div>
+              <div class="program-lock">
+                <span class="icon">🔒</span>
+                <span>Release folgt</span>
+              </div>
+            </article>
 
-  <article class="program-card locked" data-state="locked">
-    <div class="program-badge-row">
-      <div class="program-badge">Coming Soon</div>
-      <div class="program-tag locked-tag">konzeptphase</div>
-    </div>
-    <div class="program-title">EMAIL-PRO™</div>
-    <div class="program-subline">Automatisiertes Mailing & Professional Writing.</div>
-  </article>
-
-</div>
-
+            <article class="program-card locked" data-state="locked">
+              <div class="program-badge-row">
+                <div class="program-badge">Coming Soon</div>
+                <div class="program-tag locked-tag">konzeptphase</div>
+              </div>
+              <div class="program-title">G-CORE Modul</div>
+              <div class="program-subline">
+                Platzhalter für ein weiteres G-CORE Programm.
+              </div>
+              <div class="program-lock">
+                <span class="icon">🔒</span>
+                <span>Details folgen</span>
+              </div>
+            </article>
+          </div>
         </div>
       </section>
 
-      <!-- PANEL: CHAT / VERLAUF (RECHTS OBEN) -->
-      <section class="panel chat-panel">
-        <div class="panel-header">
-          <div class="panel-title">Verlauf</div>
-          <div class="panel-sub">
-            Verlauf deiner Unterhaltung mit dem aktiven Programm.
-          </div>
-        </div>
-
-        <div id="chatLog" class="chat-log">
-          <div class="chat-placeholder">
-            Noch keine Unterhaltung gestartet. Formuliere deine Aufgabe für RESUMÉ-MASTER und drücke Enter.
-          </div>
-        </div>
-
-        <div class="status-line">
-          <div id="statusText" class="status-main">
-            Bereit. Router ist aktiv, Programm: RESUMÉ-MASTER.
-          </div>
-          <div class="status-main"></div>
-        </div>
-      </section>
-
-      <!-- PANEL: EINGABE (RECHTS UNTEN) -->
-      <section class="panel input-panel">
+      <!-- PANEL: EINGABE (MITTE) -->
+      <section class="panel">
         <div class="panel-header">
           <div class="panel-title">Eingabe</div>
           <div class="panel-sub">
@@ -853,362 +874,417 @@
           </div>
         </div>
       </section>
+
+      <!-- PANEL: CHAT / VERLAUF (RECHTS) -->
+      <section class="panel">
+        <div class="panel-header">
+          <div class="panel-title">Verlauf</div>
+          <div class="panel-sub">
+            Verlauf deiner Unterhaltung mit dem aktiven Programm.
+          </div>
+        </div>
+
+        <div id="chatLog" class="chat-log">
+          <div class="chat-placeholder">
+            Noch keine Unterhaltung gestartet. Formuliere in der Mitte deine Aufgabe für RESUMÉ-MASTER und drücke Enter.
+          </div>
+        </div>
+
+        <div class="status-line">
+          <div id="statusText" class="status-main">
+            Bereit. Router ist aktiv, Programm: RESUMÉ-MASTER.
+          </div>
+          <div class="status-main">
+            <!-- bewusst leer gehalten, kein Modell-/Temperatur-Text -->
+          </div>
+        </div>
+      </section>
     </section>
   </main>
 
   <script>
-    (function () {
-      const ROUTER_BASE = "https://api.g-core-systems.com";
-      const API_URL     = ROUTER_BASE + "/genie";
+  (function () {
+    // Zentrale Router-URL
+    const ROUTER_BASE = "https://api.g-core-systems.com";
+    const API_URL     = ROUTER_BASE + "/genie";
 
-      const promptInput    = document.getElementById("promptInput");
-      const chatLog        = document.getElementById("chatLog");
-      const statusTextMain = document.getElementById("statusText");
+    // DOM-Elemente
+    const promptInput    = document.getElementById("promptInput");
+    const chatLog        = document.getElementById("chatLog");
+    const statusTextMain = document.getElementById("statusText");
 
-      const installBtn     = document.getElementById("installBtn");
-      const installStatus  = document.getElementById("install_status");
-      const resumeCard     = document.getElementById("card-resume");
+    const installBtn     = document.getElementById("installBtn");
+    const installStatus  = document.getElementById("install_status");
+    const resumeCard     = document.getElementById("card-resume");
 
-      const PROGRAM_BASE   = ROUTER_BASE + "/programs";
+    // Basis-URL für Programm-Endpunkte
+    const PROGRAM_BASE   = ROUTER_BASE + "/programs";
 
-      const MODEL       = "gpt-4.1-mini";
-      const TEMPERATURE = 0.7;
+    // Feste Modell-Parameter für das Launchpad
+    const MODEL       = "gpt-4.1-mini";
+    const TEMPERATURE = 0.7;
 
-      let activeProgramId   = "resume-master";
-      let activeProgramName = "RESUMÉ-MASTER";
-      let activeBlueprint   = null;
-      let blueprintLoaded   = false;
-      let deferredPrompt    = null;
+    // Runtime-Status
+    let activeProgramId   = "resume-master";     // technische Program-ID
+    let activeProgramName = "RESUMÉ-MASTER";     // Anzeigename im Chat
+    let activeBlueprint   = null;
+    let blueprintLoaded   = false;
+    let deferredPrompt    = null;
 
-      async function loadBlueprint(programId) {
-        blueprintLoaded   = false;
-        activeBlueprint   = null;
+    // Blueprint vom Router laden
+    async function loadBlueprint(programId) {
+      blueprintLoaded   = false;
+      activeBlueprint   = null;
 
-        try {
-          const res = await fetch(`${PROGRAM_BASE}/${programId}/blueprint`);
+      try {
+        const res = await fetch(`${PROGRAM_BASE}/${programId}/blueprint`);
 
-          if (!res.ok) {
-            console.error("[G-CORE] Blueprint-Request fehlgeschlagen:", res.status);
-            statusTextMain.textContent = "Blueprint konnte nicht geladen werden.";
-            return;
-          }
-
-          const data = await res.json();
-
-          if (!data.ok) {
-            console.error("[G-CORE] Blueprint-API meldet Fehler:", data.message || data.error);
-            statusTextMain.textContent =
-              "Blueprint-Fehler: " + (data.message || data.error || "");
-            return;
-          }
-
-          activeBlueprint = data.blueprint;
-          blueprintLoaded = true;
-
-          console.log(
-            "[G-CORE] Blueprint geladen für",
-            data.program,
-            "Version:",
-            data.version
-          );
-          statusTextMain.textContent =
-            "Blueprint für " + data.program + " ist verfügbar. Programm bereit.";
-        } catch (err) {
-          console.error("[G-CORE] Fehler beim Laden des Blueprints:", err);
-          statusTextMain.textContent = "Fehler beim Laden des Blueprints.";
+        if (!res.ok) {
+          console.error("[G-CORE] Blueprint-Request fehlgeschlagen:", res.status);
+          statusTextMain.textContent = "Blueprint konnte nicht geladen werden.";
+          return;
         }
-      }
 
-      function setActiveProgram(programId, programName) {
-        activeProgramId   = programId;
-        activeProgramName = programName;
+        const data = await res.json();
 
+        if (!data.ok) {
+          console.error("[G-CORE] Blueprint-API meldet Fehler:", data.message || data.error);
+          statusTextMain.textContent =
+            "Blueprint-Fehler: " + (data.message || data.error || "");
+          return;
+        }
+
+        activeBlueprint = data.blueprint;
+        blueprintLoaded = true;
+
+        console.log(
+          "[G-CORE] Blueprint geladen für",
+          data.program,
+          "Version:",
+          data.version
+        );
         statusTextMain.textContent =
-          "Aktives Programm: " + programName + " – Blueprint wird geprüft …";
+          "Blueprint für " + data.program + " ist verfügbar. Programm bereit.";
+      } catch (err) {
+        console.error("[G-CORE] Fehler beim Laden des Blueprints:", err);
+        statusTextMain.textContent = "Fehler beim Laden des Blueprints.";
+      }
+    }
 
-        loadBlueprint(programId);
+    // Programm aktiv setzen
+    function setActiveProgram(programId, programName) {
+      activeProgramId   = programId;
+      activeProgramName = programName;
+
+      statusTextMain.textContent =
+        "Aktives Programm: " + programName + " – Blueprint wird geprüft …";
+
+      loadBlueprint(programId);
+    }
+
+    // Klick auf die Résumé-Master-Kachel
+    if (resumeCard) {
+      resumeCard.addEventListener("click", () => {
+        setActiveProgram("resume-master", "RESUMÉ-MASTER");
+      });
+
+      // optische Markierung im Grid
+      resumeCard.classList.add("active-program");
+    }
+
+    // Label über dem Eingabefeld (wenn vorhanden)
+    const fieldLabel = document.querySelector(".field-label");
+    if (fieldLabel) {
+      fieldLabel.textContent = "RESUMÉ-MASTER · Aufgabe";
+    }
+
+    function appendMessage(role, text) {
+      const placeholder = chatLog.querySelector(".chat-placeholder");
+      if (placeholder) placeholder.remove();
+
+      const row = document.createElement("div");
+      row.className = "chat-row " + role;
+
+      const label = document.createElement("div");
+      label.className = "chat-label";
+
+      if (role === "user") {
+        label.textContent = "Du";
+      } else if (role === "error") {
+        label.textContent = "Fehler";
+      } else {
+        label.textContent = activeProgramName;
       }
 
-      if (resumeCard) {
-        resumeCard.addEventListener("click", () => {
-          setActiveProgram("resume-master", "RESUMÉ-MASTER");
+      const bubble = document.createElement("div");
+      bubble.className = "chat-bubble";
+      bubble.textContent = text;
+
+      row.appendChild(label);
+      row.appendChild(bubble);
+      chatLog.appendChild(row);
+      chatLog.scrollTop = chatLog.scrollHeight;
+    }
+
+    async function sendPrompt() {
+      const prompt = promptInput.value.trim();
+      if (!prompt) return;
+
+      // Eingabe direkt im Verlauf anzeigen
+      appendMessage("user", prompt);
+      promptInput.value = "";
+
+      // Statusanzeige aktualisieren
+      statusTextMain.textContent =
+        "Sende Anfrage an " +
+        (activeProgramName ? activeProgramName : "G-CORE Router") +
+        " …";
+
+      // 1) Finalen Prompt bauen
+      //    Wenn ein Blueprint geladen ist, wird er vor die Nutzeraufgabe gepackt
+      let finalPrompt = prompt;
+
+      if (
+        activeProgramId === "resume-master" &&
+        typeof blueprintLoaded !== "undefined" &&
+        typeof activeBlueprint !== "undefined" &&
+        blueprintLoaded &&
+        activeBlueprint
+      ) {
+        finalPrompt =
+          activeBlueprint +
+          "\n\n" +
+          "NUTZER-AUFGABE:\n" +
+          prompt;
+      }
+
+      try {
+        const res = await fetch(API_URL, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            programId: activeProgramId,
+            programName: activeProgramName,
+            prompt: finalPrompt,
+            model: MODEL,
+            temperature: TEMPERATURE,
+          }),
         });
 
-        resumeCard.classList.add("active-program");
-      }
-
-      const fieldLabel = document.querySelector(".field-label");
-      if (fieldLabel) {
-        fieldLabel.textContent = "RESUMÉ-MASTER · Aufgabe";
-      }
-
-      function appendMessage(role, text) {
-        const placeholder = chatLog.querySelector(".chat-placeholder");
-        if (placeholder) placeholder.remove();
-
-        const row = document.createElement("div");
-        row.className = "chat-row " + role;
-
-        const label = document.createElement("div");
-        label.className = "chat-label";
-
-        if (role === "user") {
-          label.textContent = "Du";
-        } else if (role === "error") {
-          label.textContent = "Fehler";
-        } else {
-          label.textContent = activeProgramName;
+        if (!res.ok) {
+          console.error("[G-CORE] Router-Response nicht OK:", res.status);
+          statusTextMain.textContent =
+            "Fehler vom Router: Status " + res.status + ".";
+          appendMessage(
+            "assistant",
+            "Es gab einen technischen Fehler beim Router. Bitte versuche es später erneut."
+          );
+          return;
         }
 
-        const bubble = document.createElement("div");
-        bubble.className = "chat-bubble";
-        bubble.textContent = text;
+        const data = await res.json();
 
-        row.appendChild(label);
-        row.appendChild(bubble);
-        chatLog.appendChild(row);
-        chatLog.scrollTop = chatLog.scrollHeight;
-      }
+        if (data && data.ok === false) {
+          console.error("[G-CORE] API-Fehler:", data.message || data.error);
+          statusTextMain.textContent =
+            "Fehler: " +
+            (data.message || data.error || "Unbekannter Fehler.");
+          appendMessage(
+            "assistant",
+            "Das Programm meldet einen Fehler: " +
+              (data.message || data.error || "Unbekannter Fehler.")
+          );
+          return;
+        }
 
-      async function sendPrompt() {
-        const prompt = promptInput.value.trim();
-        if (!prompt) return;
+        const reply =
+          (data && (data.reply || data.response || data.result)) || "";
 
-        appendMessage("user", prompt);
-        promptInput.value = "";
+        appendMessage(
+          "assistant",
+          reply || "Es kam eine leere Antwort vom Programm zurück."
+        );
 
         statusTextMain.textContent =
-          "Sende Anfrage an " +
-          (activeProgramName ? activeProgramName : "G-CORE Router") +
-          " …";
-
-        let finalPrompt = prompt;
-
-        if (
-          activeProgramId === "resume-master" &&
-          typeof blueprintLoaded !== "undefined" &&
-          typeof activeBlueprint !== "undefined" &&
-          blueprintLoaded &&
-          activeBlueprint
-        ) {
-          finalPrompt =
-            activeBlueprint +
-            "\n\n" +
-            "NUTZER-AUFGABE:\n" +
-            prompt;
-        }
-
-        try {
-          const res = await fetch(API_URL, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              programId: activeProgramId,
-              programName: activeProgramName,
-              prompt: finalPrompt,
-              model: MODEL,
-              temperature: TEMPERATURE,
-            }),
-          });
-
-          if (!res.ok) {
-            console.error("[G-CORE] Router-Response nicht OK:", res.status);
-            statusTextMain.textContent =
-              "Fehler vom Router: Status " + res.status + ".";
-            appendMessage(
-              "assistant",
-              "Es gab einen technischen Fehler beim Router. Bitte versuche es später erneut."
-            );
-            return;
-          }
-
-          const data = await res.json();
-
-          if (data && data.ok === false) {
-            console.error("[G-CORE] API-Fehler:", data.message || data.error);
-            statusTextMain.textContent =
-              "Fehler: " +
-              (data.message || data.error || "Unbekannter Fehler.");
-            appendMessage(
-              "assistant",
-              "Das Programm meldet einen Fehler: " +
-                (data.message || data.error || "Unbekannter Fehler.")
-            );
-            return;
-          }
-
-          const reply =
-            (data && (data.reply || data.response || data.result)) || "";
-
-          appendMessage(
-            "assistant",
-            reply || "Es kam eine leere Antwort vom Programm zurück."
-          );
-
-          statusTextMain.textContent =
-            "Antwort erfolgreich erhalten. Aktives Programm: " +
-            (activeProgramName ? activeProgramName : "GENIE") +
-            ".";
-        } catch (err) {
-          console.error("[G-CORE] Fetch-Fehler beim Senden des Prompts:", err);
-          statusTextMain.textContent =
-            "Fetch-Fehler: Anfrage konnte nicht gesendet werden.";
-          appendMessage(
-            "assistant",
-            "Ich konnte den Router gerade nicht erreichen. Prüfe deine Verbindung oder versuche es später noch einmal."
-          );
-        }
+          "Antwort erfolgreich erhalten. Aktives Programm: " +
+          (activeProgramName ? activeProgramName : "GENIE") +
+          ".";
+      } catch (err) {
+        console.error("[G-CORE] Fetch-Fehler beim Senden des Prompts:", err);
+        statusTextMain.textContent =
+          "Fetch-Fehler: Anfrage konnte nicht gesendet werden.";
+        appendMessage(
+          "assistant",
+          "Ich konnte den Router gerade nicht erreichen. Prüfe deine Verbindung oder versuche es später noch einmal."
+        );
       }
+    }
 
-      if (promptInput) {
-        promptInput.addEventListener("keydown", (e) => {
-          if (e.key === "Enter" && !e.shiftKey) {
-            e.preventDefault();
-            sendPrompt();
-          }
-        });
-      }
+    // Enter = senden, Shift+Enter = Zeilenumbruch
+    if (promptInput) {
+      promptInput.addEventListener("keydown", (e) => {
+        if (e.key === "Enter" && !e.shiftKey) {
+          e.preventDefault();
+          sendPrompt();
+        }
+      });
+    }
 
-      async function checkBlueprintAvailability(programId) {
-        try {
-          const res = await fetch(
-            ROUTER_BASE + "/programs/" + programId + "/blueprint"
-          );
+    // Optionaler Blueprint-Check beim Programmwechsel
+    async function checkBlueprintAvailability(programId) {
+      try {
+        const res = await fetch(
+          ROUTER_BASE + "/programs/" + programId + "/blueprint"
+        );
 
-          if (!res.ok) {
-            console.warn(
-              "[G-CORE] Blueprint-Check für",
-              programId,
-              "fehlgeschlagen mit Status",
-              res.status
-            );
-            return;
-          }
-
-          console.log("[G-CORE] Blueprint für", programId, "ist erreichbar.");
-          statusTextMain.textContent =
-            "Blueprint für " +
-            (activeProgramName || "das aktive Programm") +
-            " ist verfügbar. Programm bereit.";
-        } catch (err) {
+        if (!res.ok) {
           console.warn(
-            "[G-CORE] Fehler beim Blueprint-Check:",
-            err && err.message ? err.message : String(err)
+            "[G-CORE] Blueprint-Check für",
+            programId,
+            "fehlgeschlagen mit Status",
+            res.status
           );
+          return;
         }
+
+        console.log("[G-CORE] Blueprint für", programId, "ist erreichbar.");
+        statusTextMain.textContent =
+          "Blueprint für " +
+          (activeProgramName || "das aktive Programm") +
+          " ist verfügbar. Programm bereit.";
+      } catch (err) {
+        console.warn(
+          "[G-CORE] Fehler beim Blueprint-Check:",
+          err && err.message ? err.message : String(err)
+        );
       }
+    }
 
-      document.querySelectorAll(".program-card").forEach((card) => {
-        card.addEventListener("click", () => {
-          const state = card.getAttribute("data-state");
-          const programId = card.getAttribute("data-program") || "resume-master";
-          const nameFromCard =
-            card.querySelector(".program-title")?.textContent?.trim() ||
-            "RESUMÉ-MASTER";
+    // Kacheln: aktuell ist nur RESUMÉ-MASTER wirklich aktiv
+    document.querySelectorAll(".program-card").forEach((card) => {
+      card.addEventListener("click", () => {
+        const state = card.getAttribute("data-state");
+        const programId = card.getAttribute("data-program") || "resume-master";
+        const nameFromCard =
+          card.querySelector(".program-title")?.textContent?.trim() ||
+          "RESUMÉ-MASTER";
 
-          if (state !== "active") {
-            statusTextMain.textContent =
-              "Dieses Modul ist noch nicht freigeschaltet. Aktives Programm bleibt: " +
-              (activeProgramName || "RESUMÉ-MASTER") +
-              ".";
-            return;
-          }
-
-          document
-            .querySelectorAll(".program-card")
-            .forEach((c) => c.classList.remove("active"));
-
-          card.classList.add("active");
-
-          activeProgramId = programId;
-          activeProgramName = nameFromCard;
-
-          if (fieldLabel) {
-            fieldLabel.textContent = activeProgramName + " · Aufgabe";
-          }
-          if (promptInput) {
-            promptInput.placeholder =
-              "Schreibe hier deine Aufgabe für " + activeProgramName + " …";
-          }
-
-          checkBlueprintAvailability(activeProgramId);
-
+        // Gesperrte Module: nur Hinweis, kein Programmwechsel
+        if (state !== "active") {
           statusTextMain.textContent =
-            "Bereit. Router ist aktiv, Programm: " + activeProgramName + ".";
-        });
-      });
-
-      if ("serviceWorker" in navigator) {
-        window.addEventListener("load", () => {
-          navigator.serviceWorker
-            .register("/service-worker-genie.js")
-            .then(() => {
-              console.log("[G-CORE] Service Worker registriert.");
-            })
-            .catch((err) => {
-              console.warn(
-                "[G-CORE] Service Worker Registrierung fehlgeschlagen:",
-                err
-              );
-            });
-        });
-      }
-
-      window.addEventListener("beforeinstallprompt", (e) => {
-        e.preventDefault();
-        deferredPrompt = e;
-
-        if (installBtn) {
-          installBtn.disabled = false;
-          installBtn.textContent = "App installieren";
+            "Dieses Modul ist noch nicht freigeschaltet. Aktives Programm bleibt: " +
+            (activeProgramName || "RESUMÉ-MASTER") +
+            ".";
+          return;
         }
-        if (installStatus) {
-          installStatus.textContent =
-            "App kann installiert werden. Klicke auf „App installieren“, um das Launchpad hinzuzufügen.";
+
+        // 1. Alle Karten optisch deaktivieren
+        document
+          .querySelectorAll(".program-card")
+          .forEach((c) => c.classList.remove("active"));
+
+        // 2. Geklickte Karte hervorheben
+        card.classList.add("active");
+
+        // 3. Logische Programm-Daten setzen
+        activeProgramId = programId;
+        activeProgramName = nameFromCard;
+
+        // 4. Label & Placeholder im Eingabefeld anpassen
+        if (fieldLabel) {
+          fieldLabel.textContent = activeProgramName + " · Aufgabe";
         }
+        if (promptInput) {
+          promptInput.placeholder =
+            "Schreibe hier deine Aufgabe für " + activeProgramName + " …";
+        }
+
+        // 5. Blueprint-Verfügbarkeit prüfen
+        checkBlueprintAvailability(activeProgramId);
+
+        statusTextMain.textContent =
+          "Bereit. Router ist aktiv, Programm: " + activeProgramName + ".";
       });
+    });
+
+    // ============================
+    // G-CORE LAUNCHPAD – PWA BASIS
+    // ============================
+
+    // Service Worker registrieren
+    if ("serviceWorker" in navigator) {
+      window.addEventListener("load", () => {
+        navigator.serviceWorker
+          .register("/service-worker-genie.js")
+          .then(() => {
+            console.log("[G-CORE] Service Worker registriert.");
+          })
+          .catch((err) => {
+            console.warn(
+              "[G-CORE] Service Worker Registrierung fehlgeschlagen:",
+              err
+            );
+          });
+      });
+    }
+
+    // PWA Installations-Logik
+    window.addEventListener("beforeinstallprompt", (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
 
       if (installBtn) {
-        installBtn.addEventListener("click", async () => {
-          if (!deferredPrompt) {
-            if (installStatus) {
-              installStatus.textContent =
-                "Keine Installationsmöglichkeit. Du kannst die App später über das Browser-Menü hinzufügen.";
-            }
-            return;
-          }
-
-          deferredPrompt.prompt();
-          const choice = await deferredPrompt.userChoice;
-
-          if (choice.outcome === "accepted") {
-            if (installStatus) {
-              installStatus.textContent = "App installiert.";
-            }
-            installBtn.textContent = "Installiert";
-            installBtn.disabled = true;
-          } else {
-            if (installStatus) {
-              installStatus.textContent =
-                "Installation abgebrochen. Du kannst es später erneut versuchen.";
-            }
-          }
-
-          deferredPrompt = null;
-        });
+        installBtn.disabled = false;
+        installBtn.textContent = "App installieren";
       }
+      if (installStatus) {
+        installStatus.textContent =
+          "App kann installiert werden. Klicke auf „App installieren“, um das Launchpad hinzuzufügen.";
+      }
+    });
 
-      window.addEventListener("appinstalled", () => {
-        console.log("[G-CORE] App installiert – Launchpad läuft als PWA.");
-        if (installStatus) {
-          installStatus.textContent = "Launchpad ist als App installiert.";
+    if (installBtn) {
+      installBtn.addEventListener("click", async () => {
+        if (!deferredPrompt) {
+          if (installStatus) {
+            installStatus.textContent =
+              "Keine Installationsmöglichkeit. Du kannst die App später über das Browser-Menü hinzufügen.";
+          }
+          return;
         }
-        if (installBtn) {
-          installBtn.disabled = true;
+
+        deferredPrompt.prompt();
+        const choice = await deferredPrompt.userChoice;
+
+               if (choice.outcome === "accepted") {
+          if (installStatus) {
+            installStatus.textContent = "App installiert.";
+          }
           installBtn.textContent = "Installiert";
+          installBtn.disabled = true;
+        } else {
+          if (installStatus) {
+            installStatus.textContent =
+              "Installation abgebrochen. Du kannst es später erneut versuchen.";
+          }
         }
+
+        deferredPrompt = null;
       });
-    })();
+    }
+
+    window.addEventListener("appinstalled", () => {
+      console.log("[G-CORE] App installiert – Launchpad läuft als PWA.");
+      if (installStatus) {
+        installStatus.textContent = "Launchpad ist als App installiert.";
+      }
+      if (installBtn) {
+        installBtn.disabled = true;
+        installBtn.textContent = "Installiert";
+      }
+    });
+  })();
   </script>
+
 </body>
 </html>
