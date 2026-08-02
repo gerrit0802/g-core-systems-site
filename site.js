@@ -82,5 +82,5 @@ document.querySelector('[data-project-form]')?.addEventListener('submit', (event
     'Mit freundlichen Grüßen',
     String(data.get('name'))
   ].join('\n');
-  window.location.href = `mailto:info@g-core-systems.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+  window.location.href = `mailto:?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
 });
