@@ -1,0 +1,16 @@
+{
+  "project": "g-core-systems-site",
+  "type": "static-website",
+  "runtime_dependencies": [],
+  "validation": {
+    "node": "24.14.0",
+    "python": "3.12.13",
+    "command": "node scripts/validate-site.mjs"
+  },
+  "optional_visual_qa": {
+    "playwright": "1.61.1",
+    "chromium_revision": "1228",
+    "required_for_runtime": false,
+    "note": "Only needed for automated screenshots; the website itself has no build or browser-package dependency."
+  }
+}
