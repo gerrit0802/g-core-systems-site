@@ -18,6 +18,19 @@ navLinks.forEach((link) => link.addEventListener('click', () => {
   nav?.classList.remove('open');
 }));
 
+const mobileViewRequested = new URLSearchParams(window.location.search).get('view') === 'mobile';
+if (mobileViewRequested) document.documentElement.classList.add('force-mobile-view');
+
+document.querySelector('[data-mobile-view-switch]')?.addEventListener('click', (event) => {
+  event.preventDefault();
+  document.documentElement.classList.add('force-mobile-view');
+  const url = new URL(window.location.href);
+  url.searchParams.set('view', 'mobile');
+  url.hash = 'tagesanker';
+  window.history.replaceState(null, '', url);
+  document.getElementById('tagesanker')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+});
+
 const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 const revealItems = document.querySelectorAll('.reveal');
 if (reducedMotion || !('IntersectionObserver' in window)) {
