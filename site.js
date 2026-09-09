@@ -32,20 +32,15 @@ navLinks.forEach((link) => link.addEventListener('click', () => {
   nav?.classList.remove('open');
 }));
 
-const mobileViewRequested = new URLSearchParams(window.location.search).get('view') === 'mobile';
-if (mobileViewRequested) document.documentElement.classList.add('force-mobile-view');
-
-document.querySelector('[data-mobile-view-switch]')?.addEventListener('click', (event) => {
-  event.preventDefault();
-  document.documentElement.classList.add('force-mobile-view');
-  const currentDialog = productDialogs?.get('tagesanker');
-  if (currentDialog?.open) closeProduct(currentDialog, false);
+// Old shared links must not force a partial mobile layout or change the product.
+const normalizeLegacyMobileView = () => {
   const url = new URL(window.location.href);
-  url.searchParams.set('view', 'mobile');
-  url.hash = 'tagesanker';
-  window.history.replaceState(null, '', url);
-  document.getElementById('tagesanker')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-});
+  if (url.searchParams.get('view') !== 'mobile') return;
+  url.searchParams.delete('view');
+  window.history.replaceState(window.history.state, '', url);
+};
+normalizeLegacyMobileView();
+window.addEventListener('popstate', normalizeLegacyMobileView);
 
 const productDialogs = new Map(
   [...document.querySelectorAll('[data-product-dialog]')].map((dialog) => [dialog.dataset.productDialog, dialog])
@@ -115,17 +110,17 @@ productDialogs.forEach((dialog) => {
 
 const featureContent = {
   tagesanker: {
-    focus: ['01', 'Fokus statt Dauerliste', 'Der nächste sinnvolle Schritt bleibt sichtbar.', 'Der Jetzt-Modus reduziert die sichtbare Komplexität bewusst. Die Top 3 geben Orientierung, ohne den gesamten Tag gleichzeitig in den Vordergrund zu drängen.', 'Eine nächste Handlung', 'Bewusste Priorisierung'],
-    together: ['02', 'Gemeinsam planen', 'Aus einem Vorschlag wird eine bewusste Zusage.', 'Mit ausgewählten Personen verbinden, Planungsvorschläge austauschen und selbst über die Übernahme als eigene Aufgabe entscheiden. Ablehnung und Annahmestatus halten Absprachen nachvollziehbar. Private Aufgaben und persönliche Änderungen werden nicht automatisch geteilt.', 'Einladung und Planungsvorschläge', 'Private Übernahme nach Zustimmung'],
-    routine: ['03', 'Wiederkehrendes verlässlich tragen', 'Routinen müssen nicht jeden Tag neu geplant werden.', 'Wiederkehrende Verpflichtungen bleiben im richtigen Rhythmus sichtbar. Erinnerungen unterstützen, ohne den gesamten Tagesplan zu dominieren.', 'Routinen und Erinnerungen', 'Tagesabschluss mit Rückweg'],
-    context: ['04', 'Bereiche bewusst trennen', 'Privates und Berufliches bleiben unterscheidbar.', 'Getrennte Bereiche schaffen Übersicht. Eine optionale Kalenderverknüpfung kann relevante Termine einbeziehen, ohne den Fokusgedanken aufzugeben.', 'Privat und Beruf', 'Optionale Kalenderverknüpfung'],
-    control: ['05', 'Kontrolle bleibt beim Nutzer', 'Persönliche Struktur braucht verlässliche Grenzen.', 'App-Sperre, Widget und verschlüsselte Sicherung ergänzen die tägliche Nutzung. Der Nutzer entscheidet, welche Funktionen und Verbindungen aktiv sind.', 'Verschlüsselte Sicherung', 'Widget und App-Sperre']
+    focus: ['01', 'Fokus statt Dauerliste', 'Der nächste sinnvolle Schritt bleibt sichtbar.', 'Die Top 3 machen Prioritäten sichtbar. Der Jetzt-Modus und das Widget zeigen jeweils genau eine nächste Handlung. Bei Bedarf lässt sich bewusst eine andere wählen – ohne zur vollständigen Liste zurückzukehren.', 'Jetzt-Modus & Widget', 'Top 3 statt Dauerliste'],
+    together: ['02', 'Gemeinsam planen', 'Aus einem Vorschlag wird eine bewusste Zusage.', 'Planungsvorschläge mit ausgewählten Personen austauschen und selbst über die Übernahme entscheiden. Erst die Annahme erzeugt eine eigene Aufgabe; der Status macht die Rückmeldung nachvollziehbar. Private Aufgaben und persönliche Änderungen bleiben davon getrennt.', 'Gezielt abstimmen', 'Bewusst übernehmen'],
+    routine: ['03', 'Wiederkehrendes passend planen', 'Dein Rhythmus. Nicht nur ein fester Termin.', 'Routinen können einem festen Kalender folgen oder ihren nächsten Termin aus der Erledigung ableiten. Auch freie Intervalle und der letzte Werktag im Monat sind möglich. Pausieren, Überspringen und Verschieben schaffen Spielraum für den tatsächlichen Alltag.', 'Fest oder nach Erledigung', 'Flexible Wiederholungen'],
+    context: ['04', 'Bereiche bewusst trennen', 'Privates und Berufliches bleiben unterscheidbar.', 'Getrennte Bereiche halten berufliche Verpflichtungen und private Vorhaben auseinander. Aufgaben und Routinen lassen sich gezielt mit dem Android-Kalender verknüpfen. Tagesstart und Tagesabschluss geben der eigenen Planung einen bewussten Rahmen.', 'Privat und Beruf', 'Kalender nach eigener Wahl'],
+    control: ['05', 'Kontrolle bleibt beim Nutzer', 'Persönliche Planung mit klaren Grenzen.', 'Aufgaben und Routinen bleiben lokal und sind offline nutzbar. App-Sperre und verschlüsselte Sicherung ergänzen den Schutz. Gemeinsame Funktionen benötigen eine Verbindung; bei der Spracherkennung hängt die Verarbeitung vom verwendeten Dienst ab.', 'Verschlüsselte Sicherung', 'Lokale Planung & App-Sperre']
   },
   'story-forge': {
-    world: ['01', 'Eigener Kanon', 'Die Welt besteht aus mehr als einer Kulisse.', 'Figuren, Schauplätze, Regeln, Inventar und Wissen bleiben miteinander verbunden und bilden die Grundlage für die nächste Szene.', 'Beständige Weltzustände', 'Verbundene Spielsysteme'],
-    consequence: ['02', 'Entscheidungen mit Folgen', 'Handlungen verändern, was danach möglich ist.', 'Aufgaben, Beziehungen, Ressourcen und Wege reagieren auf Entscheidungen. Folgen bleiben nicht nur Text, sondern werden in den verbundenen Systemen sichtbar.', 'Fortlaufende Konsequenzen', 'Aufgaben, Reise und Handel'],
-    chronicle: ['03', 'Chronik und Weltwissen', 'Die Welt erinnert sich nachvollziehbar.', 'Chronik und Weltwissen halten fest, was geschehen ist und welche Informationen Figuren besitzen. So kann die Geschichte konsistent fortgeführt werden.', 'Nachvollziehbare Chronik', 'Wissen im Kontext'],
-    ai: ['04', 'Eigene KI-Verbindung', 'Freie Erzählung bleibt bewusst konfigurierbar.', 'Für freie KI-Erzählungen wird eine eigene API-Verbindung zu einem unterstützten Anbieter benötigt. Ohne sie bleibt ein begrenzter lokaler Modus mit festen Handlungen verfügbar.', 'Eigene API-Verbindung', 'Begrenzter lokaler Modus']
+    world: ['01', 'Eigener Kanon', 'Aus eigenen Ideen wird eine spielbare Welt.', 'In der Werkstatt lassen sich Welt, Figuren, Orte, Fraktionen und Hintergrundwissen selbst gestalten oder mit KI ausarbeiten. Einzelne Felder und ganze Entwürfe bleiben bearbeitbar. Erst die bestätigte Übernahme macht daraus gespeicherte Inhalte.', 'Eigene Inhalte & KI-Entwürfe', 'Prüfen vor Übernehmen'],
+    consequence: ['02', 'Entscheidungen mit Folgen', 'Deine Spielweise. Eine Geschichte mit Konsequenzen.', 'Classic, Hybrid und Narrativ setzen unterschiedliche Schwerpunkte zwischen Regeln und Erzählung. Handlungen knüpfen an den gespeicherten Spielstand an: Ressourcen, Inventar und Aufenthaltsorte werden weitergeführt; Aufgabenfortschritt ist an Ereignisse gebunden.', 'Classic, Hybrid & Narrativ', 'Fortschritt durch Ereignisse'],
+    chronicle: ['03', 'Chronik und Weltwissen', 'Nicht jede Figur weiß, was du weißt.', 'Die Chronik hält Erlebnisse und ihre Herkunft fest. Figurenwissen, Berichte, Gerüchte und bestätigte Erkenntnisse werden unterschieden. So bleiben Entdeckungen und Geheimnisse Teil des Spiels – statt zu einem allwissenden Erzählertext zu verschmelzen.', 'Wissen mit Herkunft', 'Figurenwissen & Geheimnisse'],
+    ai: ['04', 'Eigene KI-Verbindung', 'Freie Erzählung trifft auf klare Spielregeln.', 'Die KI entwickelt Vorschläge für den nächsten Verlauf. Spielrelevante Änderungen werden vor der Übernahme gegen Regeln und gespeicherte Inhalte geprüft. Freie KI-Erzählungen benötigen eine eigene API-Verbindung; Anbieter, Modell und Nutzungslimits bleiben bewusst wählbar.', 'Eigene API-Verbindung', 'Prüfung vor Zustandsänderung']
   }
 };
 
