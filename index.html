@@ -8,8 +8,8 @@
   <title>G-Core Systems – Digitale Lösungen für Arbeit, Alltag und Kreativität</title>
   <link rel="icon" type="image/png" sizes="32x32" href="assets_icons/gcore_icon_32x32.png">
   <link rel="icon" type="image/png" sizes="64x64" href="assets_icons/gcore_icon_64x64.png">
-  <link rel="stylesheet" href="site.css?v=20260909-6">
-  <script src="site.js?v=20260909-6" defer></script>
+  <link rel="stylesheet" href="site.css?v=20260909-8a">
+  <script src="site.js?v=20260909-8a" defer></script>
 </head>
 <body>
   <a class="skip-link" href="#main-content">Zum Inhalt springen</a>
@@ -125,9 +125,11 @@
             <div class="navigator-map" aria-labelledby="navigator-map-title">
               <div class="navigator-map-head">
                 <div><span>Interaktive Systemansicht</span><strong id="navigator-map-title" data-navigator-map-title>Komplexe Fallsteuerung</strong></div>
-                <small><b data-navigator-count>10</b> sichtbare Beziehungen</small>
+                <small><b data-navigator-count>10</b> mögliche Faktorpaare</small>
               </div>
 
+              <p class="navigator-scroll-hint" data-navigator-scroll-hint hidden>Die Systemkarte lässt sich seitlich verschieben: Faktoren links, Ergebnisse rechts.</p>
+              <div class="navigator-viewport" tabindex="0" role="region" aria-label="Systemkarte: Faktoren, Systemkern und Ergebnisse">
               <div class="navigator-canvas">
                 <svg class="navigator-lines" viewBox="0 0 760 500" preserveAspectRatio="none" aria-hidden="true">
                   <path d="M 170 54 C 275 54, 260 220, 368 250" data-navigator-line="0" />
@@ -156,7 +158,8 @@
                   <div class="navigator-result result-three"><small>03</small><span data-navigator-result-node="2">Freigabe vor Versand</span></div>
                 </div>
               </div>
-              <p class="navigator-hint">Faktoren anklicken, um die Systemansicht zu verändern.</p>
+              </div>
+              <p class="navigator-hint">Faktoren ein- oder ausschalten. Die Auswertung darunter zeigt, was sich dadurch verändert.</p>
             </div>
 
             <aside class="navigator-reading" aria-live="polite" aria-atomic="true">
@@ -290,6 +293,7 @@
           <div class="product-detail-identity"><img src="assets_products/story-forge-app-icon.png" alt=""><div><span>Android · Interaktives Rollenspiel</span><h2 id="story-forge-detail-title">STORY-FORGE</h2></div></div>
           <p class="product-detail-lead">Du triffst die Entscheidung. Die Welt trägt ihre Folgen weiter.</p>
           <p>Eigene Welten, Figuren, Regeln und fortlaufende Ereignisse bilden gemeinsam einen beständigen Kanon – verbunden über Chronik, Weltwissen, Aufgaben, Reise, Handel, Inventar und Karte.</p>
+          <p class="product-genre-note"><strong>Vielfältige Genres. Eigenständige Erzählwelten.</strong><br>Geplant ist eine breite Auswahl unterschiedlicher Genres – mit eigenen Atmosphären, Themen und erzählerischen Möglichkeiten. Weitere Informationen zur Genre-Auswahl folgen.</p>
           <div class="detail-status"><span><i aria-hidden="true"></i>In Entwicklung</span><strong>Eigene API-Verbindung für freie KI-Erzählungen</strong></div>
         </div>
         <figure class="product-concept-hero product-concept-hero-story"><img src="assets_products/story-forge-world-visual-v2.webp" alt="STORY-FORGE Welt mit verbundenen Wegen vom Marktplatz bis zur Zitadelle" loading="lazy"><figcaption>Orte, Wege und Folgen als Teil einer fortlaufenden Welt</figcaption></figure>

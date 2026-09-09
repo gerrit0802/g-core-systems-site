@@ -210,6 +210,35 @@ const navigatorWorkspace = document.getElementById('navigator-workspace');
 const factorButtons = [...document.querySelectorAll('[data-navigator-factor]')];
 const navigatorLines = [...document.querySelectorAll('[data-navigator-line]')];
 const resultNodes = [...document.querySelectorAll('[data-navigator-result-node]')];
+const navigatorCanvas = document.querySelector('.navigator-canvas');
+const navigatorViewport = document.querySelector('.navigator-viewport');
+let navigatorLineFrame = 0;
+const scheduleNavigatorLines = () => {
+  if (navigatorLineFrame || !navigatorCanvas) return;
+  navigatorLineFrame = requestAnimationFrame(() => {
+    navigatorLineFrame = 0;
+    const svg = navigatorCanvas.querySelector('svg');
+    const bounds = svg.getBoundingClientRect();
+    const core = navigatorCanvas.querySelector('.navigator-core').getBoundingClientRect();
+    svg.setAttribute('viewBox', `0 0 ${bounds.width} ${bounds.height}`);
+    const connect = (line, from, to) => {
+      const x1 = from.right - bounds.left, y1 = (from.top + from.bottom) / 2 - bounds.top;
+      const x2 = to.left - bounds.left, y2 = (to.top + to.bottom) / 2 - bounds.top;
+      const mid = (x1 + x2) / 2;
+      line.setAttribute('d', `M ${x1} ${y1} C ${mid} ${y1}, ${mid} ${y2}, ${x2} ${y2}`);
+    };
+    navigatorLines.forEach((line, index) => connect(line, factorButtons[index].getBoundingClientRect(), core));
+    navigatorCanvas.querySelectorAll('.result-line').forEach((line, index) => connect(line, core, resultNodes[index].parentElement.getBoundingClientRect()));
+    const hint = document.querySelector('[data-navigator-scroll-hint]');
+    if (hint) hint.hidden = navigatorViewport.scrollWidth <= navigatorViewport.clientWidth + 1;
+  });
+};
+if (navigatorCanvas && 'ResizeObserver' in window) {
+  const navigatorResize = new ResizeObserver(scheduleNavigatorLines);
+  [navigatorCanvas, navigatorViewport, ...factorButtons].forEach(element => navigatorResize.observe(element));
+}
+window.addEventListener('resize', scheduleNavigatorLines);
+document.fonts?.ready.then(scheduleNavigatorLines);
 
 const navigatorScenarios = {
   case: {
@@ -246,7 +275,7 @@ const navigatorScenarios = {
   },
   family: {
     mapTitle: 'Familie & Pflege',
-    core: 'Familienkoordination',
+    core: 'Familien\u00ADkoordination',
     title: 'Familien- und Pflegekoordination ohne Informationsverlust',
     summary: 'Gesundheit, Termine, Zuständigkeiten und Alltag mehrerer Personen werden behutsam zusammengeführt.',
     factors: ['Praxis & Pflegedienst', 'Schule & Betreuung', 'Termine & Transporte', 'Medikation & Versorgung', 'Absprachen in der Familie'],
@@ -288,7 +317,7 @@ const renderNavigator = () => {
   const fallback = selected.size
     ? [{ short: 'Weitere Verbindung', text: 'Weitere Zusammenhänge werden sichtbar, sobald zusätzliche Faktoren einbezogen werden.' }]
     : [{ short: 'Keine Auswahl', text: 'Wählen Sie mindestens zwei Faktoren, um mögliche Beziehungen sichtbar zu machen.' }];
-  const visibleFindings = [...matches, ...fallback, ...fallback].slice(0, 3);
+  const visibleFindings = [...matches, ...fallback, ...fallback, ...fallback].slice(0, 3);
   resultNodes.forEach((node, index) => {
     node.textContent = visibleFindings[index].short;
     node.parentElement.classList.toggle('is-muted', index >= matches.length);
@@ -311,6 +340,7 @@ const renderNavigator = () => {
     }));
   }
   navigatorWorkspace?.setAttribute('aria-labelledby', `tab-${activeScenario}`);
+  scheduleNavigatorLines();
 };
 
 const selectScenario = (key, moveFocus = false, animate = true) => {
