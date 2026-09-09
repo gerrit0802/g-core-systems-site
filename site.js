@@ -3,6 +3,18 @@ const header = document.querySelector('[data-header]');
 const nav = document.querySelector('[data-nav]');
 const menuToggle = document.querySelector('[data-menu-toggle]');
 const navLinks = [...document.querySelectorAll('.main-nav a[href^="#"]')];
+const navLight = document.createElement('span');
+navLight.className = 'nav-light';
+navLight.setAttribute('aria-hidden', 'true');
+nav?.append(navLight);
+const positionNavLight = () => {
+  const active = navLinks.find(link => link.classList.contains('active'));
+  const visible = active && nav?.getClientRects().length;
+  navLight.style.opacity = visible ? '1' : '0';
+  if (!visible) return;
+  navLight.style.width = `${active.offsetWidth}px`;
+  navLight.style.transform = `translate(${active.offsetLeft}px, ${active.offsetTop + active.offsetHeight + 7}px)`;
+};
 
 const setHeaderState = () => header?.classList.toggle('scrolled', window.scrollY > 16);
 setHeaderState();
@@ -12,6 +24,7 @@ menuToggle?.addEventListener('click', () => {
   const open = menuToggle.getAttribute('aria-expanded') === 'true';
   menuToggle.setAttribute('aria-expanded', String(!open));
   nav?.classList.toggle('open', !open);
+  scheduleActiveSection();
 });
 
 navLinks.forEach((link) => link.addEventListener('click', () => {
@@ -39,7 +52,7 @@ const productDialogs = new Map(
 );
 
 const setActiveNav = (sectionId) => {
-  const sectionOwners = { zielgruppen: 'loesungen', entwicklung: 'loesungen', sicherheit: 'loesungen', kontakt: 'projektanfrage' };
+  const sectionOwners = { zielgruppen: 'loesungen', entwicklung: 'unternehmen', sicherheit: 'unternehmen', kontakt: 'projektanfrage' };
   const mappedSection = ['tagesanker', 'story-forge'].includes(sectionId) ? 'apps' : (sectionOwners[sectionId] || sectionId);
   navLinks.forEach((link) => {
     const active = !link.classList.contains('button') && link.getAttribute('href') === `#${mappedSection}`;
@@ -47,6 +60,7 @@ const setActiveNav = (sectionId) => {
     if (active) link.setAttribute('aria-current', 'location');
     else link.removeAttribute('aria-current');
   });
+  positionNavLight();
 };
 
 const closeProduct = (dialog, updateHistory = true) => {
@@ -395,6 +409,7 @@ function scheduleActiveSection() {
 window.addEventListener('scroll', scheduleActiveSection, { passive: true });
 window.addEventListener('resize', scheduleActiveSection);
 window.addEventListener('load', scheduleActiveSection);
+document.fonts?.ready.then(scheduleActiveSection);
 if ('ResizeObserver' in window) new ResizeObserver(scheduleActiveSection).observe(document.querySelector('main'));
 scheduleActiveSection();
 
