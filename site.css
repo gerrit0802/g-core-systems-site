@@ -76,6 +76,39 @@ h3 { margin-bottom: 12px; font-size: 1.25rem; }
 .emblem img { width: 100%; height: 100%; object-fit: cover; }
 .hero-visual p { margin-top: 28px; color: var(--muted); font-size: .75rem; letter-spacing: .22em; text-transform: uppercase; }
 
+/* Approved brand artwork: original navigation logo stays independent of the hero. */
+.site-header .brand-mark { width: 58px; height: 58px; }
+.site-header:not(.scrolled) { background: var(--bg); }
+.hero.hero-brand-art { min-height: 790px; padding: 162px 0 106px; isolation: isolate; background: var(--bg); }
+.hero-brand-art + .offer-section { background: var(--bg); }
+.hero-brand-art .hero-grid { display: block; position: relative; z-index: 2; }
+.hero-brand-art .hero-copy { width: 48%; max-width: 560px; }
+.hero-brand-art h1 { font-size: clamp(2.35rem,4.2vw,4.25rem); line-height: 1.09; letter-spacing: -.035em; }
+.hero-brand-art h1 em { display: inline; color: #d7c58f; }
+.hero-brand-art .hero-lead { max-width: 440px; font-size: 1rem; line-height: 1.85; color: #b9bdbe; }
+.hero-brand-art .eyebrow { color: #ceb77b; }
+.hero-brand-art .button-row { max-width: 490px; }
+.hero-brand-art .button { background: #d4bc7a; border-color: #d4bc7a; }
+.hero-brand-art .button-outline { background: rgba(7,8,9,.65); border-color: rgba(198,171,105,.3); }
+.hero-brand-art .button-row > .text-link { flex-basis: 100%; margin-top: 9px; font-size: .875rem; }
+.hero-brand-image { position: absolute; z-index: 0; width: min(100vw,1280px); max-width: none; height: auto; top: 75px; right: calc((100vw - min(100vw,1180px))/2 - 190px); opacity: .95; pointer-events: none; mask-image: linear-gradient(180deg,transparent,#000 10%,#000 85%,transparent),linear-gradient(90deg,transparent,#000 24%,#000 94%,transparent); mask-composite: intersect; }
+.hero-brand-art::after { content: ""; position: absolute; inset: 0; z-index: 1; pointer-events: none; background: linear-gradient(90deg,var(--bg) 0%,rgba(7,8,9,.96) 28%,rgba(7,8,9,.7) 42%,transparent 64%),linear-gradient(180deg,var(--bg) 78px,transparent 230px),linear-gradient(0deg,var(--bg),rgba(7,8,9,.9) 48px,transparent 200px); }
+.hero-brand-caption { position: absolute; z-index: 2; bottom: 35px; right: max(22px,calc((100vw - 1180px)/2)); margin: 0; color: #a2aaae; font-size: .75rem; letter-spacing: .16em; text-transform: uppercase; }
+@media (min-width: 701px) and (max-width: 980px) {
+  .hero-brand-art .hero-copy { width: 60%; }
+  .hero-brand-image { width: 1040px; right: -410px; top: 90px; }
+}
+@media (max-width: 700px) {
+  .site-header .brand-mark { width: 48px; height: 48px; }
+  .hero.hero-brand-art { min-height: 0; padding: 126px 0 340px; }
+  .hero-brand-art .hero-copy { width: 100%; max-width: 510px; }
+  .hero-brand-art h1 { font-size: clamp(1.9rem,7.8vw,3rem); }
+  .hero-brand-art .hero-lead { max-width: 440px; }
+  .hero-brand-image { top: auto; bottom: -60px; right: calc(50% - 450px); width: 780px; mask-image: linear-gradient(180deg,transparent,#000 25%,#000 77%,transparent 94%),linear-gradient(90deg,transparent,#000 24%,#000 94%,transparent); }
+  .hero-brand-art::after { background: linear-gradient(0deg,var(--bg),rgba(7,8,9,.92) 48px,transparent 180px,transparent 270px,var(--bg) 380px); }
+  .hero-brand-caption { bottom: 29px; left: 22px; right: 22px; text-align: right; font-size: .7rem; letter-spacing: .12em; }
+}
+
 .offer-grid { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 24px; }
 .feature-card { min-height: 380px; padding: 34px; display: flex; flex-direction: column; position: relative; overflow: hidden; border: 1px solid var(--line); border-radius: var(--radius); background: linear-gradient(145deg,rgba(255,255,255,.04),rgba(255,255,255,.012)); transition: transform .25s,border-color .25s; }
 .feature-card:hover { transform: translateY(-4px); border-color: rgba(216,174,43,.32); }
