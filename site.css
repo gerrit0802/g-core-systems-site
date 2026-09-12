@@ -141,6 +141,9 @@ h3 { margin-bottom: 12px; font-size: 1.25rem; }
 .product-notice strong { color: var(--gold-light); font-size: .84rem; }
 .product-notice p { margin: 7px 0 0; color: var(--muted); font-size: .85rem; }
 .android-install-note { margin-top: 18px; font-size: .875rem; line-height: 1.6; }
+.ta-download-actions { display: flex; flex-direction: column; align-items: flex-start; gap: 12px; margin-top: 24px; }
+.ta-download-actions > span { color: #aaa69d; font-size: .75rem; line-height: 1.6; }
+.ta-download-actions .button { max-width: 100%; min-height: 48px; white-space: normal; text-align: center; }
 .mobile-download-state { display: none; margin: 18px 0 0; padding: 12px 16px; color: #b9e8c7; font-size: .79rem; font-weight: 700; border: 1px solid rgba(136,195,155,.3); border-radius: 999px; background: rgba(136,195,155,.08); }
 .more-note { margin: auto 0 0; padding-top: 25px; display: flex; align-items: center; gap: 10px; color: #d3cbb9; font-size: .82rem; }
 .more-note::before { content: ""; width: 22px; height: 1px; background: var(--gold); }
@@ -681,6 +684,51 @@ body.product-dialog-open { overflow: hidden; }
   .accordion-content .explorer-proof { margin-top: 24px; gap: 10px; }
   .accordion-content .explorer-proof span { font-size: .75rem; }
 }
+
+/* Editorial product presentation. Original pixels; cropping happens only in CSS. */
+.ta-overline { color: #c7b47f; font-size: .75rem; letter-spacing: .17em; text-transform: uppercase; font-weight: 600; }
+.ta-editorial-card { display: flex; flex-direction: column; justify-content: center; gap: 28px; padding: 40px 36px 24px; background: radial-gradient(ellipse at 85% 0%,#343021 0,transparent 62%),#141414; text-decoration: none; color: var(--text); container-type: inline-size; }
+.ta-editorial-intro { display: grid; gap: 16px; }
+.ta-editorial-intro strong { font: 400 clamp(2rem,7cqi,3.1rem)/1.12 Georgia,serif; letter-spacing: -.03em; }
+.ta-card-crop { position: relative; aspect-ratio: 1080/500; overflow: hidden; border: 1px solid #4a4433; border-radius: 14px; background: #141414; box-shadow: 0 22px 42px #0005; }
+.ta-card-crop img { display: block; position: absolute; width: 100%; height: auto; transform: translateY(-11.5%); }
+.ta-editorial-footer { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; color: #b8b2a5; font-size: .75rem; }
+.ta-editorial-cta { color: #ebd7a0; font-size: .875rem; }
+.ta-editorial-cta b { display: inline-block; margin-left: 6px; transition: transform .25s ease; }
+.ta-editorial-card:hover .ta-editorial-cta b { transform: translate(3px,-3px); }
+.ta-editorial-card:focus-visible { outline: 3px solid var(--gold); outline-offset: -4px; }
+.ta-showcase { min-width: 0; width: 100%; padding: 26px; background: linear-gradient(145deg,#28261e,#151617 56%); border: 1px solid #4b4431; border-radius: 24px; box-shadow: 0 32px 80px #0005; container-type: inline-size; }
+.ta-showcase-heading { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 22px; }
+.ta-showcase-count { color: #aca594; font: .75rem/1.5 monospace; white-space: nowrap; }
+.ta-view-selector { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; padding: 4px; border: 1px solid #484335; border-radius: 12px; background: #111212; margin-bottom: 20px; }
+.ta-showcase button { font: inherit; cursor: pointer; }
+.ta-view-selector button { min-height: 44px; padding: 10px 8px; border: 0; border-radius: 8px; color: #c8c2b5; background: transparent; font-size: .875rem; }
+.ta-view-selector button[aria-pressed="true"] { background: #dfcb96; color: #16150f; }
+.ta-showcase :is(button,a):focus-visible { outline: 2px solid #e7cd84; outline-offset: 4px; }
+.ta-capture { margin: 0; }
+.ta-capture-window { position: relative; aspect-ratio: 9/16; overflow: hidden; background: #141414; border: 1px solid #454036; border-radius: 12px; }
+.ta-capture-window img { display: block; width: 100%; height: auto; }
+.ta-showcase.is-enhanced .ta-capture-window { aspect-ratio: 1080/820; }
+.ta-showcase.is-enhanced .ta-capture-window img { position: absolute; transform: translateY(calc(var(--ta-crop,10) * -1%)); transition: transform .5s cubic-bezier(.22,1,.36,1); }
+.ta-showcase.is-full .ta-capture-window { aspect-ratio: 9/16; }
+.ta-showcase.is-full .ta-capture-window img { transform: none; }
+.ta-capture-caption { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 12px 2px 18px; color: #b0aa9d; font-size: .75rem; }
+.ta-capture-caption a { color: #dfcb96; text-decoration-color: #6a6049; text-underline-offset: 4px; }
+.ta-detail-selector { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 8px; border-top: 1px solid #464033; padding-top: 18px; }
+.ta-detail-selector button { display: grid; gap: 8px; justify-items: start; min-width: 0; min-height: 70px; padding: 12px; border: 1px solid transparent; border-radius: 10px; color: #bfb8a7; background: transparent; text-align: left; }
+.ta-detail-selector button span { font: .75rem/1 monospace; opacity: .8; }
+.ta-detail-selector button b { font-size: .875rem; font-weight: 500; overflow-wrap: anywhere; }
+.ta-detail-selector button[aria-pressed="true"] { background: #dfcb9610; border-color: #85754d; color: #f0dba4; }
+.ta-detail-note { display: grid; grid-template-columns: 30px minmax(0,1fr); gap: 12px; margin-top: 22px; min-height: 132px; }
+.ta-note-index { color: #cbb576; font: .875rem/1.6 monospace; padding-top: 2px; }
+.ta-detail-note h3 { font: 400 clamp(1.25rem,4.5cqi,1.65rem)/1.25 Georgia,serif; color: #f0eadc; margin: 0 0 10px; }
+.ta-detail-note p { color: #c0baac; font-size: 1rem; line-height: 1.65; margin: 0; }
+.ta-showcase-bottom { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; margin-top: 22px; padding-top: 18px; border-top: 1px solid #464033; font-size: .75rem; color: #aca594; }
+.ta-showcase-bottom button { min-height: 44px; padding: 8px 12px; border: 1px solid #746747; border-radius: 8px; background: transparent; color: #e9d59e; font-size: .875rem; }
+.ta-capture-disclosure { margin: 14px 0 0; color: #b4ad9f; font-size: .75rem; line-height: 1.6; }
+.ta-showcase [hidden] { display: none; }
+@media (max-width: 980px) { .ta-showcase { max-width: 640px; justify-self: center; } }
+@media (max-width: 600px) { .ta-editorial-card { padding: 30px 24px 24px; gap: 24px; } .ta-showcase { padding: 18px; border-radius: 18px; } .ta-detail-selector { gap: 4px; } .ta-detail-selector button { padding: 10px 7px; } .ta-detail-note { grid-template-columns: 24px minmax(0,1fr); gap: 8px; min-height: 0; } }
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }

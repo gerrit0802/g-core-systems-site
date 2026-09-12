@@ -108,13 +108,100 @@ productDialogs.forEach((dialog) => {
   });
 });
 
+// Guided original captures: presentation controls never simulate app actions.
+const tagesankerCaptures = {
+  today: { image: 'assets_products/tagesanker-heute-20260912.png', alt: 'Originalaufnahme Heute mit Privat, Beruf und dem Einstieg Gemeinsam planen', count: '01 / 02',
+    details: [
+      ['Bereiche', 11.5, 'Privates und Berufliches. Klar getrennt.', 'Zwei Bereiche halten persönliche Vorhaben und berufliche Aufgaben auseinander. Der gewählte Bereich bleibt oben sichtbar.'],
+      ['Gemeinsam', 20, 'Von deinem Tag zur gemeinsamen Planung.', 'Der Einstieg Gemeinsam planen führt direkt zur Abstimmung mit anderen. Welche Inhalte geteilt werden, wird erst dort bewusst festgelegt.'],
+      ['Navigation', 57.29, 'Vier Wege durch deinen Alltag.', 'Heute, Eingang, Kalender und Routinen bleiben über die untere Navigation erreichbar. Weitere Funktionen liegen im Mehr-Menü.']
+    ] },
+  calendar: { image: 'assets_products/tagesanker-kalender-20260912.png', alt: 'Originalaufnahme Kalender mit sechs Ansichten, Optionen für Quellen und leerer Wochenübersicht', count: '02 / 02',
+    details: [
+      ['Ansichten', 19.8, 'Die Perspektive wechselt. Der Plan bleibt.', 'Tag, 3 Tage, Woche, Monat, Agenda und Planung lassen sich direkt auswählen. So wird aus einem Tagesdetail ein größerer Überblick.'],
+      ['Quellen', 40, 'Zusammenhänge mit bewusst gewählten Quellen.', 'Unter Optionen lassen sich zusätzliche Kalenderquellen auswählen. Die Anzeige benennt ihre Grenzen: keine geladenen Einträge bedeutet nicht automatisch freie Zeit.'],
+      ['Zeiträume', 46.2, 'Orientierung bis zum einzelnen Tag.', 'Zeitraum und Wochentage machen den gezeigten Ausschnitt nachvollziehbar. Die Originalaufnahme zeigt eine Woche ohne geladene Termine.']
+    ] }
+};
+document.querySelectorAll('[data-ta-showcase]').forEach((showcase) => {
+  const image = showcase.querySelector('[data-ta-image]');
+  const frame = showcase.querySelector('[data-ta-window]');
+  const original = showcase.querySelector('[data-ta-original]');
+  const full = showcase.querySelector('[data-ta-full]');
+  const views = [...showcase.querySelectorAll('[data-ta-view]')];
+  const details = [...showcase.querySelectorAll('[data-ta-detail]')];
+  const error = showcase.querySelector('[data-ta-error]');
+  let active = 'today';
+  let request = 0;
+  let animation;
+  const render = (key, index) => {
+    const capture = tagesankerCaptures[key];
+    const detail = capture.details[index];
+    active = key;
+    image.src = capture.image;
+    image.alt = capture.alt;
+    original.href = capture.image;
+    original.setAttribute('aria-label', `Vollständige Originalaufnahme ${key === 'today' ? 'Heute' : 'Kalender'} in neuem Tab öffnen`);
+    frame.style.setProperty('--ta-crop', String(detail[1]));
+    showcase.querySelector('[data-ta-count]').textContent = capture.count;
+    showcase.querySelector('[data-ta-index]').textContent = String(index + 1).padStart(2, '0');
+    showcase.querySelector('[data-ta-title]').textContent = detail[2];
+    showcase.querySelector('[data-ta-description]').textContent = detail[3];
+    views.forEach(button => button.setAttribute('aria-pressed', String(button.dataset.taView === key)));
+    details.forEach((button, i) => {
+      button.querySelector('b').textContent = capture.details[i][0];
+      button.setAttribute('aria-pressed', String(i === index));
+    });
+    error.hidden = true;
+  };
+  const select = async (key, index) => {
+    const capture = tagesankerCaptures[key];
+    if (!capture || !Number.isInteger(index) || !capture.details[index]) return;
+    const current = ++request;
+    if (key !== active) {
+      const candidate = new Image();
+      candidate.src = capture.image;
+      try { await candidate.decode(); } catch {
+        if (request === current) error.hidden = false;
+        return;
+      }
+    }
+    if (request !== current) return;
+    render(key, index);
+    animation?.cancel();
+    if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches && image.animate) {
+      animation = image.animate([{ opacity: .5 }, { opacity: 1 }], { duration: 240, easing: 'ease-out' });
+    }
+  };
+  views.forEach(button => button.addEventListener('click', () => select(button.dataset.taView, 0)));
+  details.forEach(button => button.addEventListener('click', () => select(active, Number(button.dataset.taDetail))));
+  [views, details].forEach(group => group.forEach((button, index) => button.addEventListener('keydown', event => {
+    const offset = { ArrowRight: 1, ArrowLeft: -1, Home: -index, End: group.length - 1 - index }[event.key];
+    if (offset === undefined) return;
+    event.preventDefault();
+    const target = group[(index + offset + group.length) % group.length];
+    target.focus();
+    target.click();
+  })));
+  full.addEventListener('click', () => {
+    const expanded = showcase.classList.toggle('is-full');
+    full.setAttribute('aria-pressed', String(expanded));
+    full.textContent = expanded ? 'Detailansicht' : 'Gesamtansicht';
+    showcase.querySelector('[data-ta-framing]').textContent = expanded ? 'Vollständige Originalaufnahme' : 'Vergrößerter Originalausschnitt';
+  });
+  render('today', 0);
+  showcase.classList.add('is-enhanced');
+  showcase.querySelector('[data-ta-framing]').textContent = 'Vergrößerter Originalausschnitt';
+  showcase.querySelectorAll('[data-ta-controls]').forEach(control => { control.hidden = false; });
+});
+
 const featureContent = {
   tagesanker: {
-    focus: ['01', 'Fokus statt Dauerliste', 'Der nächste sinnvolle Schritt bleibt sichtbar.', 'Die Top 3 machen Prioritäten sichtbar. Der Jetzt-Modus und das Widget zeigen jeweils genau eine nächste Handlung. Bei Bedarf lässt sich bewusst eine andere wählen – ohne zur vollständigen Liste zurückzukehren.', 'Jetzt-Modus & Widget', 'Top 3 statt Dauerliste'],
-    together: ['02', 'Gemeinsam planen', 'Aus einem Vorschlag wird eine bewusste Zusage.', 'Planungsvorschläge mit ausgewählten Personen austauschen und selbst über die Übernahme entscheiden. Erst die Annahme erzeugt eine eigene Aufgabe; der Status macht die Rückmeldung nachvollziehbar. Private Aufgaben und persönliche Änderungen bleiben davon getrennt.', 'Gezielt abstimmen', 'Bewusst übernehmen'],
-    routine: ['03', 'Wiederkehrendes passend planen', 'Dein Rhythmus. Nicht nur ein fester Termin.', 'Routinen können einem festen Kalender folgen oder ihren nächsten Termin aus der Erledigung ableiten. Auch freie Intervalle und der letzte Werktag im Monat sind möglich. Pausieren, Überspringen und Verschieben schaffen Spielraum für den tatsächlichen Alltag.', 'Fest oder nach Erledigung', 'Flexible Wiederholungen'],
-    context: ['04', 'Bereiche bewusst trennen', 'Privates und Berufliches bleiben unterscheidbar.', 'Getrennte Bereiche halten berufliche Verpflichtungen und private Vorhaben auseinander. Aufgaben und Routinen lassen sich gezielt mit dem Android-Kalender verknüpfen. Tagesstart und Tagesabschluss geben der eigenen Planung einen bewussten Rahmen.', 'Privat und Beruf', 'Kalender nach eigener Wahl'],
-    control: ['05', 'Kontrolle bleibt beim Nutzer', 'Persönliche Planung mit klaren Grenzen.', 'Aufgaben und Routinen bleiben lokal und sind offline nutzbar. App-Sperre und verschlüsselte Sicherung ergänzen den Schutz. Gemeinsame Funktionen benötigen eine Verbindung; bei der Spracherkennung hängt die Verarbeitung vom verwendeten Dienst ab.', 'Verschlüsselte Sicherung', 'Lokale Planung & App-Sperre']
+    focus: ['01', 'Dein Alltag, übersichtlich', 'Erst festhalten. Dann bewusst einordnen.', 'Aufgaben zunächst ohne Termin im Eingang sammeln und später planen. Meine Top 3 hebt bis zu drei wichtige offene Aufgaben hervor. Eigene Vorlagen für Titel, Notiz und Aufwand sparen wiederholte Eingaben. Privat und Beruf bleiben getrennte Bereiche – ohne verpflichtenden Tagesstart oder Tagesabschluss.', 'Meine Top 3', 'Eigene Vorlagen'],
+    together: ['02', 'Gemeinsam planen', 'Verbunden planen. Selbst entscheiden.', 'Mit gezielt eingeladenen Personen Vorschläge austauschen, gemeinsame Termine planen oder Frei/Belegt-Zeiten freigeben. Diese drei Funktionen bleiben getrennt: Ein empfangener Vorschlag wird erst durch ausdrückliche Übernahme zur privaten Aufgabe. Persönliche Änderungen daran bleiben privat; der Übertragungsstatus bleibt sichtbar.', 'Vorschläge & gemeinsame Termine', 'Frei/Belegt nach Freigabe'],
+    routine: ['03', 'Routinen und Terminserien', 'Wiederkehrend ist nicht immer dasselbe.', 'Routinen folgen einem Plan oder leiten die nächste Fälligkeit aus der Erledigung ab. Terminserien bilden dagegen feste Kalenderfolgen ab: Ändere einen Termin, diesen und folgende oder die gesamte Serie – mit Prüfung des Geltungsbereichs vor dem Speichern. Serien bleiben derzeit lokal, ohne Erinnerungen, Gerätekalenderbindung oder Gemeinsam-Synchronisation.', 'Routinen nach Plan oder Erledigung', 'Serien mit gezielten Ausnahmen'],
+    context: ['04', 'Kalender mit Perspektive', 'Vom einzelnen Tag zum größeren Zusammenhang.', 'Tag, 3 Tage, Woche, Monat, Agenda und Planung zeigen jeweils einen anderen Ausschnitt. Planung bezieht auch Aufgaben ohne Termin ein. Gerätekalender und gemeinsame Termine lassen sich als zusätzliche Quellen einblenden. Hinweise auf Überschneidungen und unvollständig geladene Quellen helfen beim Einordnen; Termine werden nicht automatisch verschoben.', 'Sechs Kalenderansichten', 'Quellen bewusst auswählen'],
+    control: ['05', 'Deine App, deine Einstellungen', 'Die Planung passt sich deinem Alltag an.', 'Startansicht, Design, Textgröße, Wochenbeginn und Vorgaben für neue Einträge lassen sich anpassen. Gültige Einstellungen werden automatisch gespeichert; bestehende Aufgaben werden durch neue Planungsvorgaben nicht verändert. App-Sperre und passwortgeschützte Sicherungsdateien ergänzen die lokale Aufgabenverwaltung.', 'Anpassbare Darstellung', 'Verschlüsselte Sicherung']
   },
   'story-forge': {
     world: ['01', 'Eigener Kanon', 'Aus eigenen Ideen wird eine spielbare Welt.', 'In der Werkstatt lassen sich Welt, Figuren, Orte, Fraktionen und Hintergrundwissen selbst gestalten oder mit KI ausarbeiten. Einzelne Felder und ganze Entwürfe bleiben bearbeitbar. Erst die bestätigte Übernahme macht daraus gespeicherte Inhalte.', 'Eigene Inhalte & KI-Entwürfe', 'Prüfen vor Übernehmen'],
