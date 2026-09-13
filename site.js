@@ -60,6 +60,7 @@ const setActiveNav = (sectionId) => {
 
 const closeProduct = (dialog, updateHistory = true) => {
   if (!dialog?.open) return;
+  dialog.querySelectorAll('video').forEach((video) => video.pause());
   dialog.close();
   document.body.classList.remove('product-dialog-open');
   if (updateHistory && ['#tagesanker', '#story-forge'].includes(window.location.hash)) {
@@ -107,6 +108,25 @@ productDialogs.forEach((dialog) => {
     if (event.target === dialog) closeProduct(dialog);
   });
 });
+
+// The film loads on demand; leaving the product must never leave audio running.
+const tagesankerFilm = document.querySelector('[data-ta-film]');
+const filmSection = document.querySelector('#tagesanker-film');
+document.querySelectorAll('[data-ta-film-jump]').forEach((trigger) => {
+  trigger.addEventListener('click', () => {
+    const dialog = productDialogs.get('tagesanker');
+    if (!dialog?.open) openProduct('tagesanker');
+    filmSection?.scrollIntoView({ behavior: reducedMotion ? 'auto' : 'smooth', block: 'start' });
+    tagesankerFilm?.focus({ preventScroll: true });
+  });
+});
+const filmError = document.querySelector('[data-ta-film-error]');
+const showFilmError = () => { if (filmError) filmError.hidden = false; };
+tagesankerFilm?.addEventListener('error', showFilmError);
+tagesankerFilm?.querySelector('source')?.addEventListener('error', showFilmError);
+tagesankerFilm?.addEventListener('loadeddata', () => { if (filmError) filmError.hidden = true; });
+productDialogs.get('tagesanker')?.addEventListener('close', () => tagesankerFilm?.pause());
+document.addEventListener('visibilitychange', () => { if (document.hidden) tagesankerFilm?.pause(); });
 
 // Guided original captures: presentation controls never simulate app actions.
 const tagesankerCaptures = {
