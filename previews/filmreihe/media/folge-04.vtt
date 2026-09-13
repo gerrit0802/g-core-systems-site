@@ -1,0 +1,109 @@
+WEBVTT
+
+00:00:08.350 --> 00:00:11.441
+Woran erkennen Sie, ob eine neue Anwendung
+
+00:00:11.442 --> 00:00:14.336
+wirklich das tut, was Sie sich wünschen?
+
+00:00:14.337 --> 00:00:16.426
+Bei G-Core Systems wird Ihre
+
+00:00:16.427 --> 00:00:19.935
+Vorstellung am konkreten Verhalten überprüfbar.
+
+00:00:20.736 --> 00:00:23.861
+Im fiktiven Lernmodul zur Projektübergabe
+
+00:00:23.862 --> 00:00:26.328
+fehlt, wer den Vorgang übernimmt.
+
+00:00:26.329 --> 00:00:29.534
+Außerdem ist der Ablageort unklar.
+
+00:00:29.535 --> 00:00:33.186
+Die lernende Person trägt Lea als Verantwortliche ein
+
+00:00:33.187 --> 00:00:36.287
+und hält die Antwort auf ihre Rückfrage fest.
+
+00:00:36.288 --> 00:00:39.468
+Erst dann lässt sich die Übung abschließen.
+
+00:00:40.274 --> 00:00:43.320
+Dann kommt Ihre zusätzliche Regel: Bei einer
+
+00:00:43.321 --> 00:00:46.939
+externen Übergabe muss auch der Empfänger bestätigen.
+
+00:00:46.940 --> 00:00:50.472
+Interne Übergaben bleiben davon unberührt.
+
+00:00:50.473 --> 00:00:53.815
+Das verändert die Fachlogik der Anwendung.
+
+00:00:54.628 --> 00:00:59.364
+Wir spielen dieselbe externe Übergabe in beiden Fassungen durch.
+
+00:00:59.365 --> 00:01:02.761
+Ohne benannte Verantwortung stoppen beide.
+
+00:01:02.762 --> 00:01:06.048
+Sind die bisherigen Angaben vollständig, lässt
+
+00:01:06.049 --> 00:01:08.549
+die erste Fassung den Abschluss zu.
+
+00:01:08.550 --> 00:01:12.408
+Die zweite wartet zusätzlich auf die Bestätigung.
+
+00:01:13.230 --> 00:01:17.001
+Der bisherige Prüfbeleg gehört zur ersten Fassung.
+
+00:01:17.002 --> 00:01:20.194
+Er bestätigt die neue Bedingung noch nicht.
+
+00:01:20.195 --> 00:01:24.422
+Genau solche Zuordnungen soll Omni-Core nachvollziehbar halten:
+
+00:01:24.423 --> 00:01:27.913
+welche Anforderung an welcher Fassung geprüft wurde.
+
+00:01:28.712 --> 00:01:31.824
+Die Prüfung der zweiten Fassung umfasst jetzt
+
+00:01:31.825 --> 00:01:36.183
+vier Situationen: fehlende Verantwortung, externe Übergabe ohne
+
+00:01:36.184 --> 00:01:39.453
+und mit Bestätigung sowie eine interne Übergabe.
+
+00:01:39.454 --> 00:01:44.020
+Dabei zählen auch die Fälle, die weiterhin funktionieren müssen.
+
+00:01:44.818 --> 00:01:47.129
+Sie sehen, wann die Anwendung den
+
+00:01:47.130 --> 00:01:50.301
+Abschluss zulässt und wann sie ihn verhindert.
+
+00:01:50.302 --> 00:01:53.752
+Der Vergleich belegt die vereinbarte Änderung.
+
+00:01:53.753 --> 00:01:55.747
+So können Sie die Funktion
+
+00:01:55.748 --> 00:01:58.509
+an Ihren eigenen Kriterien abnehmen.
+
+00:01:59.316 --> 00:02:03.576
+Welche Ausnahme muss Ihre Anwendung richtig behandeln?
+
+00:02:03.577 --> 00:02:05.777
+Zeigen Sie G-Core Systems einen
+
+00:02:05.778 --> 00:02:09.257
+Fall, bei dem Standardsoftware nicht weiterhilft.
+
+00:02:10.620 --> 00:02:16.476
+Ihre Idee. Ihr System. G-Core Systems.

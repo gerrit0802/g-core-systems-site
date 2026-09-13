@@ -141,6 +141,15 @@ h3 { margin-bottom: 12px; font-size: 1.25rem; }
 .product-notice strong { color: var(--gold-light); font-size: .84rem; }
 .product-notice p { margin: 7px 0 0; color: var(--muted); font-size: .85rem; }
 .android-install-note { margin-top: 18px; font-size: .875rem; line-height: 1.6; }
+.android-install-help { margin-top: 20px; border-block: 1px solid rgba(224,196,130,.22); text-align: left; }
+.android-install-help summary { padding: 18px 8px; min-height: 48px; color: var(--gold); font-size: 1rem; line-height: 1.5; cursor: pointer; overflow-wrap: anywhere; }
+.android-install-help summary:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
+.android-install-help-content { padding: 0 8px 24px; font-size: 1rem; line-height: 1.75; overflow-wrap: anywhere; }
+.android-install-help-content p { margin: 0 0 18px; }
+.android-install-help-content ol { margin: 0 0 20px; padding-left: 1.5em; }
+.android-install-help-content li + li { margin-top: 16px; }
+.android-install-help-content strong { color: var(--text); }
+.android-install-help-content a { color: var(--gold); text-underline-offset: .2em; }
 .ta-download-actions { display: flex; flex-direction: column; align-items: flex-start; gap: 12px; margin-top: 24px; }
 .ta-download-actions > span { color: #aaa69d; font-size: .75rem; line-height: 1.6; }
 .ta-download-actions .button { max-width: 100%; min-height: 48px; white-space: normal; text-align: center; }

@@ -8,9 +8,11 @@
   <title>G-Core Systems – Digitale Lösungen für Arbeit, Alltag und Kreativität</title>
   <link rel="icon" type="image/png" sizes="32x32" href="assets_icons/gcore_icon_32x32.png">
   <link rel="icon" type="image/png" sizes="64x64" href="assets_icons/gcore_icon_64x64.png">
-  <link rel="stylesheet" href="site.css?v=20260913-16">
+  <link rel="stylesheet" href="site.css?v=20260913-19">
   <script src="site.js?v=20260913-16" defer></script>
   <script defer src="site-counter.js?v=20260913-17"></script>
+<link rel="stylesheet" href="previews/filmreihe/player.css?v=20a">
+<script defer src="previews/filmreihe/player.js?v=20"></script>
 </head>
 <body>
   <a class="skip-link" href="#main-content">Zum Inhalt springen</a>
@@ -205,6 +207,37 @@
         <div class="company-mark reveal"><img src="logo-g-core.png" alt="G-Core Systems Logo"></div>
         <div class="company-copy reveal"><p class="eyebrow">Über G-Core Systems</p><h2>Entwicklung mit klarem System</h2><p>G-Core Systems ist ein digitales Entwicklungsstudio für eigene Apps und individuell entwickelte Anwendungen. Der Schwerpunkt liegt auf durchdachten digitalen Lösungen für Arbeit, Alltag und Kreativität.</p><p>Projekte werden auf Grundlage konkreter Anforderungen entwickelt – von der ersten Analyse über einen testbaren Prototyp bis zur schrittweisen Umsetzung. Dabei stehen verständliche Bedienung, nachvollziehbare Funktionen und die praktische Nutzbarkeit im Mittelpunkt.</p><p>Neben eigenen digitalen Produkten entwickelt G-Core Systems individuelle Apps, Webanwendungen und Assistenzsysteme für Privatpersonen, Selbstständige, Unternehmen und Organisationen.</p><p class="company-signature">Architecture of Intelligence.</p><small>G-Core Systems · gegründet von Gerrit Gutsch</small></div>
       </div>
+    <div class="film-library container" id="filmreihe" aria-labelledby="film-library-title">
+  <div class="film-library-heading">
+    <div><p class="eyebrow">G-Core in vier Perspektiven</p><h2 id="film-library-title">Von Ihrer Idee<br>zur passenden Anwendung.</h2></div>
+    <p>Was möglich wird. Wie Wissen zusammenarbeitet. Und woran sich eine gute Lösung messen lässt.</p>
+  </div>
+  <div class="film-library-layout">
+    <div class="film-stage">
+      <div class="film-stage-top"><span data-film-chapter>01 / 04 · Das Studio</span><span>Die Filmreihe</span></div>
+      <div class="film-screen">
+        <video id="company-film" controls playsinline preload="none" poster="previews/filmreihe/media/folge-01.jpg" aria-label="Ihre Idee. Ihr System.">
+          <source src="previews/filmreihe/media/folge-01-hd.mp4" type="video/mp4">
+          <track kind="captions" src="previews/filmreihe/media/folge-01.vtt" srclang="de" label="Deutsch">
+          Ihr Browser unterstützt dieses Video nicht.
+        </video>
+      </div>
+      <div class="film-player-tools"><span>Mit Ton erzählt · Untertitel verfügbar</span><label for="film-quality">Qualität <select id="film-quality"><option value="hd">HD · 1080p</option><option value="4k">4K · 2160p</option></select></label></div>
+      <div class="film-description" aria-live="polite" aria-atomic="true"><h3 data-film-title>Ihre Idee. Ihr System.</h3><p data-film-description>Ein Einblick in G-Core Systems: individuelle Anwendungen für Unternehmen, Selbstständige und persönliche Ideen.</p></div>
+      <p class="film-load-error" role="status" hidden data-film-error>Das Video konnte nicht geladen werden. Versuchen Sie HD oder öffnen Sie die Videodatei direkt.</p>
+      <div class="film-stage-footer"><span data-film-length>1:08 · Folge 01</span><a data-film-file href="previews/filmreihe/media/folge-01-hd.mp4" target="_blank" rel="noopener">Videodatei öffnen ↗</a></div>
+    </div>
+    <nav class="film-episodes" aria-label="Folge auswählen">
+      <p class="film-episodes-heading">Vier Filme. Ein Zusammenhang.</p>
+      <button type="button" data-film="0" aria-pressed="true" aria-controls="company-film"><img src="previews/filmreihe/media/folge-01.jpg" width="1280" height="720" alt=""><span class="film-episode-copy"><span class="film-episode-meta">01 · Das Studio <span>1:08</span></span><strong>Ihre Idee.<br>Ihr System.</strong><span class="film-episode-summary">Was wir für Sie entwickeln.</span></span></button>
+      <button type="button" data-film="1" aria-pressed="false" aria-controls="company-film"><img src="previews/filmreihe/media/folge-02.jpg" width="1280" height="720" alt=""><span class="film-episode-copy"><span class="film-episode-meta">02 · Wissen &amp; Agenten <span>2:08</span></span><strong>Wissen. Agenten.<br>Ihre Lösung.</strong><span class="film-episode-summary">Aus einer Frage wird ein nächster Schritt.</span></span></button>
+      <button type="button" data-film="2" aria-pressed="false" aria-controls="company-film"><img src="previews/filmreihe/media/folge-03.jpg" width="1280" height="720" alt=""><span class="film-episode-copy"><span class="film-episode-meta">03 · Vernetzte Abläufe <span>2:10</span></span><strong>Ihre Anforderungen<br>werden zur Anwendung.</strong><span class="film-episode-summary">Auswirkungen erkennen. Gemeinsam abstimmen.</span></span></button>
+      <button type="button" data-film="3" aria-pressed="false" aria-controls="company-film"><img src="previews/filmreihe/media/folge-04.jpg" width="1280" height="720" alt=""><span class="film-episode-copy"><span class="film-episode-meta">04 · Überprüfbare Entwicklung <span>2:17</span></span><strong>Von der Idee<br>zum geprüften Ergebnis.</strong><span class="film-episode-summary">Die eigene Anforderung im Ergebnis wiederfinden.</span></span></button>
+    </nav>
+  </div>
+  <p class="film-library-note">Sie wählen die Folge und starten den Film. HD für kompakte Wiedergabe, 4K für große Bildschirme.</p>
+</div>
+
     </section>
 
     <section id="entwicklung" class="section process-section">
@@ -241,7 +274,7 @@
     <section class="cta-section"><div class="container cta-inner reveal"><div><p class="eyebrow">Der nächste Schritt</p><h2>Sie haben eine Idee oder eine konkrete digitale Herausforderung?</h2><p>Beschreiben Sie die Ausgangssituation und das gewünschte Ergebnis. G-Core Systems prüft, ob und in welcher Form eine passende Umsetzung möglich ist.</p></div><a class="button" href="#projektanfrage">Projektanfrage starten</a></div></section>
   </main>
 
-  <footer class="site-footer"><div class="container footer-grid"><div class="footer-brand"><a class="brand" href="#start"><span class="brand-mark"><img src="logo-g-core.png" alt=""></span><span class="brand-copy"><strong>G-Core Systems</strong><small>Architecture of Intelligence</small></span></a><p>Eigene Apps und individuelle digitale Lösungen für Arbeit, Alltag und Kreativität.</p></div><div><h2>Angebote</h2><a href="#apps">Apps &amp; Software</a><a href="#zielgruppen">Individuelle Lösungen</a><a href="#beispiele">Anwendungsbeispiele</a><a href="#entwicklung">Entwicklungsablauf</a></div><div><h2>Unternehmen</h2><a href="#unternehmen">Über G-Core Systems</a><a href="#kontakt">Kontakt</a><a href="#sicherheit">Datenschutz und Sicherheit</a></div><div><h2>Rechtliches</h2><a href="#impressum-dialog" data-dialog-open="impressum-dialog">Impressum</a><a href="#datenschutz-dialog" data-dialog-open="datenschutz-dialog">Datenschutzerklärung</a></div></div><div class="container footer-bottom"><span>© 2026 G-Core Systems. Alle Rechte vorbehalten.</span><span>Gegründet von Gerrit Gutsch.</span></div></footer>
+  <footer class="site-footer"><div class="container footer-grid"><div class="footer-brand"><a class="brand" href="#start"><span class="brand-mark"><img src="logo-g-core.png" alt=""></span><span class="brand-copy"><strong>G-Core Systems</strong><small>Architecture of Intelligence</small></span></a><p>Eigene Apps und individuelle digitale Lösungen für Arbeit, Alltag und Kreativität.</p><p class="site-update-note">Wir ergänzen diese Website regelmäßig um neue Einblicke und Informationen zu unseren Anwendungen.</p></div><div><h2>Angebote</h2><a href="#apps">Apps &amp; Software</a><a href="#zielgruppen">Individuelle Lösungen</a><a href="#beispiele">Anwendungsbeispiele</a><a href="#entwicklung">Entwicklungsablauf</a></div><div><h2>Unternehmen</h2><a href="#unternehmen">Über G-Core Systems</a><a href="#kontakt">Kontakt</a><a href="#sicherheit">Datenschutz und Sicherheit</a></div><div><h2>Rechtliches</h2><a href="#impressum-dialog" data-dialog-open="impressum-dialog">Impressum</a><a href="#datenschutz-dialog" data-dialog-open="datenschutz-dialog">Datenschutzerklärung</a></div></div><div class="container footer-bottom"><span>© 2026 G-Core Systems. Alle Rechte vorbehalten.</span><span>Gegründet von Gerrit Gutsch.</span></div></footer>
 
   <dialog id="product-tagesanker" class="product-dialog product-dialog-calm" aria-labelledby="tagesanker-detail-title" data-product-dialog="tagesanker">
     <div class="product-dialog-shell">
@@ -255,6 +288,19 @@
           <div class="detail-status"><span><i aria-hidden="true"></i>Kostenlos zum Start</span><strong>Für Android-Smartphones ab Android 8.0</strong></div>
           <div class="ta-download-actions"><a class="button button-primary" data-apk-download href="https://github.com/gerrit0802/g-core-systems-site/releases/download/tagesanker-v1.0-build38/TagesAnker-1.0-build38.apk" aria-describedby="tagesanker-download-info">Für Android herunterladen <span aria-hidden="true">↓</span></a><span id="tagesanker-download-info">Version 1.0 · Build 38 · APK · 11,3 MB</span></div>
           <p class="android-install-note">Installation nur auf Ihrem Android-Smartphone: APK herunterladen, öffnen und die angezeigten Systemhinweise und Berechtigungen prüfen. Ein Wechsel der Website-Ansicht ist nicht erforderlich. Der Download wird über GitHub bereitgestellt.</p>
+          <details class="android-install-help" id="tagesanker-installation">
+            <summary>Installation &amp; Google Play Protect</summary>
+            <div class="android-install-help-content">
+              <p>TagesAnker wird als APK außerhalb des Google Play Store angeboten. Google Play Protect kann deshalb eine zusätzliche Prüfung anfordern. Eine Prüfaufforderung ist nicht dasselbe wie eine Warnung vor einer schädlichen App.</p>
+              <ol>
+                <li><strong>Download öffnen.</strong> Laden Sie die APK über den Downloadknopf auf dieser Seite und öffnen Sie die Datei auf Ihrem Android-Smartphone. Vor einem Update eine Sicherung erstellen; die vorhandene App nicht vorher deinstallieren.</li>
+                <li><strong>Prüfung durchführen.</strong> Wird „App scannen“ angeboten, starten Sie die Prüfung und warten Sie das Ergebnis ab. Dabei können App-Details zur Sicherheitsbewertung an Google gesendet werden. Die genaue Beschriftung hängt vom Gerät und der Android-Version ab.</li>
+                <li><strong>Ergebnis beachten.</strong> Nur wenn keine Sicherheitswarnung vorliegt, mit der angebotenen Installation fortfahren. Wird die App als schädlich eingestuft oder blockiert, brechen Sie ab und melden Sie uns den genauen Wortlaut über <a href="mailto:hello@g-core-systems.com">hello@g-core-systems.com</a>.</li>
+              </ol>
+              <p><strong>Google Play Protect eingeschaltet lassen.</strong> Sicherheitswarnungen nicht umgehen. Ein unauffälliges Prüfergebnis ist keine Garantie für vollständige Sicherheit oder Fehlerfreiheit.</p>
+              <a href="https://support.google.com/googleplay/answer/2812853?hl=de" target="_blank" rel="noopener noreferrer">Offizielle Hilfe zu Google Play Protect</a>
+            </div>
+          </details>
           <button class="ta-film-link" type="button" data-ta-film-jump aria-controls="tagesanker-film"><span aria-hidden="true">▷</span> TagesAnker im Film entdecken <small>0:58</small></button>
         </div>
         <section class="ta-showcase" data-ta-showcase aria-label="Interaktive Originaleinblicke in TagesAnker">
@@ -317,7 +363,7 @@
       </section>
 
       <section class="product-detail-facts" aria-label="TagesAnker Funktionen und Voraussetzungen"><article><span>Erfassen</span><h3>Gesprochen. Geprüft. Übernommen.</h3><p>Spracheingabe bereitet Texte und erkannte Zeitangaben vor. Vor der Übernahme prüfen Sie besonders Datum und Uhrzeit. Erkennung allein speichert oder versendet nichts; der Android-Sprachdienst kann Internet benötigen.</p></article><article><span>Planen</span><h3>Ausnahmen gehören zum Alltag.</h3><p>Bei Terminserien lässt sich ein einzelner Termin, die Folge ab diesem Termin oder die gesamte Serie ändern. Die Vorschau zeigt den Geltungsbereich vor dem Speichern. Serien sind derzeit nur im lokalen App-Kalender verfügbar.</p></article><article><span>Sichern</span><h3>Eigene Daten. Bewusste Sicherung.</h3><p>Aufgaben und Routinen sind lokal und offline nutzbar. Passwortgeschützte Sicherungen enthalten Aufgaben, Routinen und unterstützte Serienangaben – kein vollständiges Geräteabbild. Eigene Vorlagen, sämtliche Einstellungen und Verbindungsschlüssel sind nicht pauschal enthalten.</p></article></section>
-      <footer class="product-dialog-footer"><p>TagesAnker 1.0 ist für Android verfügbar. Weitere Informationen folgen.</p><button class="button button-outline" type="button" data-product-close>Zurück zur Übersicht</button></footer>
+      <footer class="product-dialog-footer"><p>TagesAnker 1.0 ist für Android verfügbar.</p><button class="button button-outline" type="button" data-product-close>Zurück zur Übersicht</button></footer>
     </div>
   </dialog>
 

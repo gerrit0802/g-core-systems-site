@@ -1,0 +1,36 @@
+.film-library{margin-top:clamp(64px,9vw,136px);padding-top:clamp(40px,5vw,72px);border-top:1px solid rgba(224,196,130,.2);scroll-margin-top:110px}
+.film-library-heading{display:grid;grid-template-columns:1.4fr 1fr;align-items:end;gap:40px;margin-bottom:40px}
+.film-library-heading h2{font-family:var(--font-display,Georgia,serif);font-weight:400;font-size:clamp(2.1rem,4.1vw,3.7rem);line-height:1.1;margin:0;letter-spacing:-.025em;color:#ebddb8}
+.film-library-heading>p{font-size:1.0625rem;line-height:1.8;max-width:400px;margin:0;color:#b5b2a8}
+.film-library-layout{display:grid;grid-template-columns:minmax(0,1.65fr) minmax(340px,1fr);gap:clamp(24px,3vw,48px);align-items:start}
+.film-stage{min-width:0;border:1px solid #39372d;border-radius:18px;background:linear-gradient(155deg,#161713,#0b0d0c);overflow:hidden;box-shadow:0 20px 65px #0003}
+.film-stage-top{display:flex;justify-content:space-between;gap:12px;padding:18px 22px;font-size:.875rem;color:#d5c696}
+.film-stage-top>span:last-child{color:#a5a399}
+.film-screen{background:#050605}
+.film-screen video{display:block;width:100%;aspect-ratio:16/9;object-fit:contain;background:#050605}
+.film-player-tools{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:14px;padding:16px 22px;border-bottom:1px solid #ffffff0d;color:#aaa99f;font-size:.875rem}
+.film-player-tools label{display:flex;gap:12px;align-items:center;color:#d7cfb6}
+.film-player-tools select{font:inherit;min-height:44px;background:#1e211c;color:#eee5cd;border:1px solid #61573e;border-radius:8px;padding:8px 30px 8px 12px;max-width:100%}
+.film-description{padding:26px 26px 20px;min-height:165px}
+.film-description h3{margin:0 0 12px;font-family:var(--font-display,Georgia,serif);font-size:clamp(1.6rem,2.5vw,2.3rem);font-weight:400;line-height:1.2;color:#e8d8a9}
+.film-description p{margin:0;color:#babbb1;font-size:1rem;line-height:1.8;max-width:60ch}
+.film-stage-footer{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;padding:0 26px 24px;font-size:.875rem;color:#a9a89d}
+.film-stage-footer a{color:#dfc889;text-underline-offset:.2em}
+.film-load-error{padding:0 26px;color:#efc888;line-height:1.6}
+.film-episodes{display:grid;gap:12px;min-width:0}
+.film-episodes-heading{color:#b7b5a9;letter-spacing:.05em;font-size:.875rem;margin:0 0 5px}
+.film-episodes button{width:100%;display:grid;grid-template-columns:104px minmax(0,1fr);align-items:center;gap:18px;text-align:left;background:#ffffff02;border:1px solid #ffffff13;border-radius:12px;color:#dddccd;padding:18px;cursor:pointer;transition:background .2s,border-color .2s;min-width:0;font:inherit}
+.film-episodes button:hover{background:#d6bc8010;border-color:#84754c}
+.film-episodes button[aria-pressed=true]{background:linear-gradient(105deg,#d6bc801b,#d6bc8005);border-color:#ad9560;box-shadow:inset 3px 0 #d7bd7c}
+.film-episodes img{display:block;width:104px;height:auto;aspect-ratio:16/9;object-fit:contain;border-radius:5px;opacity:.86;background:#070908}
+.film-episode-copy{display:grid;gap:8px;min-width:0}
+.film-episode-meta{display:flex;justify-content:space-between;flex-wrap:wrap;gap:5px 12px;color:#c6b589;font-size:.875rem;line-height:1.4}
+.film-episode-meta>span{color:#9c9e92;font-variant-numeric:tabular-nums}
+.film-episode-copy strong{font-size:1.0625rem;font-weight:500;line-height:1.4;color:#f0e7cf}
+.film-episode-summary{color:#a4a79b;font-size:.875rem;line-height:1.5}
+.film-library-note{margin:22px 0 0;color:#92968c;font-size:.875rem;line-height:1.7}
+.site-update-note{font-size:.875rem;line-height:1.7;color:#a6a89e;max-width:44ch;margin-top:20px}
+.film-library :is(button,select,a,video):focus-visible{outline:2px solid #f1d38e;outline-offset:4px}
+@media(max-width:1000px){.film-library-layout{grid-template-columns:1fr}.film-episodes{grid-template-columns:1fr 1fr}.film-episodes-heading{grid-column:1/-1}.film-episodes button{grid-template-columns:76px minmax(0,1fr);padding:16px;gap:12px}.film-episodes img{width:76px}.film-description{min-height:0}}
+@media(max-width:600px){.film-library-heading{grid-template-columns:1fr;gap:22px;margin-bottom:28px}.film-library-heading>p{font-size:1rem}.film-episodes{grid-template-columns:1fr}.film-stage-top,.film-player-tools{padding:14px 16px}.film-stage-top>span:last-child{display:none}.film-description{padding:24px 18px}.film-stage-footer{padding:0 18px 22px}.film-episodes button{grid-template-columns:86px minmax(0,1fr)}.film-episodes img{width:86px}.film-stage{border-radius:12px}}
+@media(prefers-reduced-motion:reduce){.film-episodes button{transition:none}}
