@@ -766,3 +766,96 @@ body.product-dialog-open { overflow: hidden; }
   *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
   .reveal { opacity: 1; transform: none; }
 }
+
+/* Freigegebene Informationen zur Zusammenarbeit und API-Nutzung — Revision21. */
+.consultation-note {
+  margin-block: 28px;
+  padding: 24px;
+  border: 1px solid rgba(216, 174, 43, .25);
+  border-radius: 16px;
+  background: linear-gradient(120deg, rgba(216, 174, 43, .065), transparent);
+}
+.consultation-label {
+  display: block;
+  margin-bottom: 12px;
+  color: var(--gold-light);
+  font-size: .875rem;
+  font-weight: 650;
+}
+.consultation-note h3 { margin-bottom: 12px; font-size: 1.4rem; }
+.consultation-note p { margin: 0; color: var(--muted); font-size: 1rem; }
+.collaboration-faq {
+  display: grid;
+  grid-template-columns: .84fr 1.16fr;
+  gap: 72px;
+  margin-top: 72px;
+  padding-top: 48px;
+  border-top: 1px solid var(--line);
+}
+.collaboration-faq-heading h3 { font-size: clamp(1.45rem, 2.1vw, 1.9rem); }
+.collaboration-faq-heading > p:last-child { color: var(--muted); margin-bottom: 0; }
+.collaboration-faq-items { min-width: 0; }
+.collaboration-faq details { border-bottom: 1px solid var(--line); }
+.collaboration-faq details:first-child { border-top: 1px solid var(--line); }
+.collaboration-faq summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  min-height: 64px;
+  padding: 20px 4px;
+  color: var(--text);
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.5;
+  cursor: pointer;
+  list-style: none;
+}
+.collaboration-faq summary::-webkit-details-marker { display: none; }
+.collaboration-faq summary::after {
+  content: '+';
+  flex: 0 0 22px;
+  color: var(--gold-light);
+  font-size: 1.45rem;
+  font-weight: 400;
+  text-align: center;
+}
+.collaboration-faq details[open] > summary::after { content: '−'; }
+.collaboration-faq summary:hover { color: var(--gold-light); }
+.collaboration-faq summary:focus-visible {
+  outline: 2px solid var(--gold-light);
+  outline-offset: 4px;
+  border-radius: 4px;
+}
+.faq-answer { padding: 0 34px 24px 4px; }
+.faq-answer p { color: var(--muted); font-size: 1rem; margin: 0; line-height: 1.7; }
+#product-story-forge .product-api-callout p { font-size: 1rem; }
+.product-api-callout .api-setup-note { margin-top: 16px; }
+@media (max-width: 980px) {
+  .collaboration-faq { grid-template-columns: 1fr; gap: 24px; }
+}
+@media (max-width: 600px) {
+  .consultation-note { padding: 20px; }
+  .collaboration-faq { margin-top: 48px; padding-top: 32px; }
+  .collaboration-faq summary { gap: 16px; }
+  .faq-answer { padding-right: 4px; }
+}
+
+/* Freigegebene Erklärung des bestehenden Gemeinsam-Umfangs, keine App-Simulation. */
+.ta-sharing-info { margin-top: 12px; }
+.ta-sharing-info > summary { color: var(--gold-light); }
+.ta-sharing-info-content { padding: 0 20px 24px; font-size: 1rem; color: var(--muted); }
+.ta-sharing-info-content p { margin: 0; line-height: 1.7; }
+.ta-sharing-intro { padding-block: 4px 24px; color: var(--text); }
+.ta-sharing-boundaries { margin: 0; }
+.ta-sharing-boundaries > div { padding-block: 20px; border-top: 1px solid var(--line); }
+.ta-sharing-boundaries dt { display: flex; gap: 12px; color: var(--text); font-weight: 650; }
+.ta-sharing-boundaries dt span { color: var(--gold-light); font-size: .875rem; font-weight: 500; padding-top: 2px; }
+.ta-sharing-boundaries dd { margin: 10px 0 0; line-height: 1.7; }
+.ta-sharing-practical { padding-top: 24px; border-top: 1px solid var(--line); }
+.ta-sharing-practical h3 { color: var(--text); margin: 24px 0 10px; font-size: 1rem; line-height: 1.4; letter-spacing: 0; }
+.ta-sharing-practical h3:first-child { margin-top: 0; }
+.ta-sharing-info > summary:focus-visible { outline: 2px solid var(--gold-light); outline-offset: 4px; }
+@media (max-width: 600px) {
+  .ta-sharing-info-content { padding-inline: 16px; }
+}
